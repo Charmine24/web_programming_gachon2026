@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>ID Example</title></head>
+<body>
+
+  <!-- Navigation using fragment links (# + id) -->
+  <nav>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Web programming student at Gachon.</p>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+  </section>
+
+</body>
+</html>
