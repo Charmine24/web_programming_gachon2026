@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+  /* TODO: :root variables — --primary, --accent, --bg, --text, --radius */
+  :root {
+    --primary: #0f766e;
+    --accent:  #14b8a6;
+    --bg:      #f0fdfa;
+    --text:    #1e293b;
+    --radius:  12px;
+  }
+
+  /* TODO: * reset */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* TODO: body styles */
+  body {
+    font-family: sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    padding: 24px;
+  }
+
+    h1 { color: var(--primary); margin-bottom: 24px; }
+
+  /* TODO: .grid — display:grid, 1 column base, gap */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* TODO: @media (min-width: 640px) — 3 columns */
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* TODO: .card — border, padding, radius, transition */
+  .card {
+    border: 2px solid var(--accent);
+    padding: 24px;
+    border-radius: var(--radius);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
+}
+
+  /* TODO: .card:hover — lift effect */
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+  }
+
+  /* TODO: .card[data-icon]::before — content using attr() */
+  .card[data-icon]::before {
+    content: attr(data-icon) '  ';
+    font-size: 2rem;
+    display: block;
+  }
+
+  /* TODO: dark mode @media */
+  @media (prefers-color-scheme: dark) {
+    :root {
+    --bg: #051a0a;
+    --text: #d4edda;
+    }
+  }
+</style>
+</head>
+<body>
+  <h1>My Skills</h1>
+  <div class="grid">
+    <div class="card" data-icon="🌐">HTML5 — Structure</div>
+    <div class="card" data-icon="🎨">CSS3 — Styling</div>
+    <div class="card" data-icon="⚡">JavaScript — Behaviour</div>
+    <div class="card" data-icon="📐">Flexbox — 1D Layout</div>
+    <div class="card" data-icon="🗂">Grid — 2D Layout</div>
+    <div class="card" data-icon="📱">Responsive — Any Screen</div>
+  </div>
+</body>
+</html>
