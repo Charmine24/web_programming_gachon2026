@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Web Programming | Course Library</title>
+	<style>
+		:root {
+			--ink: #3f4661;
+			--muted: #737b98;
+			--paper: #f3fbff;
+			--panel: #fffefe;
+			--line: #d8eaf3;
+			--accent: #f1a7bd;
+			--accent-dark: #b46682;
+			--teal: #83bfda;
+			--shadow: 0 18px 50px rgba(92, 137, 170, .12);
+		}
+
+		* { box-sizing: border-box; }
+		html { scroll-behavior: smooth; }
+		body {
+			margin: 0;
+			color: var(--ink);
+			background: var(--paper);
+			font-family: Georgia, "Times New Roman", serif;
+			line-height: 1.5;
+		}
+		a { color: inherit; }
+		.site-header {
+			overflow: hidden;
+			color: var(--ink);
+			background: linear-gradient(125deg, #bfe5f5 0%, #d9d1f0 58%, #f7cad8 150%);
+		}
+		.header-inner, main { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+		.header-inner { padding: 64px 0 58px; }
+		.eyebrow {
+			margin: 0 0 16px;
+			color: #6d719f;
+			font: 700 .78rem/1.2 "Trebuchet MS", sans-serif;
+			letter-spacing: .16em;
+			text-transform: uppercase;
+		}
+		h1, h2, h3, p { margin-top: 0; }
+		h1 { max-width: 700px; margin-bottom: 16px; font-size: clamp(2.8rem, 7vw, 5.7rem); line-height: .95; font-weight: 700; }
+		.intro { max-width: 620px; margin-bottom: 30px; color: #526581; font-size: 1.15rem; }
+		.week-nav { display: flex; flex-wrap: wrap; gap: 10px; }
+		.week-nav a {
+			padding: 9px 15px;
+			border: 1px solid rgba(63,64,87,.28);
+			border-radius: 999px;
+			color: var(--ink);
+			font: 700 .9rem "Trebuchet MS", sans-serif;
+			text-decoration: none;
+		}
+		.week-nav a:hover, .week-nav a:focus-visible { background: rgba(255,255,255,.72); color: var(--accent-dark); }
+		main { padding: 52px 0 76px; }
+		.section-lead { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 24px; }
+		.section-lead h2 { margin-bottom: 6px; font-size: 2rem; }
+		.section-lead p { margin-bottom: 0; color: var(--muted); }
+		.legend { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); font: .82rem "Trebuchet MS", sans-serif; }
+		.legend span::before { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; content: ""; background: var(--teal); }
+		.legend span:last-child::before { background: var(--accent); }
+		.week-list { display: grid; gap: 18px; }
+		details.week {
+			overflow: hidden;
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: var(--panel);
+			box-shadow: var(--shadow);
+		}
+		details.week[open] { border-color: #c8d8ed; }
+		summary {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+			padding: 23px 26px;
+			cursor: pointer;
+			list-style: none;
+		}
+		summary::-webkit-details-marker { display: none; }
+		summary::after { margin-left: auto; color: var(--accent); font-size: 1.5rem; content: "+"; }
+		details[open] summary::after { content: "−"; }
+		.week-number {
+			display: grid;
+			flex: 0 0 52px;
+			width: 52px;
+			height: 52px;
+			place-items: center;
+			border-radius: 50%;
+			color: #fffefd;
+			background: var(--teal);
+			font: 700 1.05rem "Trebuchet MS", sans-serif;
+		}
+		.week-title h3 { margin-bottom: 2px; font-size: 1.45rem; }
+		.week-title p { margin: 0; color: var(--muted); font: .86rem "Trebuchet MS", sans-serif; }
+		.sessions { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; padding: 0 26px 26px; }
+		.session { padding: 20px; border-top: 3px solid var(--accent); background: #fff8fc; }
+		.session h4 { margin: 0 0 16px; font-size: 1.15rem; }
+		.link-group + .link-group { margin-top: 20px; }
+		.link-group h5 { margin: 0 0 7px; color: var(--teal); font: 700 .73rem "Trebuchet MS", sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+		.link-list { display: grid; gap: 5px; margin: 0; padding: 0; list-style: none; }
+		.link-list a { display: block; padding: 3px 0 3px 14px; color: var(--ink); font-size: .94rem; text-decoration: none; }
+		.link-list a::before { position: absolute; margin-left: -14px; color: var(--accent); content: "↗"; }
+		.link-list a:hover, .link-list a:focus-visible { color: var(--accent-dark); text-decoration: underline; }
+		footer { padding: 24px 20px 34px; color: var(--muted); text-align: center; font: .82rem "Trebuchet MS", sans-serif; }
+		@media (max-width: 620px) {
+			.header-inner, main { width: min(100% - 28px, 1120px); }
+			.header-inner { padding: 44px 0 42px; }
+			main { padding-top: 34px; }
+			.section-lead { display: block; }
+			.legend { margin-top: 16px; }
+			summary { padding: 18px; }
+			.sessions { grid-template-columns: 1fr; padding: 0 18px 18px; }
+		}
+	</style>
+</head>
+<body>
+	<header class="site-header">
+		<div class="header-inner">
+			<p class="eyebrow">Gachon University · 2026</p>
+			<h1>Web Programming<br>Course Library</h1>
+			<p class="intro">A single starting point for every week, session, topic, and hands-on exercise in the course.</p>
+			<nav class="week-nav" aria-label="Jump to week">
+				<a href="#week-2">Week 2 · HTML</a>
+				<a href="#week-3">Week 3 · CSS</a>
+				<a href="#week-4">Week 4</a>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<div class="section-lead">
+			<div>
+				<h2>Browse the course</h2>
+				<p>Open a week, choose a session, and jump straight into a lesson.</p>
+			</div>
+			<div class="legend" aria-label="Content types"><span>Topic</span><span>Exercise</span></div>
+		</div>
+		<section id="course-content" class="week-list" aria-label="Course weeks"></section>
+	</main>
+	<footer>Web Programming · Gachon University · 2026</footer>
+
+	<script>
+		const course = [
+			{
+				week: 2, title: "HTML foundations", description: "Structure, meaning, and accessible HTML", sessions: [
+					{ name: "Session 1 · HTML essentials", folder: "week2/week2_1", topics: [
+						"topic_01_what_is_html.html", "topic_02_doctype_declaration.html", "topic_03_the_body_element", "topic_04_headings_h1-h6.html", "topic_05_the_head_section.html", "topic_06_meta_charset_UTF-8.html", "topic_07_the_title_element.html", "topic_08_the_lang_attribute.html", "topic_09_paragraphs_&_block_elements.html", "topic_10_inline_elements_&_span.html", "topic_11_strong.html", "topic_12_em.html", "topic_13_void_elements_&_br.html", "topic_14_links_a_tag_&_href.html", "topic_15_target_blank.html", "topic_16_unordered_lists.html", "topic_17_ordered_lists.html", "topic_18_list_items.html", "topic_19_images_img_src.html", "topic_20_alt_attribute.html", "topic_21_id_attribute.html", "topic_22_class_attribute.html", "topic_23_html_comments.html", "topic_24_block_vs_inline_summary.html", "topic_25_complete_page.html"
+					], exercises: [
+						"exercise_01_html_skeleton.html", "exercise_02_headings_paragraph_emphasis.html", "exercise_03_navigation_list_with_links.html", "exercise_04_image_with_meaningful_alt_text.html", "exercise_05_complete_profile_page.html", "exercise_06_fix_broken_html.html.html", "exercise_07_ordered_steps_w_nested_list.html", "exercise_08_favourites_gallery.html"
+					] },
+					{ name: "Session 2 · Semantic HTML", folder: "week2/week2_2", topics: [
+						"topic_01_semantic_html.html", "topic_02_page_&_section_header.html", "topic_03_navigation_landmark.html", "topic_04_main_content.html", "topic_05_page_&_section_footer.html", "topic_06_thematic_grouping.html", "topic_07_self_contained_content.html", "topic_08_tangentially_related_content", "topic_09_non_semantic_container.html", "topic_10_self_contained_figure.html", "topic_11_caption_for_figure.html", "topic_12_machine-readable_dates.html", "topic_13_contact_information.html", "topic_14_highlighted_text.html", "topic_15_abbreviations.html", "topic_16_block_quotation.html", "topic_17_inline_quotation.html", "topic_18_cite_title_of_a_work.html", "topic_19_inline_code.html", "topic_20_preformatted_text.html", "topic_21_disclosure_widget.html", "topic_22_popup_modal.html", "topic_23_aria_role_attribute.html", "topic_24_semantic_landmarks_&_accessibility.html", "topic_25_complete_semantic_page.html"
+					], exercises: [
+						"exercise_01_convert_div_soup_to_semantic_html.html", "exercise_02_blog_article_with_header_&_footer.html", "exercise_03_figure_figcaption_&_time.html", "exercise_04_FAQ_w_details_&_summary.html", "exercise_05_full_semantic_portfolio_page.html", "exercise_06_fix_semantic_errors.html", "exercise_07_quotation_&_citation_page.html", "exercise_08_news_article.html"
+					] }
+				]
+			},
+			{
+				week: 3, title: "CSS fundamentals", description: "Selectors, layout, and visual styling", sessions: [
+					{ name: "Session 1 · CSS essentials", folder: "week3/week3_1", topics: [
+						"topic_01_what_is_css.html", "topic_02_three_ways_to_add_css.html", "topic_03_css_syntax.css", "topic_04_the_universal_selector.css", "topic_05_id_selector.html", "topic_06_class_selector.html", "topic_07_type_element_selector.html", "topic_08_color_property.html", "topic_09_background_color_property.html", "topic_10_hex_color_codes.html", "topic_11_rgb_color_values.html", "topic_12_font-size_property.html", "topic_13_font-weight_property.html", "topic_14_font-style_property.html", "topic_15_text-align_property.html", "topic_16_box_model_padding.html", "topic_17_box_model_margin.html", "topic_18_box_model_width_calculation.html", "topic_19_display_block.html", "topic_20_display_none.html", "topic_21_display_flex.html", "topic_22_css_specificity.css", "topic_23_which_selector_wins.html", "topic_24_css_comments.css", "topic_25_putting_it_all_together.html"
+					], exercises: [
+						"exercise_01_style_your_first_heading.html", "exercise_02_three_ways_spot_the_difference.html", "exercise_03_color_palette_card.html", "exercise_04_box_model_explorer.html", "exercise_05_fix_the_broken_css.html", "exercise_06_flexbox_navigation_bar.html", "exercise_07_profile_card_with_css.html", "exercise_08_full_style_sheet_from_scratch.html"
+					] },
+					{ name: "Session 2 · Advanced CSS", folder: "week3/week3_2", topics: [
+						"topic_01_position_static_&_relative.html", "topic_02_position_absolute.html", "topic_03_position_fixed_&_sticky.html", "topic_04_z-index_&_overflow.html", "topic_05_pseudo_classes.html", "topic_06_pseudo_elements_before_&_after.html", "topic_07_css_transitions.html", "topic_08_css_animations_&_@keyframes.html", "topic_09_css_custom_properties_variables.html", "topic_10_css_media_queries.html", "topic_11_advanced_flexbox.html", "topic_12_css_grid.html", "topic_13_border-radius_&_box-shadow.html", "topic_14_the_inherit_keyword.html", "topic_15_putting_css_advanced_together.html"
+					], exercises: [
+						"exercise_01_position_the_badge.html", "exercise_02_hover_card_with_transition.html", "exercise_03_loading_spinner_with_@keyframes.html", "exercise_04_css_variables_theme.html", "exercise_05_fixed_navigation_bar.html", "exercise_06_responsive_grid_page.html", "exercise_07_complete_css_advanced_portfolio_page.html"
+					] }
+				]
+			},
+			{
+				week: 4, title: "Week 4", description: "Content will appear here as the session materials are added", sessions: []
+			}
+		];
+
+		const prettyName = (fileName) => fileName
+			.replace(/\.[^.]+$/, "")
+			.replace(/^(topic|exercise)_\d+_/, "")
+			.replace(/[_&@-]+/g, " ")
+			.replace(/\b\w/g, (letter) => letter.toUpperCase());
+
+		const makeLinks = (files, folder) => files.map((fileName) =>
+			`<li><a href="${folder}/${encodeURI(fileName)}">${prettyName(fileName)}</a></li>`
+		).join("");
+
+		document.querySelector("#course-content").innerHTML = course.map((week) => {
+			const itemCount = week.sessions.reduce((total, session) => total + session.topics.length + session.exercises.length, 0);
+			const sessions = week.sessions.length
+				? week.sessions.map((session) => `<article class="session"><h4>${session.name}</h4><div class="link-group"><h5>Topics · ${session.topics.length}</h5><ul class="link-list">${makeLinks(session.topics, session.folder)}</ul></div><div class="link-group"><h5>Exercises · ${session.exercises.length}</h5><ul class="link-list">${makeLinks(session.exercises, session.folder)}</ul></div></article>`).join("")
+				: `<article class="session"><h4>Coming soon</h4><p>Session materials have not been added yet.</p></article>`;
+			return `<details class="week" id="week-${week.week}" ${week.week === 2 ? "open" : ""}><summary><span class="week-number">${week.week}</span><span class="week-title"><h3>${week.title}</h3><p>${week.description} · ${week.sessions.length} session${week.sessions.length === 1 ? "" : "s"} · ${itemCount} resources</p></span></summary><div class="sessions">${sessions}</div></details>`;
+		}).join("");
+	</script>
+</body>
+</html>
