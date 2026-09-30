@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Color Palette</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
+      background: #0f172a;
+      color: #f8fafc;
+    }
+    h1 { text-align: center; color: #38bdf8; }
+    
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 14px;
+      border: 2px solid #334155;
+      border-radius: 8px;
+      background: #1e293b;
+      color: #fff;
+      font-size: 15px;
+    }
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+    button:active { transform: scale(0.96); }
+    .btn-add { background: #38bdf8; color: #0f172a; }
+    .btn-export { background: #facc15; color: #0f172a; }
+
+    /* Palette Container */
+    #palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    /* Base styling for color boxes */
+    .color-box {
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 13px;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      user-select: none;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+
+      /* Smooth transition animation for expansion */
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Expanded box state */
+    .color-box.expanded {
+      width: 160px;
+      height: 160px;
+      font-size: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Interactive Color Palette</h1>
+
+  <!-- Control inputs and action buttons -->
+  <div class="controls">
+    <input id="color-input" type="text" placeholder="Enter hex color (e.g. #ff5733)">
+    <button id="add-btn" class="btn-add">+ Add Color</button>
+    <button id="export-btn" class="btn-export">📷 Export PNG</button>
+  </div>
+
+  <!-- Color Palette Container -->
+  <div id="palette"></div>
+
+  <script>
+    const palette = document.getElementById('palette');
+    const colorInput = document.getElementById('color-input');
+    const addBtn = document.getElementById('add-btn');
+    const exportBtn = document.getElementById('export-btn');
+
+    // Default color palette fallback
+    const defaultColors = ['#1a56db', '#dc2626', '#16a34a', '#ca8a04', '#9333ea', '#0891b2'];
+
+    // Retrieve saved color array from local storage
+    function getStoredColors() {
+      const stored = localStorage.getItem('my_color_palette');
+      return stored ? JSON.parse(stored) : defaultColors;
+    }
+
+    // Save active color array to local storage
+    function saveColors() {
+      const boxes = document.querySelectorAll('.color-box');
+      const colors = Array.from(boxes).map(box => box.dataset.hex);
+      localStorage.setItem('my_color_palette', JSON.stringify(colors));
+    }
+
+    // Create a new color box DOM element with event handlers
+    function createColorBox(hexColor) {
+      const box = document.createElement('div');
+      box.className = 'color-box';
+      box.style.backgroundColor = hexColor;
+      box.dataset.hex = hexColor;
+
+      // Toggle box size and hex code display on single click
+      box.addEventListener('click', () => {
+        box.classList.toggle('expanded');
+        box.textContent = box.classList.contains('expanded') ? hexColor : '';
+      });
+
+      // Remove box from DOM and update storage on double click
+      box.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        box.remove();
+        saveColors();
+      });
+
+      return box;
+    }
+
+    // Render palette items from local storage or defaults on initial load
+    function initPalette() {
+      palette.innerHTML = '';
+      const colors = getStoredColors();
+      colors.forEach(hex => {
+        palette.appendChild(createColorBox(hex));
+      });
+    }
+
+    // Validate hex input, create a new color box, and sync storage
+    function addColor() {
+      let hex = colorInput.value.trim();
+      if (!hex) return;
+
+      if (!hex.startsWith('#')) hex = '#' + hex;
+
+      if (!/^#[0-9A-F]{6}$/i.test(hex)) {
+        alert('Please enter a valid 6-digit hex color code (e.g. #ff5733)');
+        return;
+      }
+
+      const box = createColorBox(hex);
+      palette.appendChild(box);
+      colorInput.value = '';
+
+      saveColors();
+    }
+
+    addBtn.addEventListener('click', addColor);
+    colorInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addColor();
+    });
+
+    // Render current palette onto an HTML5 canvas and trigger a PNG file download
+    exportBtn.addEventListener('click', () => {
+      const boxes = document.querySelectorAll('.color-box');
+      if (boxes.length === 0) {
+        alert('No colors to export!');
+        return;
+      }
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const boxSize = 100;
+      const gap = 15;
+      const cols = Math.min(boxes.length, 6);
+      const rows = Math.ceil(boxes.length / cols);
+
+      canvas.width = cols * boxSize + (cols + 1) * gap;
+      canvas.height = rows * boxSize + (rows + 1) * gap;
+
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      boxes.forEach((box, index) => {
+        const hex = box.dataset.hex;
+        const col = index % cols;
+        const row = Math.floor(index / cols);
+        const x = gap + col * (boxSize + gap);
+        const y = gap + row * (boxSize + gap);
+
+        ctx.fillStyle = hex;
+        ctx.fillRect(x, y, boxSize, boxSize);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(hex, x + boxSize / 2, y + boxSize / 2 + 4);
+      });
+
+      const link = document.createElement('a');
+      link.download = 'color-palette.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+
+    initPalette();
+  </script>
+</body>
+</html>

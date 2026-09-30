@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html><body style="font-family:system-ui;padding:24px;text-align:center">
+  <style>
+    .done { background: #16a34a !important; }
+  </style>
+
+  <button id="clicker" style="
+    padding:14px 32px;font-size:18px;border:none;
+    background:#1a56db;color:white;border-radius:10px;
+    cursor:pointer;transition:background .3s">
+    Click me!
+  </button>
+
+  <p id="count" style="font-size:32px;font-weight:bold;margin:16px 0">0</p>
+  <p id="message" style="font-size:16px;color:#666">Keep clicking...</p>
+
+  <script>
+    // YOUR CODE HERE
+    // 1. Select the button, count paragraph, and message paragraph
+    const button = document.getElementById('clicker');
+    const countEl = document.getElementById('count');
+    const messageEl = document.getElementById('message');
+    // 2. Create a counter variable starting at 0
+    let count = 0;
+    // 3. Add a click listener to the button
+    const btn = document.querySelector('#clicker');
+    // 4. Inside the listener: increment count, update #count text
+        btn.addEventListener('click', () => {
+        count++;
+        countEl.textContent = count;
+    // 5. If count >= 5: add class 'done' to button, update #message
+        if (count >= 5) {
+            btn.classList.add('done');
+            messageEl.textContent = 'You did it!';
+        } 
+    })
+  </script>
+</body></html>

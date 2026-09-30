@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html><body style="font-family:system-ui;padding:20px;max-width:420px;margin:auto">
+  <style>
+    h2 { color: #1a56db; }
+    #search { width:100%; padding:10px 14px; font-size:16px;
+      border:2px solid #1a56db; border-radius:10px; margin-bottom:14px; }
+    .student { padding:10px 14px; margin-bottom:6px; background:#f0f4ff;
+      border-radius:8px; border:1px solid #c8d4f0; font-size:15px; }
+    mark { background: #f7df1e; border-radius: 3px; }
+    #no-results { display:none; color:#9ca3af; text-align:center; padding:20px; }
+  </style>
+
+  <h2>Student Search</h2>
+  <input id="search" type="text" placeholder="Search students...">
+  <div id="student-list">
+    <div class="student" data-name="Kim Jisoo">Kim Jisoo — Web Programming</div>
+    <div class="student" data-name="Park Minjun">Park Minjun — Computer Science</div>
+    <div class="student" data-name="Lee Sooyeon">Lee Sooyeon — Software Engineering</div>
+    <div class="student" data-name="Choi Hyunwoo">Choi Hyunwoo — Artificial Intelligence</div>
+    <div class="student" data-name="Jung Yuna">Jung Yuna — Data Science</div>
+    <div class="student" data-name="Kang Seojun">Kang Seojun — Web Programming</div>
+  </div>
+  <p id="no-results">No students found.</p>
+
+  <script>
+    // YOUR CODE HERE
+    // 1. Select #search and all .student elements
+    const searchInput = document.getElementById('search');
+    const students = document.querySelectorAll('.student');
+    const noResults = document.getElementById('no-results');
+
+    students.forEach(student => {
+        student.dataset.originalText = student.innerHTML; // Store original text for highlighting
+    });
+
+    // 2. Add 'input' event listener to #search
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        let visibleCount = 0;
+    // 3. Inside the listener:
+    //    a. Get the search term: e.target.value.toLowerCase()
+    //    b. For each .student: get data-name attribute, compare with term
+    //    c. Show or hide each student (style.display = '' or 'none')
+        students.forEach(student => {
+            const name = student.dataset.name.toLowerCase();
+            const originalText = student.dataset.originalText;
+
+            if (name.includes(searchTerm)) {
+                student.style.display = '';
+                visibleCount++;
+                // Highlight matched text
+                if (searchTerm !== '') {
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    student.innerHTML = originalText.replace(regex, '<mark>$1</mark>');
+                } else {
+                    student.innerHTML = originalText; // Reset to original text
+                }
+            } else {
+                student.style.display = 'none';
+                student.innerHTML = originalText; // Reset to original text
+            }
+        })
+    })
+    // 4. Show #no-results if all students are hidden
+    noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    // BONUS: wrap matched text in <mark> using innerHTML for highlighting
+  </script>
+</body></html>
