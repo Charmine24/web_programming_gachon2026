@@ -1,0 +1,48 @@
+﻿<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Week 3 | CSS Fundamentals</title>
+		<link rel="stylesheet" href="../style.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<p class="eyebrow">Yang Kaijing Charmine · Web Programming (K0126_002)</p>
+				<h1>Week 3<br>CSS Fundamentals</h1>
+				<p class="intro">Selectors, layout, and visual styling.</p>
+				<nav class="page-nav" aria-label="Course navigation">
+					<a href="../index.html">Course home</a>
+					<a href="#session-1">Session 1</a>
+					<a href="#session-2">Session 2</a>
+					<a href="../week2/index.html">Week 2</a>
+					<a href="../week5/index.html">Week 5</a>
+				</nav>
+			</div>
+		</header>
+		<main>
+			<div class="section-lead">
+				<div>
+					<h2>Choose a session</h2>
+					<p>Use the main course catalog to open every topic and exercise.</p>
+				</div>
+			</div>
+			<section id="week-3-resources" class="week-list session-list" aria-label="Week 3 sessions"></section>
+		</main>
+		<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
+		<script>
+			const sessions = [
+				{
+					name: "CSS essentials", topics: ["topic_01_what_is_css.html", "topic_02_three_ways_to_add_css.html", "topic_03_css_syntax.css", "topic_04_the_universal_selector.css", "topic_05_id_selector.html", "topic_06_class_selector.html", "topic_07_type_element_selector.html", "topic_08_color_property.html", "topic_09_background_color_property.html", "topic_10_hex_color_codes.html", "topic_11_rgb_color_values.html", "topic_12_font-size_property.html", "topic_13_font-weight_property.html", "topic_14_font-style_property.html", "topic_15_text-align_property.html", "topic_16_box_model_padding.html", "topic_17_box_model_margin.html", "topic_18_box_model_width_calculation.html", "topic_19_display_block.html", "topic_20_display_none.html", "topic_21_display_flex.html", "topic_22_css_specificity.css", "topic_23_which_selector_wins.html", "topic_24_css_comments.css", "topic_25_putting_it_all_together.html"], exercises: ["exercise_01_style_your_first_heading.html", "exercise_02_three_ways_spot_the_difference.html", "exercise_03_color_palette_card.html", "exercise_04_box_model_explorer.html", "exercise_05_fix_the_broken_css.html", "exercise_06_flexbox_navigation_bar.html", "exercise_07_profile_card_with_css.html", "exercise_08_full_style_sheet_from_scratch.html"]
+				},
+				{
+					name: "Advanced CSS", topics: ["topic_01_position_static_&_relative.html", "topic_02_position_absolute.html", "topic_03_position_fixed_&_sticky.html", "topic_04_z-index_&_overflow.html", "topic_05_pseudo_classes.html", "topic_06_pseudo_elements_before_&_after.html", "topic_07_css_transitions.html", "topic_08_css_animations_&_@keyframes.html", "topic_09_css_custom_properties_variables.html", "topic_10_css_media_queries.html", "topic_11_advanced_flexbox.html", "topic_12_css_grid.html", "topic_13_border-radius_&_box-shadow.html", "topic_14_the_inherit_keyword.html", "topic_15_putting_css_advanced_together.html"], exercises: ["exercise_01_position_the_badge.html", "exercise_02_hover_card_with_transition.html", "exercise_03_loading_spinner_with_@keyframes.html", "exercise_04_css_variables_theme.html", "exercise_05_fixed_navigation_bar.html", "exercise_06_responsive_grid_page.html", "exercise_07_complete_css_advanced_portfolio_page.html"]
+				}
+			];
+			const label = (fileName) => fileName.replace(/\.[^.]+$/, "").replace(/^(topic|exercise)_\d+_/, "").replace(/[_&@-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+			const links = (files) => files.map((fileName) => `<li><a href="${encodeURI(fileName)}">${label(fileName)}</a></li>`).join("");
+			document.querySelector("#week-3-resources").innerHTML = sessions.map((session, index) => `<details id="session-${index + 1}" class="week session-details" open><summary><span class="week-number">${index + 1}</span><span class="week-title"><h3>${session.name}</h3><p>${session.topics.length} topics · ${session.exercises.length} exercises</p></span></summary><div class="sessions"><article class="session"><div class="link-group"><h5>Topics</h5><ul class="link-list">${links(session.topics)}</ul></div><div class="link-group"><h5>Exercises</h5><ul class="link-list">${links(session.exercises)}</ul></div></article></div></details>`).join("");
+		</script>
+	</body>
+</html>

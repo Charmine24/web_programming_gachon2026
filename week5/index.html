@@ -1,0 +1,42 @@
+﻿<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Week 5 | DOM and JavaScript</title>
+		<link rel="stylesheet" href="../style.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<p class="eyebrow">Yang Kaijing Charmine · Web Programming (K0126_002)</p>
+				<h1>Week 5<br>DOM &amp; JavaScript</h1>
+				<p class="intro">Selecting elements, handling events, and modifying the page dynamically.</p>
+				<nav class="page-nav" aria-label="Course navigation">
+					<a href="../index.html">Course home</a>
+					<a href="#session-1">Session 1</a>
+					<a href="#session-2">Session 2</a>
+					<a href="../week2/index.html">Week 2</a>
+					<a href="../week3/index.html">Week 3</a>
+				</nav>
+			</div>
+		</header>
+		<main>
+			<div class="section-lead">
+				<div>
+					<h2>Choose a session</h2>
+					<p>Use the main course catalog to open every topic and exercise.</p>
+				</div>
+			</div>
+			<section id="week-5-resources" class="week-list session-list" aria-label="Week 5 sessions"></section>
+		</main>
+		<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
+		<script>
+			const topics = ["topic_01_what_is_the_dom.html", "topic_02_selecting_elements.js", "topic_03_querySelector_&_querySelectorAll.js", "topic_04_textContent_Reading_&_Writing_Text.js", "topic_05_innerHTML_Power_&_Danger.js", "topic_06_classList_styling_with_javascript.js", "topic_07_addEventListener.js", "topic_08_the_event_object_e.js", "topic_09_e_preventDefault.js", "topic_10_event_bubbling_&_delegation.js", "topic_11_createElement_&_appendChild.js", "topic_12_removing_elements.js"];
+			const exercises = ["exercise_01_click_counter_with_colour_change.html", "exercise_02_dark_mode_toggle_card.html", "exercise_03_interactive_to-do_list.html", "exercise_04_live_search_filter_advanced.html", "lecture_homework_interactive_color_palette.html", "lecture_mini_project_todo_list.html"];
+			const label = (fileName) => fileName.replace(/\.[^.]+$/, "").replace(/^(topic|exercise)_\d+_/, "").replace(/[_&@-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+			const links = (files) => files.map((fileName) => `<li><a href="${encodeURI(fileName)}">${label(fileName)}</a></li>`).join("");
+			document.querySelector("#week-5-resources").innerHTML = `<details id="session-1" class="week session-details" open><summary><span class="week-number">1</span><span class="week-title"><h3>DOM essentials</h3><p>${topics.length} topics · ${exercises.length} exercises</p></span></summary><div class="sessions"><article class="session"><div class="link-group"><h5>Topics</h5><ul class="link-list">${links(topics)}</ul></div><div class="link-group"><h5>Exercises</h5><ul class="link-list">${links(exercises)}</ul></div></article></div></details><details id="session-2" class="week session-details"><summary><span class="week-number">2</span><span class="week-title"><h3>Coming soon</h3><p>Materials will be added here when available.</p></span></summary></details>`;
+		</script>
+	</body>
+</html>
