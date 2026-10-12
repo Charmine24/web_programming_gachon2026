@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade Calculator</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f2f4f8;
+      color: #222;
+      padding: 16px;
+    }
+    .card {
+      background: #fff;
+      width: 100%;
+      max-width: 400px;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    p.sub { margin: 0 0 24px; color: #666; }
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      border: 2px solid #ccd;
+      border-radius: 8px;
+      text-align: center;
+    }
+    input:focus { outline: none; border-color: #3b6fd8; }
+    button {
+      margin-top: 12px;
+      width: 100%;
+      padding: 12px;
+      font-size: 17px;
+      border: none;
+      border-radius: 8px;
+      background: #3b6fd8;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover { background: #2f5bb5; }
+    #grade {
+      margin-top: 24px;
+      font-size: 72px;
+      font-weight: bold;
+      min-height: 86px;
+    }
+    #message { color: #555; min-height: 22px; }
+    table {
+      margin: 24px auto 0;
+      border-collapse: collapse;
+      font-size: 14px;
+      color: #555;
+    }
+    td { padding: 4px 12px; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Grade Calculator</h1>
+    <p class="sub">Enter a score from 0 to 100</p>
+
+    <input type="number" id="score" min="0" max="100" placeholder="e.g. 75">
+    <button onclick="calculateGrade()">Calculate Grade</button>
+
+    <div id="grade"></div>
+    <div id="message"></div>
+
+    <table>
+      <tr><td>90 and above</td><td>A</td></tr>
+      <tr><td>80 – 89</td><td>B</td></tr>
+      <tr><td>70 – 79</td><td>C</td></tr>
+      <tr><td>Below 70</td><td>F</td></tr>
+    </table>
+  </div>
+
+  <script>
+    function calculateGrade() {
+      let score = Number(document.getElementById('score').value);
+      let gradeBox = document.getElementById('grade');
+      let messageBox = document.getElementById('message');
+      let input = document.getElementById('score').value;
+
+      // Check the input is valid
+      if (input === '' || score < 0 || score > 100) {
+        gradeBox.textContent = '';
+        messageBox.textContent = 'Please enter a score between 0 and 100.';
+        return;
+      }
+
+      // Conditions (if / else)
+      let grade;
+      let color;
+      if (score >= 90) {
+        grade = 'A';
+        color = '#2e9e5b';
+      } else if (score >= 80) {
+        grade = 'B';
+        color = '#3b6fd8';
+      } else if (score >= 70) {
+        grade = 'C';
+        color = '#e0a100';
+      } else {
+        grade = 'F';
+        color = '#d64545';
+      }
+
+      console.log(grade);
+      gradeBox.textContent = grade;
+      gradeBox.style.color = color;
+      messageBox.textContent = 'A score of ' + score + ' gets grade ' + grade + '.';
+    }
+
+    // Let the Enter key calculate too
+    document.getElementById('score').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') calculateGrade();
+    });
+  </script>
+</body>
+</html>

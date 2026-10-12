@@ -19,4 +19,4 @@ web_programming_gachon2026/
 └── week5/index.html # Week 5 section page
 ```
 
-Session folders contain the individual topic and exercise files. Week 5 resources are stored directly in `week5/`; they do not need their own `index.html`.
+Session folders contain the individual topic and exercise files. Week 5 uses `week5/week5_1/` for DOM materials and `week5/week5_2/` for JavaScript practice exercises.
