@@ -15,7 +15,6 @@
 				<nav class="page-nav" aria-label="Course navigation">
 					<a href="../index.html">Course home</a>
 					<a href="#session-1">Session 1</a>
-					<a href="#session-2">Session 2</a>
 					<a href="../week2/index.html">Week 2</a>
 					<a href="../week3/index.html">Week 3</a>
 				</nav>
@@ -36,7 +35,7 @@
 			const exercises = ["exercise_01_click_counter_with_colour_change.html", "exercise_02_dark_mode_toggle_card.html", "exercise_03_interactive_to-do_list.html", "exercise_04_live_search_filter_advanced.html", "lecture_homework_interactive_color_palette.html", "lecture_mini_project_todo_list.html"];
 			const label = (fileName) => fileName.replace(/\.[^.]+$/, "").replace(/^(topic|exercise)_\d+_/, "").replace(/[_&@-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 			const links = (files) => files.map((fileName) => `<li><a href="${encodeURI(fileName)}">${label(fileName)}</a></li>`).join("");
-			document.querySelector("#week-5-resources").innerHTML = `<details id="session-1" class="week session-details" open><summary><span class="week-number">1</span><span class="week-title"><h3>DOM essentials</h3><p>${topics.length} topics · ${exercises.length} exercises</p></span></summary><div class="sessions"><article class="session"><div class="link-group"><h5>Topics</h5><ul class="link-list">${links(topics)}</ul></div><div class="link-group"><h5>Exercises</h5><ul class="link-list">${links(exercises)}</ul></div></article></div></details><details id="session-2" class="week session-details"><summary><span class="week-number">2</span><span class="week-title"><h3>Coming soon</h3><p>Materials will be added here when available.</p></span></summary></details>`;
+			document.querySelector("#week-5-resources").innerHTML = `<details id="session-1" class="week session-details" open><summary><span class="week-number">1</span><span class="week-title"><h3>DOM essentials</h3><p>${topics.length} topics · ${exercises.length} exercises</p></span></summary><div class="sessions"><article class="session"><div class="link-group"><h5>Topics</h5><ul class="link-list">${links(topics)}</ul></div><div class="link-group"><h5>Exercises</h5><ul class="link-list">${links(exercises)}</ul></div></article></div></details>`;
 		</script>
 	</body>
 </html>

@@ -91,7 +91,7 @@ details[open] summary::after { content: "−"; }
 .week-title h3 a:hover, .week-title h3 a:focus-visible, .resource-panel h3 a:hover, .resource-panel h3 a:focus-visible { color: var(--accent-dark); text-decoration: underline; }
 .week-title p { margin: 0; color: var(--muted); font: .86rem "Trebuchet MS", sans-serif; }
 .sessions { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; padding: 0 26px 26px; }
-.session { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 20px; border-top: 3px solid var(--accent); background: #fff8fc; }
+.session { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 24px; padding: 20px; border-top: 3px solid var(--accent); background: #fff8fc; }
 .session h4 { grid-column: 1 / -1; margin: 0 0 16px; font-size: 1.15rem; }
 .link-group + .link-group { margin-top: 0; }
 .link-group h5 { margin: 0 0 7px; color: var(--teal); font: 700 .73rem "Trebuchet MS", sans-serif; letter-spacing: .12em; text-transform: uppercase; }
