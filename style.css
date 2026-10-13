@@ -55,7 +55,7 @@ main { padding: 52px 0 76px; }
 .legend span::before { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; content: ""; background: var(--teal); }
 .legend span:last-child::before { background: var(--accent); }
 .week-list, .resource-list { display: grid; gap: 18px; }
-.session-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.session-list { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
 details.week, .resource-panel {
 	overflow: hidden;
 	border: 1px solid var(--line);
@@ -90,9 +90,9 @@ details[open] summary::after { content: "−"; }
 .week-title h3 a, .resource-panel h3 a { text-decoration: none; }
 .week-title h3 a:hover, .week-title h3 a:focus-visible, .resource-panel h3 a:hover, .resource-panel h3 a:focus-visible { color: var(--accent-dark); text-decoration: underline; }
 .week-title p { margin: 0; color: var(--muted); font: .86rem "Trebuchet MS", sans-serif; }
-.sessions { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; padding: 0 26px 26px; }
-.session { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 24px; padding: 20px; border-top: 3px solid var(--accent); background: #fff8fc; }
-.session h4 { grid-column: 1 / -1; margin: 0 0 16px; font-size: 1.15rem; }
+.sessions { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); align-items: start; gap: 18px; padding: 0 26px 12px; }
+.session { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 12px 24px; padding: 8px 16px 12px; border-top: 3px solid var(--accent); background: #fff8fc; }
+.session h4 { grid-column: 1 / -1; margin: 0 0 2px; font-size: 1.15rem; }
 .link-group + .link-group { margin-top: 0; }
 .link-group h5 { margin: 0 0 7px; color: var(--teal); font: 700 .73rem "Trebuchet MS", sans-serif; letter-spacing: .12em; text-transform: uppercase; }
 .session > .link-group:first-of-type h5 { color: var(--teal); }
@@ -115,10 +115,10 @@ footer { padding: 24px 20px 34px; color: var(--muted); text-align: center; font:
 	.section-lead { display: block; }
 	.legend { margin-top: 16px; }
 	summary { padding: 18px; }
-	.sessions { grid-template-columns: 1fr; padding: 0 18px 18px; }
+	.sessions { grid-template-columns: 1fr; padding: 0 8px 8px; }
 	.session-list { grid-template-columns: 1fr; }
-	.session { grid-template-columns: 1fr; }
-	.link-group + .link-group { margin-top: 20px; }
+	.session { grid-template-columns: 1fr; padding: 8px 12px 12px; }
+	.link-group + .link-group { margin-top: 12px; }
 	.resource-panel { padding: 20px 18px; }
 	.resource-panel .link-list { grid-template-columns: 1fr; }
 }
