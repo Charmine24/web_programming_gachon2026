@@ -48,6 +48,17 @@ h1 { max-width: 700px; margin-bottom: 16px; font-size: clamp(2.8rem, 7vw, 5.7rem
 }
 .week-nav a:hover, .week-nav a:focus-visible, .page-nav a:hover, .page-nav a:focus-visible { background: rgba(255,255,255,.72); color: var(--accent-dark); }
 .week-nav a[aria-current="page"], .page-nav a[aria-current="page"] { border-color: var(--accent-dark); background: rgba(255,255,255,.72); color: var(--accent-dark); }
+.back-button {
+	margin: 20px;
+	padding: 8px 14px;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	color: var(--ink);
+	background: var(--panel);
+	cursor: pointer;
+	font: 700 .86rem "Trebuchet MS", sans-serif;
+}
+.back-button:hover, .back-button:focus-visible { border-color: var(--accent-dark); color: var(--accent-dark); }
 main { padding: 52px 0 76px; }
 .section-lead { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 24px; }
 .section-lead h2 { margin-bottom: 6px; font-size: 2rem; }

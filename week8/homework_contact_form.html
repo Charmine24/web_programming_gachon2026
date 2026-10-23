@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Me</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+ 
+  <style>
+    :root {
+      --pink: #ff7eb6;
+      --pink-dark: #ec5a9c;
+      --pink-soft: #ffe3ef;
+      --lavender: #c9b6ff;
+      --lavender-soft: #f1ebff;
+      --cream: #fff8fb;
+      --text: #5a3d5c;
+      --muted: #a58aa8;
+      --valid: #4cc38a;     /* soft green for :valid  */
+      --invalid: #f0607e;   /* rosy red for :invalid  */
+      --radius: 16px;
+    }
+ 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    body {
+      font-family: "Quicksand", system-ui, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 10% 20%, var(--pink-soft) 0, transparent 40%),
+        radial-gradient(circle at 90% 10%, var(--lavender-soft) 0, transparent 45%),
+        var(--cream);
+      background-attachment: fixed;
+      padding: 50px 20px 60px;
+    }
+ 
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    header h1 {
+      font-family: "Pacifico", cursive;
+      font-weight: 400;
+      font-size: clamp(2.2rem, 6vw, 3rem);
+      background: linear-gradient(90deg, var(--pink-dark), #b48cff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    header p {
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+ 
+    main { max-width: 560px; margin: 0 auto; }
+ 
+    /* ---------- Form card ---------- */
+    form {
+      background: #fff;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(201, 182, 255, 0.35);
+    }
+ 
+    fieldset {
+      border: 2px dashed var(--pink-soft);
+      border-radius: var(--radius);
+      padding: 18px 18px 6px;
+      margin-bottom: 20px;
+    }
+    legend {
+      padding: 0 8px;
+      font-weight: 700;
+      color: var(--pink-dark);
+    }
+ 
+    .field { margin-bottom: 16px; }
+ 
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 6px;
+    }
+    label .req { color: var(--pink-dark); }
+ 
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      font: inherit;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--cream);
+      border: 2px solid var(--pink-soft);
+      border-radius: 12px;
+      outline: none;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+    input::placeholder,
+    textarea::placeholder { color: #d3b5cf; }
+ 
+    /* ---------- Validation styles ---------- */
+ 
+    /* Focus ring for keyboard users */
+    input:focus,
+    textarea:focus {
+      border-color: var(--lavender);
+      outline: 3px solid var(--lavender-soft);
+      outline-offset: 1px;
+    }
+ 
+    /* Only show valid/invalid once the user has typed something
+       (:placeholder-shown = field is still empty) */
+    input:not(:placeholder-shown):valid,
+    textarea:not(:placeholder-shown):valid {
+      border-color: var(--valid);
+    }
+    input:not(:placeholder-shown):invalid,
+    textarea:not(:placeholder-shown):invalid {
+      border-color: var(--invalid);
+      background: #fff4f6;
+    }
+ 
+    /* Hint text under each field, turns red when that field is invalid */
+    .hint {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+    input:not(:placeholder-shown):invalid + .hint,
+    textarea:not(:placeholder-shown):invalid + .hint {
+      color: var(--invalid);
+      font-weight: 600;
+    }
+ 
+    .back-button {
+      width: auto;
+      margin: 0 0 20px;
+      padding: 8px 14px;
+      color: var(--text);
+      background: #fff;
+      border: 1px solid var(--pink-soft);
+      font-size: 0.86rem;
+    }
+
+    /* ---------- Button ---------- */
+    button {
+      width: 100%;
+      padding: 14px;
+      font: inherit;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink), #b48cff);
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    button:hover { filter: brightness(0.95); }
+    button:focus-visible {
+      outline: 3px solid var(--lavender);
+      outline-offset: 3px;
+    }
+ 
+    #thanks {
+      display: none;
+      text-align: center;
+      margin-top: 18px;
+      font-weight: 700;
+      color: var(--pink-dark);
+    }
+  </style>
+</head>
+<body>
+  <button class="back-button" type="button" onclick="history.back()">Back</button>
+ 
+  <header>
+    <h1>Contact Me</h1>
+    <p>leave me a little note ♡</p>
+  </header>
+ 
+  <main>
+    <!-- POST: message content shouldn't appear in the URL -->
+    <form id="contact-form" action="/contact" method="POST" autocomplete="on">
+ 
+      <fieldset>
+        <legend>About you</legend>
+ 
+        <div class="field">
+          <label for="name">Name <span class="req">*</span></label>
+          <!-- Validation: required + minlength + maxlength -->
+          <input
+            type="text" id="name" name="name"
+            placeholder="Your name"
+            required minlength="2" maxlength="50">
+          <span class="hint">2–50 characters</span>
+        </div>
+ 
+        <div class="field">
+          <label for="email">Email <span class="req">*</span></label>
+          <!-- Validation: type="email" checks the @ format + required -->
+          <input
+            type="email" id="email" name="email"
+            placeholder="you@example.com"
+            required>
+          <span class="hint">Must be a valid email address</span>
+        </div>
+      </fieldset>
+ 
+      <fieldset>
+        <legend>Your message</legend>
+ 
+        <div class="field">
+          <label for="subject">Subject <span class="req">*</span></label>
+          <!-- Validation: required + minlength + maxlength -->
+          <input
+            type="text" id="subject" name="subject"
+            placeholder="What's it about?"
+            required minlength="3" maxlength="80">
+          <span class="hint">3–80 characters</span>
+        </div>
+ 
+        <div class="field">
+          <label for="message">Message <span class="req">*</span></label>
+          <!-- Validation: required + minlength + maxlength -->
+          <textarea
+            id="message" name="message"
+            placeholder="Write your message here…"
+            required minlength="10" maxlength="500"></textarea>
+          <span class="hint">10–500 characters</span>
+        </div>
+      </fieldset>
+ 
+      <button type="submit">Send ✨</button>
+      <p id="thanks" role="status">Thank you! Your message was sent 💕</p>
+    </form>
+  </main>
+ 
+  <script>
+    // There's no real server at /contact, so instead of leaving the page
+    // we show a thank-you message. The browser's built-in validation
+    // still runs first: this only fires once every field is valid.
+    const form = document.getElementById('contact-form');
+    const thanks = document.getElementById('thanks');
+ 
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      thanks.style.display = 'block';
+      form.reset();
+    });
+  </script>
+</body>
+</html>
