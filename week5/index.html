@@ -14,10 +14,10 @@
 				<p class="intro">Selecting elements, handling events, and modifying the page dynamically.</p>
 				<nav class="page-nav" aria-label="Course navigation">
 					<a href="../index.html">Course home</a>
-					<a href="#session-1">Session 1</a>
-					<a href="#session-2">Session 2</a>
 					<a href="../week2/index.html">Week 2</a>
 					<a href="../week3/index.html">Week 3</a>
+					<a href="../week5/index.html" aria-current="page">Week 5</a>
+					<a href="../week7/index.html">Week 7</a>
 				</nav>
 			</div>
 		</header>
@@ -38,7 +38,7 @@
 			const label = (fileName) => fileName.replace(/\.[^.]+$/, "").replace(/^(topic|exercise)_\d+_/, "").replace(/[_&@-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 			const links = (files) => files.map((fileName) => `<li><a href="week5_1/${encodeURI(fileName)}">${label(fileName)}</a></li>`).join("");
 			const sessionTwoLinks = (files) => files.map((fileName) => `<li><a href="week5_2/${encodeURI(fileName)}">${label(fileName)}</a></li>`).join("");
-			document.querySelector("#week-5-resources").innerHTML = `<details id="session-1" class="week session-details" open><summary><span class="week-number">1</span><span class="week-title"><h3>DOM essentials</h3><p>${topics.length} topics · ${exercises.length} exercises</p></span></summary><div class="sessions"><article class="session"><div class="link-group"><h5>Topics</h5><ul class="link-list">${links(topics)}</ul></div><div class="link-group"><h5>Exercises</h5><ul class="link-list">${links(exercises)}</ul></div></article></div></details><details id="session-2" class="week session-details"><summary><span class="week-number">2</span><span class="week-title"><h3>JavaScript website exercises</h3><p>0 topics · ${sessionTwoExercises.length} exercises</p></span></summary><div class="sessions"><article class="session"><div class="link-group"><h5>Exercises</h5><ul class="link-list">${sessionTwoLinks(sessionTwoExercises)}</ul></div></article></div></details>`;
+			document.querySelector("#week-5-resources").innerHTML = `<details id="session-1" class="week session-details" open><summary><span class="week-number">1</span><span class="week-title"><h3>DOM essentials</h3><p>${topics.length} topics · ${exercises.length} exercises</p></span></summary><div class="sessions"><article class="session"><div class="link-group"><h5>Topics</h5><ul class="link-list">${links(topics)}</ul></div><div class="link-group"><h5>Exercises</h5><ul class="link-list">${links(exercises)}</ul></div></article></div></details><details id="session-2" class="week session-details" open><summary><span class="week-number">2</span><span class="week-title"><h3>JavaScript website exercises</h3><p>0 topics · ${sessionTwoExercises.length} exercises</p></span></summary><div class="sessions"><article class="session"><div class="link-group"><h5>Exercises</h5><ul class="link-list">${sessionTwoLinks(sessionTwoExercises)}</ul></div></article></div></details>`;
 		</script>
 	</body>
 </html>
