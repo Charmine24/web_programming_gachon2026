@@ -1,0 +1,16 @@
+<!-- required: field must not be empty -->
+<input type="text" required>
+
+<!-- minlength / maxlength: text length constraints -->
+<input type="text" minlength="8" maxlength="20">
+
+<!-- min / max: numeric or date bounds -->
+<input type="number" min="1" max="100">
+
+<!-- step: acceptable intervals -->
+<input type="number" step="5" min="0">
+
+<!-- pattern: regular expression the value must match -->
+<input type="text"
+       pattern="\d{9}"
+       title="Enter your 9-digit student ID">
