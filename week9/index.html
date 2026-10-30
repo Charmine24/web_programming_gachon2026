@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Week 9 | Accessibility</title>
+		<link rel="stylesheet" href="../style.css">
+	</head>
+	<body>
+		<a class="skip-link" href="#main-content">Skip to main content</a>
+		<header class="site-header">
+			<div class="header-inner">
+				<p class="eyebrow">Yang Kaijing Charmine · Web Programming (K0126_002)</p>
+				<h1>Week 9<br>Accessibility</h1>
+				<p class="intro">Semantic HTML, ARIA, keyboard access, and Lighthouse audits.</p>
+				<nav class="page-nav" aria-label="Course navigation">
+					<a href="../index.html">Course home</a>
+					<a href="../week2/index.html">Week 2 · HTML</a>
+					<a href="../week3/index.html">Week 3 · CSS</a>
+					<a href="../week5/index.html">Week 5 · DOM &amp; JS</a>
+					<a href="../week7/index.html">Week 7 · Fetch API</a>
+					<a href="../week8/index.html">Week 8 · Forms</a>
+					<a href="../week9/index.html" aria-current="page">Week 9 · Accessibility</a>
+				</nav>
+			</div>
+		</header>
+		<main id="main-content" tabindex="-1">
+			<div class="section-lead">
+				<div>
+					<h2>Choose a session</h2>
+					<p>Review semantic HTML, ARIA, keyboard access, and Lighthouse audits.</p>
+				</div>
+			</div>
+			<section class="week-list session-list" aria-label="Week 9 sessions">
+				<details id="session-1" class="week session-details" open>
+					<summary><span class="week-number">1</span><span class="week-title"><h3>Accessibility audit</h3><p>0 topics · 1 exercise</p></span></summary>
+					<div class="sessions">
+						<article class="session">
+							<div class="link-group">
+								<h5>Exercises</h5>
+								<ul class="link-list">
+									<li><a href="week9_1/exercise_01_accessibility_audit.html">Accessibility Audit</a></li>
+								</ul>
+							</div>
+						</article>
+					</div>
+				</details>
+			</section>
+		</main>
+		<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
+	</body>
+</html>

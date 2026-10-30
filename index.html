@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+	<a class="skip-link" href="#main-content">Skip to main content</a>
 	<header class="site-header">
 		<div class="header-inner">
 			<p class="eyebrow">Yang Kaijing Charmine · Web Programming (K0126_002)</p>
@@ -20,11 +21,12 @@
 				<a href="week5/index.html">Week 5 · DOM &amp; JS</a>
 				<a href="week7/index.html">Week 7 · Fetch API</a>
 				<a href="week8/index.html">Week 8 · Forms</a>
+				<a href="week9/index.html">Week 9 · Accessibility</a>
 			</nav>
 		</div>
 	</header>
 
-	<main>
+	<main id="main-content" tabindex="-1">
 		<section id="group-15-project" class="resource-panel project-panel" aria-labelledby="group-15-project-title">
 			<h2 id="group-15-project-title">Group 15 Project</h2>
 			<p>Project presentation video and slide deck.</p>
@@ -131,7 +133,12 @@
 						"exercise_03_style_valid_invalid_states_with_css.html", "homework_01_contact_form.html"
 					] }
 				]
-			}
+			},
+			{ week: 9, title: "Accessibility", description: "Semantic HTML, ARIA, keyboard access, and Lighthouse audits", sessions: [
+				{ name: "Session 1 · Accessibility audit", folder: "week9/week9_1", topics: [], exercises: [
+					"exercise_01_accessibility_audit.html"
+				] }
+			] }
 		];
 
 		const prettyName = (fileName) => fileName
@@ -149,7 +156,7 @@
 			const sessions = week.sessions.length
 				? week.sessions.map((session, sessionIndex) => `<article id="week-${week.week}-session-${sessionIndex + 1}" class="session"><h4>${session.name}</h4><div class="link-group"><h5>Topics · ${session.topics.length}</h5><ul class="link-list">${makeLinks(session.topics, session.folder)}</ul></div><div class="link-group"><h5>Exercises · ${session.exercises.length}</h5><ul class="link-list">${makeLinks(session.exercises, session.folder)}</ul></div></article>`).join("")
 				: `<article class="session"><h4>Coming soon</h4><p>Session materials have not been added yet.</p></article>`;
-			return `<details class="week" id="week-${week.week}"><summary><span class="week-number">${week.week}</span><span class="week-title"><h3><a href="week${week.week}/index.html">${week.title}</a></h3><p>${week.description} · ${week.sessions.length} session${week.sessions.length === 1 ? "" : "s"} · ${itemCount} resources</p></span></summary><div class="sessions">${sessions}</div></details>`;
+			return `<details class="week" id="week-${week.week}"><summary><span class="week-number">${week.week}</span><span class="week-title"><h3>${week.title}</h3><p>${week.description} · ${week.sessions.length} session${week.sessions.length === 1 ? "" : "s"} · ${itemCount} resources</p></span></summary><a class="week-link" href="week${week.week}/index.html">Go to the Week ${week.week} page</a><div class="sessions">${sessions}</div></details>`;
 		}).join("");
 	</script>
 </body>

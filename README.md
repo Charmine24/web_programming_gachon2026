@@ -10,6 +10,7 @@ The root page links to one section page for each course week. Each week page use
 - [Week 5: DOM and JavaScript](week5/)
 - [Week 7: Fetch API](week7/)
 - [Week 8: HTML forms and JavaScript form validation](week8/)
+- [Week 9: Accessibility](week9/)
 
 ```text
 web_programming_gachon2026/
@@ -20,7 +21,8 @@ web_programming_gachon2026/
 ├── week3/index.html # Week 3 section page
 ├── week5/index.html # Week 5 section page
 ├── week7/index.html # Week 7 section page
-└── week8/index.html # Week 8 section page
+├── week8/index.html # Week 8 section page
+└── week9/index.html # Week 9 section page
 ```
 
 Session folders contain the individual topic and exercise files. Week 5 uses `week5/week5_1/` for DOM materials and `week5/week5_2/` for JavaScript practice exercises. Week 8 uses `week8/week8_1/` for HTML forms and `week8/week8_2/` for JavaScript form validation.
