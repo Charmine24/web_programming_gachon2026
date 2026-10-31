@@ -1,0 +1,17 @@
+<!-- A11y = "accessibility" (11 letters between the A and the y) -->
+<!-- Designing so people with disabilities can perceive, understand, navigate and interact with a site -->
+
+<!-- Visual impairment (screen reader): use real buttons, not divs -->
+<button type="button">Submit</button>
+
+<!-- Motor disability (keyboard / switch access): logical tab order, large click targets -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- Cognitive differences: clear headings and short paragraphs -->
+<h2>Opening hours</h2>
+<p>Mon–Fri, 9am to 6pm.</p>
+
+<!-- Hearing impairment: captions on videos, no autoplaying audio -->
+<video src="lecture.mp4" controls>
+  <track kind="captions" src="lecture-en.vtt" srclang="en" label="English">
+</video>

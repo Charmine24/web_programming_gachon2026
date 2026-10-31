@@ -1,0 +1,26 @@
+<!-- Tab = forward · Shift+Tab = back · Enter/Space = activate · Arrows = inside widgets -->
+
+<style>
+  /* ✅ :focus-visible — shows focus ring for keyboard, not mouse clicks */
+  :focus-visible {
+    outline: 3px solid #1a7f5a;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ❌ Never do this — removes focus for keyboard users! */
+  /* *:focus { outline: none; } */
+</style>
+
+<!-- tabindex="0" — adds element to natural tab order -->
+<div role="button" tabindex="0" onclick="..." onkeydown="...">
+  Custom widget
+</div>
+
+<!-- tabindex="-1" — focusable via JS but not by Tab key -->
+<div id="modal" tabindex="-1">...</div>
+
+<!-- Skip navigation link — lets keyboard users jump past nav -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<nav>...</nav>
+<main id="main-content">...</main>

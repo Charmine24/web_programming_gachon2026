@@ -1,0 +1,22 @@
+<!-- WCAG levels: A = minimum, AA = standard target, AAA = enhanced -->
+<!-- POUR: Perceivable, Operable, Understandable, Robust -->
+
+<!-- A (1.1.1) Non-text content: every image has an alt attribute -->
+<img src="campus.jpg" alt="Gachon University main building">
+
+<!-- A (2.1.1) Keyboard: all functionality works with the keyboard -->
+<button type="button" onclick="openMenu()">Menu</button>
+
+<!-- AA (1.4.3) Contrast: normal text at least 4.5:1 -->
+<p style="color: #595959; background: #ffffff;">7.0:1 on white</p>
+
+<!-- AA (2.4.7) Focus visible: keyboard focus indicator is visible -->
+<style>
+  :focus-visible { outline: 3px solid #1a7f5a; outline-offset: 3px; }
+</style>
+
+<!-- AAA (1.4.6) Enhanced contrast: 7:1 for text -->
+<p style="color: #1a1a1a; background: #ffffff;">17.4:1 on white</p>
+
+<!-- AAA (2.4.9) Link purpose: link text alone describes the destination -->
+<a href="/week9/">Week 9 accessibility materials</a>  <!-- not "click here" -->

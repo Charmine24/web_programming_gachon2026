@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      font-family: system-ui;
+      padding: 24px;
+      max-width: 400px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 12px 0 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      margin-bottom: 4px;
+      box-sizing: border-box;
+    }
+
+    /* Fix 5 (bonus): pure red #ff0000 on white is only 4.0:1 — darker red is 6.5:1 */
+    .error {
+      color: #b91c1c;
+      font-size: 13px;
+      margin: 0 0 8px;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible {
+      outline: 3px solid #1a56db;
+      outline-offset: 2px;
+    }
+
+    .icon-btn {
+      background: #1a7f5a;
+      color: white;
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+      border-radius: 50%;
+    }
+
+    .submit-btn {
+      background: #1a56db;
+      color: white;
+      padding: 10px 24px;
+      font-size: 15px;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    a img {
+      display: block;
+      width: 80px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sign Up</h1>
+
+  <!-- Fix 1: icon-only button gets an accessible name -->
+  <button class="icon-btn" type="button" aria-label="Search">
+    <span aria-hidden="true">🔍</span>
+  </button>
+
+  <!-- Fix 2: input gets a real <label>; error text linked with aria-describedby -->
+  <label for="email-field">Email address</label>
+  <input type="email" id="email-field" placeholder="you@example.com"
+         autocomplete="email" aria-describedby="email-error" aria-invalid="true">
+  <!-- Fix 3: error is not shown by colour alone — icon + "Error:" text -->
+  <p class="error" id="email-error"><span aria-hidden="true">⚠️</span> Error: Please enter a valid email address.</p>
+
+  <label for="password-field">Password</label>
+  <input type="password" id="password-field" autocomplete="new-password"
+         aria-describedby="password-error" aria-invalid="true">
+  <p class="error" id="password-error" role="alert"><span aria-hidden="true">⚠️</span> Error: Password too short. Must be 8+ characters.</p>
+
+  <button class="submit-btn" type="submit">Create account</button>
+
+  <!-- Fix 4: linked image alt describes the destination, not "click here" -->
+  <a href="/about" style="margin-top:16px; display:inline-block">
+    <img src="" alt="Learn about our team" style="background:#e0eaff; width:80px; height:40px; border-radius:4px">
+  </a>
+</body>
+</html>

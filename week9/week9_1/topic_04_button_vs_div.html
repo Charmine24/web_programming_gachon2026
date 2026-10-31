@@ -1,0 +1,25 @@
+<!-- ❌ This is NOT accessible: -->
+<div class="btn"
+  onclick="submitForm()">
+  Submit
+</div>
+<!-- Problems:
+  - Not reachable by Tab key
+  - Screen reader: "Submit" (nothing else)
+  - No keyboard activation (Enter/Space)
+  - No disabled state support
+  - No implicit ARIA role -->
+
+
+<!-- ✅ This IS accessible: -->
+<button
+  type="button"
+  onclick="submitForm()">
+  Submit
+</button>
+<!-- Benefits:
+  ✓ Tab focusable by default
+  ✓ Screen reader: "Submit, button"
+  ✓ Activated by Enter and Space
+  ✓ disabled attribute works
+  ✓ Built-in role="button" -->

@@ -1,0 +1,29 @@
+<!-- Running a Lighthouse accessibility audit:
+  1. Open the page in Chrome → right-click → Inspect (F12)
+  2. Open the "Lighthouse" tab (may be under ">>")
+  3. Check only the "Accessibility" category
+  4. Click "Analyze page load"
+  5. Read the score (0–100) and expand each failing item
+
+  90–100 green = good · 50–89 orange = needs work · 0–49 red = serious issues
+  Automated tools catch only ~30–40% of issues: also test with keyboard and a screen reader
+-->
+
+<!-- Common quick wins Lighthouse flags -->
+
+<!-- "Image elements do not have [alt] attributes" -->
+<img src="campus.jpg">                                     <!-- ❌ -->
+<img src="campus.jpg" alt="Gachon University main building"> <!-- ✅ -->
+
+<!-- "Form elements do not have associated labels" -->
+<input type="email" placeholder="Email">                   <!-- ❌ -->
+<label for="email">Email</label>
+<input type="email" id="email">                             <!-- ✅ -->
+
+<!-- "Buttons do not have an accessible name" -->
+<button>✕</button>                                          <!-- ❌ -->
+<button aria-label="Close">✕</button>                       <!-- ✅ -->
+
+<!-- "Background and foreground colors do not have a sufficient contrast ratio" -->
+<p style="color:#aaaaaa">Low contrast</p>                   <!-- ❌ 2.3:1 -->
+<p style="color:#595959">Readable</p>                       <!-- ✅ 7.0:1 -->

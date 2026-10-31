@@ -1,0 +1,15 @@
+<!-- WCAG 1.4.3 (AA): normal text 4.5:1 · large text (18pt+ / 14pt+ bold) 3:1 -->
+<!-- WCAG 1.4.6 (AAA): normal text 7:1 · large text 4.5:1 -->
+<!-- Ratios below calculated with the WCAG relative-luminance formula -->
+
+<!-- ❌ FAIL -->
+<span style="background:#ff9999; color:#ff4444;">Pink on pink — FAIL (1.7:1)</span>
+<span style="background:#ff9900; color:#ffffff;">White on orange — FAIL (2.1:1)</span>
+
+<!-- ✅ PASS -->
+<span style="background:#ffffff; color:#767676;">Gray #767676 — PASS AA (4.5:1)</span>
+<span style="background:#ffffff; color:#595959;">Gray #595959 — PASS AAA (7.0:1)</span>
+<span style="background:#1a7f5a; color:#ffffff;">White on green — PASS AA (5.0:1)</span>
+
+<!-- Check with: WebAIM Contrast Checker, Chrome DevTools color picker,
+     Lighthouse, or the Colour Contrast Analyser app -->

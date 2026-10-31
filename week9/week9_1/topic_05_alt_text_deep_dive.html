@@ -1,0 +1,26 @@
+<!-- ❌ Missing alt (WCAG failure — worst case) -->
+<img src="profile.jpg">
+
+<!-- ❌ Useless alt (screen reader: "image image") -->
+<img src="profile.jpg" alt="image">
+
+<!-- ❌ Filename as alt (uninformative) -->
+<img src="profile.jpg" alt="profile.jpg">
+
+<!-- ✅ Informational image -->
+<img src="profile.jpg" alt="Kim Jisoo, Web Programming student">
+
+<!-- ✅ Decorative image — empty alt -->
+<img src="decorative-wave.svg" alt="">
+
+<!-- ✅ Linked image — alt describes the link destination -->
+<a href="/home"><img src="logo.png" alt="Gachon University homepage"></a>
+
+<!-- ✅ Complex chart — use figcaption or aria-describedby for longer descriptions -->
+<figure>
+  <img src="chart.png" alt="Enrollment bar chart — see caption below"
+       aria-describedby="chart-desc">
+  <figcaption id="chart-desc">
+    Bar chart: 2024: 1,200 students; 2025: 1,400 students; 2026: 1,476 students.
+  </figcaption>
+</figure>

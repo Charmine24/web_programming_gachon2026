@@ -1,0 +1,32 @@
+<!-- First rule of ARIA: don't use ARIA if native HTML can do it -->
+
+<!-- aria-label: icon-only button -->
+<button aria-label="Search">
+  <svg aria-hidden="true">...</svg>
+</button>
+
+<!-- aria-describedby: form field with hint -->
+<label for="email">Email address</label>
+<input type="email" id="email"
+       aria-describedby="email-hint"
+       aria-required="true">
+<p id="email-hint">We will send a verification link here.</p>
+
+<!-- aria-hidden: hide a decorative icon next to text -->
+<a href="/"><span aria-hidden="true">🏠</span> Home</a>
+
+<!-- aria-live: live status region -->
+<div aria-live="polite" aria-atomic="true" id="status">
+  <!-- JS updates this div — screen reader announces changes -->
+</div>
+
+<!-- aria-expanded: accordion / disclosure pattern -->
+<button aria-expanded="false" aria-controls="faq-1">
+  What is accessibility?
+</button>
+<div id="faq-1" hidden>
+  Accessibility means designing for everyone...
+</div>
+
+<!-- role: only when no native element exists -->
+<div role="alert">Form saved!</div>
