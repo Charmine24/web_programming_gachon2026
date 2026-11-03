@@ -1,0 +1,17 @@
+<!-- ❌ Default — blocks HTML parsing (render-blocking) -->
+<script src="app.js"></script>
+
+<!-- ✅ defer — fetches in background, runs AFTER HTML is fully parsed -->
+<!-- Preserves order: script1 runs before script2 -->
+<!-- Best choice for most scripts that need the DOM -->
+<script src="app.js" defer></script>
+
+<!-- async — fetches in background, runs as soon as downloaded -->
+<!-- Order NOT guaranteed — good for independent scripts (analytics) -->
+<script src="analytics.js" async></script>
+
+<!-- Always put scripts in <head> when using defer/async -->
+<head>
+  <script src="app.js" defer></script>
+  <script src="analytics.js" async></script>
+</head>

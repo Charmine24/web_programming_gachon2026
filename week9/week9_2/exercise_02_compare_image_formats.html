@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image Format Practice</title>
+  <style>
+    body { font-family: system-ui; padding: 24px; max-width: 500px; margin: auto; }
+    /* Scale to the column width; height:auto keeps the 2:1 ratio from width/height */
+    img { width: 100%; height: auto; display: block; border-radius: 8px; }
+    .note { margin-top: 12px; font-size: 13px; color: #595959; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Image Format Practice</h1>
+
+    <picture>
+      <!-- 1. WebP source: browsers that support WebP pick from this srcset.
+              Two sizes so small screens download the small file. -->
+      <source
+        type="image/webp"
+        srcset="https://picsum.photos/id/1015/400/200.webp 400w,
+                https://picsum.photos/id/1015/800/400.webp 800w"
+        sizes="(max-width: 500px) calc(100vw - 48px), 452px">
+
+      <!-- 2. JPEG fallback: used by browsers without WebP support.
+              Same two sizes, same sizes rule.
+           3. width/height: reserve the space before loading (no layout shift).
+           4. alt: describes what the photo shows.
+           5. Bonus: fetchpriority="high" because this is the hero image. -->
+      <img
+        src="https://picsum.photos/id/1015/800/400.jpg"
+        srcset="https://picsum.photos/id/1015/400/200.jpg 400w,
+                https://picsum.photos/id/1015/800/400.jpg 800w"
+        sizes="(max-width: 500px) calc(100vw - 48px), 452px"
+        width="800" height="400"
+        alt="A river winding through a green valley between steep mountains"
+        fetchpriority="high">
+    </picture>
+
+    <p class="note">
+      Open the Network tab, reload, and check the image. The Type column shows
+      <strong>webp</strong> in Chrome, and the Size column is smaller than the
+      JPEG version.
+    </p>
+  </main>
+</body>
+</html>

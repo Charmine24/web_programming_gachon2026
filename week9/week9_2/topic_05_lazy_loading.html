@@ -1,0 +1,15 @@
+<!-- Native lazy loading — one attribute! -->
+<img src="photo.webp" alt="Gallery photo"
+     loading="lazy" width="600" height="400">
+
+<!-- Also works for iframes -->
+<iframe src="https://www.youtube.com/embed/xyz"
+        loading="lazy" title="Tutorial video"></iframe>
+
+<!-- ❌ NEVER lazy-load the hero/above-fold image! -->
+<!-- This delays your LCP and hurts your Lighthouse score -->
+<img src="hero.webp" alt="Hero" loading="lazy"> <!-- WRONG -->
+
+<!-- ✅ Hero image: use eager (default) or fetchpriority -->
+<img src="hero.webp" alt="Hero"
+     fetchpriority="high" width="1200" height="600">

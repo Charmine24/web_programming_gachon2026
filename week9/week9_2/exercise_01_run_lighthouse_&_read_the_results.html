@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!-- A11Y FIX 1: lang="en" tells screen readers which language to pronounce -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Performance Practice Page</title>
+
+<!-- PERF FIX 1: defer — jQuery downloads in parallel and runs after the HTML
+     is parsed, so it no longer blocks the first paint -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+
+<!-- PERF FIX 2: start downloading the first (LCP) image immediately -->
+<link rel="preload" as="image" href="https://picsum.photos/id/1015/600/400">
+
+<style>
+  body { font-family: system-ui; padding: 24px; max-width: 600px; margin: auto; }
+  /* height:auto keeps the ratio from the width/height attributes */
+  img { width: 100%; height: auto; border-radius: 8px; margin: 12px 0; }
+  h2 { color: #e85d04; }
+  h3 { margin-top: 2rem; }
+  .evidence { margin-top: 3rem; padding-top: 1rem; border-top: 2px solid #e85d04; }
+  .evidence-intro { max-width: 70ch; }
+  .comparison { display: grid; gap: 1rem; margin: 1.5rem 0 2rem; }
+  .comparison figure { margin: 0; }
+  .comparison img,
+  .recordings video { display: block; width: 100%; height: auto; margin: 0; }
+  figcaption { margin-top: .5rem; font-size: .95rem; }
+  .recordings { display: grid; gap: 1.5rem; }
+  .recordings figure { margin: 0; }
+  .recordings video { background: #222; }
+  @media (min-width: 700px) {
+    .comparison { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+</head>
+<body>
+  <!-- A11Y FIX 2: <main> landmark so screen-reader users can jump to the content -->
+  <main>
+    <h1>Performance Test Page</h1>
+    <p>This page has performance issues. Fix them!</p>
+
+    <!-- PERF FIX 3: request 600x400 instead of 1200x800 (page is max 600px wide) -->
+    <!-- PERF FIX 4: width/height reserve the space before the image loads (no layout shift) -->
+    <!-- First image is visible straight away: load it eagerly with high priority -->
+    <img src="https://picsum.photos/id/1015/600/400" width="600" height="400"
+         fetchpriority="high" alt="Random photo from Lorem Picsum">
+
+    <!-- PERF FIX 5: below-the-fold images load only when the user scrolls near them -->
+    <img src="https://picsum.photos/id/1016/600/400" width="600" height="400"
+         loading="lazy" decoding="async" alt="Random photo 2">
+    <img src="https://picsum.photos/id/1018/600/400" width="600" height="400"
+         loading="lazy" decoding="async" alt="Random photo 3">
+
+    <h2>YOUR FIXES:</h2>
+    <p>Added defer to the script, loading="lazy" to below-fold images, width/height attributes, smaller image sizes and a preload for the first image. Added lang="en" and a &lt;main&gt; landmark for accessibility.</p>
+
+    <section class="evidence" aria-labelledby="accessibility-evidence-title">
+      <h2 id="accessibility-evidence-title">Accessibility Changes: Before and After</h2>
+      <p class="evidence-intro">The following evidence shows how accessibility improvements affected the Forum and Rewards pages. The changes included improving colour contrast, adding discernible names to links and controls, and making the page easier to understand with assistive technology.</p>
+
+      <h3>Forum page</h3>
+      <div class="comparison">
+        <figure>
+          <img src="../../images/accessibility_before_forum.png" alt="Forum page before accessibility fixes, with Lighthouse showing an accessibility score of 93 and contrast and link-name warnings">
+          <figcaption>Before: Lighthouse identified contrast and discernible-link-name issues.</figcaption>
+        </figure>
+        <figure>
+          <img src="../../images/accessibility_after_forum.png" alt="Forum page after accessibility fixes, with Lighthouse showing an accessibility score of 100">
+          <figcaption>After: the accessibility score reached 100 and the earlier automated issues were resolved.</figcaption>
+        </figure>
+      </div>
+
+      <h3>Rewards and leaderboard page</h3>
+      <div class="comparison">
+        <figure>
+          <img src="../../images/accessibility_before_rewards.png" alt="Rewards and leaderboard page before accessibility fixes, showing accessibility issues in Lighthouse">
+          <figcaption>Before: the page contained accessibility issues that needed correction.</figcaption>
+        </figure>
+        <figure>
+          <img src="../../images/accessibility_after_rewards.png" alt="Rewards and leaderboard page after accessibility fixes, showing improved accessibility results">
+          <figcaption>After: the page was updated with more accessible controls, labels and contrast.</figcaption>
+        </figure>
+      </div>
+
+      <h3>Lighthouse results for this exercise</h3>
+      <div class="comparison">
+        <figure>
+          <img src="../../images/exercise_01_run_lighthouse_accessibility_before.png" alt="Lighthouse accessibility audit before fixes, showing a score of 82 and a missing lang attribute warning">
+          <figcaption>Before: score 82, including a missing <code>lang</code> attribute.</figcaption>
+        </figure>
+        <figure>
+          <img src="../../images/exercise_01_run_lighthouse_accessibility_after.png" alt="Lighthouse accessibility audit after fixes, showing a score of 100">
+          <figcaption>After: score 100 after adding the language attribute and main landmark.</figcaption>
+        </figure>
+      </div>
+
+      <h3>Video demonstrations</h3>
+      <div class="recordings">
+        <figure>
+          <video controls preload="metadata" aria-label="Video demonstration of the Forum page before accessibility fixes">
+            <source src="../../videos/accessibility_before_video_forum.mp4" type="video/mp4">
+            Your browser does not support the video element.
+          </video>
+          <figcaption>Forum page before the accessibility changes.</figcaption>
+        </figure>
+        <figure>
+          <video controls preload="metadata" aria-label="Video demonstration of the Rewards page before accessibility fixes">
+            <source src="../../videos/accessibility_before_video_rewards.mp4" type="video/mp4">
+            Your browser does not support the video element.
+          </video>
+          <figcaption>Rewards page before the accessibility changes.</figcaption>
+        </figure>
+        <figure>
+          <video controls preload="metadata" aria-label="Video demonstration of the Lighthouse audit before fixes for this exercise">
+            <source src="../../videos/exercise_01_run_lighthouse_accessibility_video_before.mp4" type="video/mp4">
+            Your browser does not support the video element.
+          </video>
+          <figcaption>Lighthouse audit before the fixes in this exercise.</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

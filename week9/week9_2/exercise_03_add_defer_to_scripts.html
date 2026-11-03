@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Script Loading Demo</title>
+  <style>
+    body { font-family: system-ui; padding: 20px; }
+    #status { padding: 12px; border-radius: 8px; margin-top: 12px; font-size: 14px; }
+    /* Darker text so both states pass the 4.5:1 contrast minimum */
+    .ok { background: #dcfce7; color: #166534; }
+    .pending { background: #fef3c7; color: #92400e; }
+  </style>
+
+  <!-- FIX: both scripts moved to <head>.
+       Note: defer and async are ignored on normal inline scripts.
+       Inline scripts with type="module" are deferred automatically,
+       and async works on them, so the page can stay a single file.
+       (With external files you would write
+        <script src="app.js" defer></script> and
+        <script src="analytics.js" async></script>.) -->
+
+  <!-- Main app script uses the DOM -> deferred:
+       runs after the HTML is fully parsed, so #status already exists -->
+  <script type="module">
+    document.getElementById('status').textContent =
+      '✅ DOM was ready when this script ran (deferred)';
+    document.getElementById('status').className = 'ok';
+    console.log('Main script ran (deferred) at', Math.round(performance.now()), 'ms');
+  </script>
+
+  <!-- Analytics is independent and needs no DOM -> async:
+       runs as soon as it is ready, without waiting for the page -->
+  <script type="module" async>
+    // Simulate a heavy script (blocks for 50ms)
+    const start = Date.now();
+    while (Date.now() - start < 50) {} // simulated blocking
+    console.log('Analytics script ran (async) at', Math.round(performance.now()), 'ms');
+  </script>
+</head>
+<body>
+  <main>
+    <h1>Script Loading Test</h1>
+    <p>With defer, the DOM is ready when scripts run. Without defer, scripts block the page.</p>
+    <div id="status" class="pending">Waiting for script...</div>
+  </main>
+</body>
+</html>
