@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Homework · Landed Performance Audit</title>
+	<style>
+		:root {
+			--ink: #3f4661;
+			--muted: #5a6280;
+			--paper: #f3fbff;
+			--panel: #fffefe;
+			--line: #d8eaf3;
+			--accent: #f1a7bd;
+			--accent-dark: #9c4f6b;
+			--teal: #83bfda;
+			--teal-text: #2b6f8c;
+			--bad: #a3324a;
+			--bad-bg: #fdf0f3;
+			--good: #2f6b4a;
+			--good-bg: #eef8f2;
+			--code-bg: #f6f7fb;
+		}
+		* { box-sizing: border-box; }
+		html { scroll-behavior: smooth; }
+		body {
+			margin: 0;
+			color: var(--ink);
+			background: var(--paper);
+			font-family: Georgia, "Times New Roman", serif;
+			line-height: 1.6;
+		}
+		a { color: var(--accent-dark); }
+		.skip-link {
+			position: absolute; top: 12px; left: 12px; z-index: 10;
+			padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px;
+			color: var(--ink); background: var(--panel);
+			font: .9rem "Trebuchet MS", sans-serif;
+			transform: translateY(-200%);
+		}
+		.skip-link:focus { transform: none; }
+		header {
+			background: linear-gradient(125deg, #bfe5f5 0%, #d9d1f0 58%, #f7cad8 150%);
+		}
+		.wrap { width: min(1040px, calc(100% - 32px)); margin: 0 auto; }
+		header .wrap { padding: 80px 0 40px; }
+		.eyebrow {
+			margin: 0 0 12px;
+			color: #555a8a;
+			font: 700 .78rem/1.2 "Trebuchet MS", sans-serif;
+			letter-spacing: .16em; text-transform: uppercase;
+		}
+		h1 { margin: 0 0 12px; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; }
+		h2 { margin: 0 0 14px; font-size: 1.6rem; line-height: 1.2; }
+		h3 { margin: 0 0 8px; font-size: 1.15rem; }
+		p { margin: 0 0 12px; }
+		.lead { max-width: 680px; font-size: 1.08rem; }
+		.back-button {
+			position: fixed; top: 20px; left: 20px; z-index: 9;
+			display: inline-flex; width: 96px; height: 40px;
+			align-items: center; justify-content: center;
+			border: 1px solid var(--line); border-radius: 999px;
+			color: var(--ink); background: rgba(255, 254, 254, .92);
+			font: 700 .9rem "Trebuchet MS", sans-serif; cursor: pointer;
+			box-shadow: 0 8px 24px rgba(92, 137, 170, .14);
+		}
+		.back-button:hover, .back-button:focus-visible { border-color: var(--accent-dark); color: var(--accent-dark); }
+		main { padding: 36px 0 64px; }
+		section.card {
+			margin-bottom: 28px; padding: 28px;
+			border: 1px solid var(--line); border-radius: 10px;
+			background: var(--panel);
+			box-shadow: 0 18px 50px rgba(92, 137, 170, .10);
+		}
+		.label {
+			display: inline-block; margin-bottom: 10px;
+			color: var(--teal-text);
+			font: 700 .74rem "Trebuchet MS", sans-serif;
+			letter-spacing: .12em; text-transform: uppercase;
+		}
+		.scores { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 18px 0 4px; }
+		.score {
+			display: grid; place-items: center;
+			width: 108px; height: 108px; border-radius: 50%;
+			border: 7px solid; background: var(--panel);
+			font: 700 2rem "Trebuchet MS", sans-serif;
+		}
+		.score.before { color: #8a5a00; border-color: #e8a33d; }
+		.score.after { color: var(--good); border-color: #3fae6f; }
+		.score small { display: block; margin-top: -26px; font-size: .7rem; font-weight: 400; color: var(--muted); }
+		.arrow { font: 1.8rem "Trebuchet MS", sans-serif; color: var(--muted); }
+		.meta {
+			display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 24px;
+			margin: 18px 0 0; padding: 0; list-style: none;
+			font: .9rem "Trebuchet MS", sans-serif;
+		}
+		.meta li { min-width: 0; overflow-wrap: anywhere; }
+		.meta b { display: block; color: var(--muted); font-weight: 400; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+		table { width: 100%; border-collapse: collapse; font: .92rem "Trebuchet MS", sans-serif; }
+		th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+		th { color: var(--muted); font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+		.table-scroll { overflow-x: auto; }
+		code, pre { font-family: Consolas, "Courier New", monospace; font-size: .86rem; }
+		code { padding: 1px 5px; border-radius: 4px; background: var(--code-bg); }
+		pre {
+			margin: 0; padding: 14px 16px; overflow-x: auto;
+			border-radius: 8px; background: var(--code-bg); line-height: 1.5;
+		}
+		.diff { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+		.diff > div { min-width: 0; }
+		.diff h4 { margin: 0 0 6px; font: 700 .78rem "Trebuchet MS", sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+		.diff .old h4 { color: var(--bad); }
+		.diff .new h4 { color: var(--good); }
+		.diff .old pre { background: var(--bad-bg); }
+		.diff .new pre { background: var(--good-bg); }
+		.why {
+			margin: 14px 0; padding: 12px 16px;
+			border-left: 4px solid var(--teal); border-radius: 0 8px 8px 0;
+			background: #f1f8fc;
+		}
+		.why p:last-child { margin-bottom: 0; }
+		figure { margin: 16px 0 0; }
+		figure img, figure video {
+			display: block; width: 100%; height: auto;
+			border: 1px solid var(--line); border-radius: 8px; background: #222;
+		}
+		figure img { background: var(--panel); }
+		figcaption { margin-top: 6px; color: var(--muted); font: .85rem "Trebuchet MS", sans-serif; }
+		.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+		.swatches { display: flex; flex-wrap: wrap; gap: 14px; margin: 14px 0; }
+		.swatch {
+			flex: 1 1 220px; padding: 14px 16px;
+			border: 1px solid var(--line); border-radius: 8px; background: var(--paper);
+			font: .9rem "Trebuchet MS", sans-serif;
+		}
+		.swatch .chip { display: inline-block; width: 14px; height: 14px; margin-right: 6px; border-radius: 50%; vertical-align: -2px; }
+		.swatch .sample { margin: 8px 0 4px; font-size: 1rem; }
+		.pill { display: inline-block; padding: 1px 9px; border-radius: 99px; font: 700 .76rem "Trebuchet MS", sans-serif; }
+		.pill.fail { color: var(--bad); background: var(--bad-bg); }
+		.pill.pass { color: var(--good); background: var(--good-bg); }
+		.placeholder {
+			display: grid; place-items: center; min-height: 160px; padding: 20px;
+			border: 2px dashed var(--line); border-radius: 8px;
+			color: var(--muted); text-align: center; font: .92rem "Trebuchet MS", sans-serif;
+		}
+		ol.steps { margin: 0; padding-left: 20px; }
+		ol.steps li { margin-bottom: 6px; }
+		footer { padding: 0 0 36px; color: var(--muted); text-align: center; font: .82rem "Trebuchet MS", sans-serif; }
+		@media (max-width: 720px) {
+			section.card { padding: 20px 16px; }
+			.diff, .pair { grid-template-columns: 1fr; }
+		}
+
+		.score-pages { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px 28px; margin-top: 8px; }
+		.score-pages h3 { margin: 10px 0 0; font: 700 .9rem "Trebuchet MS", sans-serif; color: var(--muted); }
+		.swatch .pill { margin-top: 8px; }
+		figure img.tall { max-width: 640px; margin: 0 auto; }
+		@media print {
+			.no-print, .back-button, .skip-link { display: none !important; }
+			header .wrap { padding: 32px 0 24px; }
+			section.card { box-shadow: none; break-inside: auto; }
+			figure, .diff, table, .why, .swatches { break-inside: avoid; }
+			h2, h3, .label { break-after: avoid; }
+			section.card > .label + h2 + h3 + p, section.card > .label + h2 + p { break-before: avoid; }
+			figure img.tall { max-width: 330px; }
+			body { font-size: 12.5px; line-height: 1.5; }
+			.wrap { width: 100%; }
+			section.card { padding: 18px 20px; margin-bottom: 16px; }
+			.diff, .pair { grid-template-columns: 1fr 1fr !important; }
+			pre { font-size: 10.5px; padding: 10px 12px; }
+			table { font-size: 11.5px; }
+			th, td { padding: 6px 8px; }
+			main { padding: 16px 0 24px; }
+			body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+		}
+	</style>
+<body>
+	<a class="skip-link" href="#content">Skip to main content</a>
+	<button class="back-button" type="button" onclick="history.back()">Back</button>
+	<header>
+		<div class="wrap">
+			<p class="eyebrow">Yang Kaijing Charmine · Week 9 · Session 2 · Homework</p>
+			<h1>Team Project Performance Audit<br>Landed: Forum &amp; Rewards</h1>
+			<p class="lead">Lighthouse performance audit of two pages from our team project, Landed: the score and biggest issues before, the five changes I made with code, the score after, and which change mattered most.</p>
+		</div>
+	</header>
+
+	<main id="content" class="wrap" tabindex="-1">
+
+		<section class="card" aria-labelledby="summary-title">
+			<span class="label">Summary</span>
+			<h2 id="summary-title">Target 80+: both pages now 100</h2>
+			<div class="score-pages">
+				<div>
+					<h3>forum.html</h3>
+					<div class="scores" aria-label="Forum page Lighthouse performance score: 81 before, 100 after">
+						<div class="score before">81<small>before</small></div>
+						<span class="arrow" aria-hidden="true">→</span>
+						<div class="score after">100<small>after</small></div>
+					</div>
+				</div>
+				<div>
+					<h3>rewards.html</h3>
+					<div class="scores" aria-label="Rewards page Lighthouse performance score: 75 before, 100 after">
+						<div class="score before">75<small>before</small></div>
+						<span class="arrow" aria-hidden="true">→</span>
+						<div class="score after">100<small>after</small></div>
+					</div>
+				</div>
+			</div>
+			<ul class="meta">
+				<li><b>Project</b>Landed: app for international students (WDP team project)</li>
+				<li><b>Pages audited</b><code>forum.html</code>, <code>rewards.html</code></li>
+				<li><b>Tool</b>Chrome DevTools · Lighthouse 13.5.0</li>
+				<li><b>Mode</b>Navigation · Emulated Desktop · Live Server</li>
+				<li><b>Category</b>Performance only</li>
+				<li><b>Date</b>3 November 2026</li>
+			</ul>
+		</section>
+
+		<section class="card" aria-labelledby="before-title">
+			<span class="label">Step 1 · Before</span>
+			<h2 id="before-title">Initial score and metric breakdown</h2>
+			<p>Forum scored <strong>81</strong> and Rewards scored <strong>75</strong>. Both pages already painted quickly: four of the five metrics were green. The only failing metric was <strong>Cumulative Layout Shift (CLS)</strong>, which makes up 25% of the performance score.</p>
+			<div class="table-scroll">
+				<table>
+					<thead><tr><th scope="col">Metric</th><th scope="col">Forum</th><th scope="col">Rewards</th></tr></thead>
+					<tbody>
+						<tr><td>First Contentful Paint</td><td><span class="pill pass">0.6 s</span></td><td><span class="pill pass">0.6 s</span></td></tr>
+						<tr><td>Largest Contentful Paint</td><td><span class="pill pass">0.6 s</span></td><td><span class="pill pass">0.6 s</span></td></tr>
+						<tr><td>Total Blocking Time</td><td><span class="pill pass">0 ms</span></td><td><span class="pill pass">0 ms</span></td></tr>
+						<tr><td>Speed Index</td><td><span class="pill pass">0.6 s</span></td><td><span class="pill pass">0.6 s</span></td></tr>
+						<tr><td>Cumulative Layout Shift</td><td><span class="pill fail">0.398</span></td><td><span class="pill fail">1.000</span></td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="pair">
+				<figure>
+					<img src="../../images/lighthouse_performance_forum_before.png" alt="Lighthouse report for the forum page showing a performance score of 81 in orange" width="1918" height="1198" loading="lazy">
+					<figcaption>Figure 1. Forum page: initial Lighthouse performance score of 81.</figcaption>
+				</figure>
+				<figure>
+					<img src="../../images/lighthouse_performance_rewards_before.png" alt="Lighthouse report for the rewards page showing a performance score of 75 in orange" width="1918" height="1198" loading="lazy">
+					<figcaption>Figure 2. Rewards page: initial Lighthouse performance score of 75.</figcaption>
+				</figure>
+			</div>
+			<figure class="no-print">
+				<video controls preload="metadata" playsinline aria-label="Screen recording scrolling through the forum page Lighthouse performance report: metrics, insights and diagnostics">
+					<source src="../../videos/lighthouse_performance_forum_before.mp4" type="video/mp4">
+					Your browser does not support the forum performance audit video.
+				</video>
+				<figcaption>Figure 3. Forum page: screen recording of the full report, including the metric breakdown, Insights and Diagnostics.</figcaption>
+			</figure>
+			<figure class="no-print">
+				<video controls preload="metadata" playsinline aria-label="Screen recording scrolling through the rewards page Lighthouse performance report: metrics, insights and diagnostics">
+					<source src="../../videos/lighthouse_performance_rewards_before.mp4" type="video/mp4">
+					Your browser does not support the rewards performance audit video.
+				</video>
+				<figcaption>Figure 4. Rewards page: screen recording of the full report, including the metric breakdown, Insights and Diagnostics.</figcaption>
+			</figure>
+		</section>
+
+		<section class="card" aria-labelledby="issues-title">
+			<span class="label">Step 2 · Biggest issues</span>
+			<h2 id="issues-title">The 5 biggest issues</h2>
+			<p>In Lighthouse 13, the old "Opportunities" list appears as <em>Insights</em> and <em>Diagnostics</em>. Both pages reported the same five problems:</p>
+			<div class="table-scroll">
+				<table>
+					<thead><tr><th scope="col">#</th><th scope="col">Lighthouse issue</th><th scope="col">Forum</th><th scope="col">Rewards</th><th scope="col">What Lighthouse showed</th></tr></thead>
+					<tbody>
+						<tr><td>1</td><td>Layout shift culprits</td><td><span class="pill fail">0.398</span></td><td><span class="pill fail">1.000</span></td><td><code>div.forum-layout</code> / <code>body</code> shifted; culprit: Inter web font (<code>.woff2</code> from fonts.gstatic.com)</td></tr>
+						<tr><td>2</td><td>Render-blocking requests</td><td><span class="pill fail">300 ms</span></td><td><span class="pill fail">340 ms</span></td><td><code>app.css</code> (45.3 KiB) and the Google Fonts CSS block the first paint</td></tr>
+						<tr><td>3</td><td>Network dependency tree</td><td><span class="pill fail">4 levels</span></td><td><span class="pill fail">4 levels</span></td><td>HTML → <code>app.css</code> → <code>@import</code> font CSS → <code>.woff2</code>; "no origins were preconnected"</td></tr>
+						<tr><td>4</td><td>Reduce unused CSS</td><td><span class="pill fail">36 KiB</span></td><td><span class="pill fail">36 KiB</span></td><td>36.1 KiB of the 45.0 KiB <code>app.css</code> is never used on the page</td></tr>
+						<tr><td>5</td><td>Minify CSS</td><td><span class="pill fail">10 KiB</span></td><td><span class="pill fail">10 KiB</span></td><td><code>app.css</code> is served with comments and whitespace</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<p style="margin-top:14px">Lighthouse also reported <em>"Document request latency: no compression applied"</em>. Compression (gzip/Brotli) is a server setting that VS Code Live Server doesn't support, so I couldn't fix it in our code. Real hosts such as GitHub Pages or Netlify turn it on automatically.</p>
+		</section>
+
+		<section class="card" aria-labelledby="cause-title">
+			<span class="label">Root cause</span>
+			<h2 id="cause-title">How the font and stylesheet were loaded</h2>
+			<p>All five issues came from two lines. Every page links our shared <code>app.css</code>, and line 7 of <code>app.css</code> imports the Inter font from Google Fonts with <code>display=swap</code>:</p>
+			<pre>&lt;link rel="stylesheet" href="../Css/app.css"&gt;
+
+/* app.css, line 7 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap');</pre>
+			<div class="why">
+				<p><strong>Why it matters:</strong> the browser can't draw anything until it has downloaded <code>app.css</code>, and only then does it discover the <code>@import</code> and start fetching the font. With <code>display=swap</code>, the text is drawn first in Segoe UI and then redrawn when Inter arrives. Inter is wider, so lines rewrap and the whole layout jumps. On a phone this is the moment a user goes to tap "Log in" and the button moves.</p>
+			</div>
+			<p>Each page uses only about 20% of <code>app.css</code>, because the file holds the styles for all nine pages of the app.</p>
+		</section>
+
+		<section class="card" aria-labelledby="fixes-title">
+			<span class="label">Step 3 · Overview</span>
+			<h2 id="fixes-title">The five changes</h2>
+			<div class="table-scroll">
+				<table>
+					<thead>
+						<tr><th scope="col">#</th><th scope="col">Change</th><th scope="col">Fixes issue</th><th scope="col">Before</th><th scope="col">After</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>1</td><td>Font <code>display=swap</code> → <code>display=optional</code></td><td>1 Layout shift</td><td><span class="pill fail">CLS 0.398 / 1.000</span></td><td><span class="pill pass">CLS 0</span></td></tr>
+						<tr><td>2</td><td>Font CSS loaded from HTML without blocking, instead of <code>@import</code></td><td>2 Render-blocking, 3 Dependency tree</td><td><span class="pill fail">Blocks paint</span></td><td><span class="pill pass">Non-blocking</span></td></tr>
+						<tr><td>3</td><td><code>preconnect</code> to the font servers</td><td>3 Dependency tree</td><td><span class="pill fail">No preconnect</span></td><td><span class="pill pass">2 origins</span></td></tr>
+						<tr><td>4</td><td>Remove unused CSS with PurgeCSS</td><td>4 Unused CSS</td><td><span class="pill fail">45,960 bytes</span></td><td><span class="pill pass">14,323 / 14,182 bytes</span></td></tr>
+						<tr><td>5</td><td>Minify with clean-css and inline in <code>&lt;style&gt;</code></td><td>5 Minify CSS, 2 Render-blocking</td><td><span class="pill fail">1 CSS request</span></td><td><span class="pill pass">8,242 / 8,096 bytes inline</span></td></tr>
+					</tbody>
+				</table>
+			</div>
+			<p style="margin-top:14px"><strong>Where I made the change:</strong> only in the <code>&lt;head&gt;</code> of <code>forum.html</code> and <code>rewards.html</code>. <code>app.css</code> is not edited, because teammates' pages (<code>index.html</code>, <code>profile.html</code>, <code>events.html</code> and others) still link it. The accessibility fixes from Session 1 are kept in their own <code>&lt;style&gt;</code> block after the inlined CSS, so they still apply.</p>
+		</section>
+
+		<section class="card" aria-labelledby="font-fix-title">
+			<span class="label">Changes 1–3 · Web font</span>
+			<h2 id="font-fix-title">Load the Inter font without shifting or blocking</h2>
+
+			<h3>Change 1: <code>display=swap</code> → <code>display=optional</code></h3>
+			<p>With <code>optional</code>, the browser waits only about 100 ms for Inter. If it hasn't arrived, the page keeps the fallback font for that visit and never swaps, so the text is laid out once and nothing moves. By the next page load Inter is cached and is used.</p>
+			<div class="diff">
+				<div class="old"><h4>Before (app.css)</h4><pre>@import url('https://fonts.googleapis.com/
+  css2?family=Inter:wght@400;500;600;700;800
+  &amp;display=swap');</pre></div>
+				<div class="new"><h4>After (page &lt;head&gt;)</h4><pre>&lt;link rel="stylesheet"
+  href="https://fonts.googleapis.com/
+    css2?family=Inter:wght@400;500;600;700;800
+    &amp;display=optional" …&gt;</pre></div>
+			</div>
+
+			<h3>Change 2: Load the font CSS from the HTML, without blocking</h3>
+			<p>Moving the font link from the <code>@import</code> into the HTML lets the browser find it straight away instead of after <code>app.css</code>. <code>media="print"</code> makes the browser download it at low priority without blocking the first paint, and <code>onload</code> switches it to <code>all</code> once it's ready. The <code>&lt;noscript&gt;</code> copy keeps the font working if JavaScript is off.</p>
+			<div class="diff">
+				<div class="old"><h4>Before</h4><pre>/* inside app.css, found only after
+   app.css has fully downloaded */
+@import url('…Inter…&amp;display=swap');</pre></div>
+				<div class="new"><h4>After</h4><pre>&lt;link rel="stylesheet"
+  href="…Inter…&amp;display=optional"
+  media="print" onload="this.media='all'"&gt;
+&lt;noscript&gt;
+  &lt;link rel="stylesheet"
+    href="…Inter…&amp;display=optional"&gt;
+&lt;/noscript&gt;</pre></div>
+			</div>
+
+			<h3>Change 3: Preconnect to the font servers</h3>
+			<p>The font comes from two other websites: the CSS from <code>fonts.googleapis.com</code> and the font file from <code>fonts.gstatic.com</code>. <code>preconnect</code> opens both connections (DNS, TCP and TLS) while the HTML is still loading, so Inter arrives sooner and is more likely to be used with <code>optional</code>. <code>crossorigin</code> is needed on gstatic because font files are always fetched in CORS mode.</p>
+			<div class="diff">
+				<div class="old"><h4>Before</h4><pre>&lt;!-- no resource hints --&gt;</pre></div>
+				<div class="new"><h4>After</h4><pre>&lt;link rel="preconnect"
+  href="https://fonts.googleapis.com"&gt;
+&lt;link rel="preconnect"
+  href="https://fonts.gstatic.com" crossorigin&gt;</pre></div>
+			</div>
+		</section>
+
+		<section class="card" aria-labelledby="css-fix-title">
+			<span class="label">Changes 4–5 · CSS</span>
+			<h2 id="css-fix-title">Send only the CSS each page needs</h2>
+
+			<h3>Change 4: Remove unused CSS with PurgeCSS</h3>
+			<p>PurgeCSS reads each page's HTML and keeps only the CSS rules whose selectors appear in it. Classes that JavaScript adds later, like <code>.active</code> on the forum filter tabs, are on a safelist so they aren't removed.</p>
+			<pre>// build.mjs (PurgeCSS 6)
+const [result] = await new PurgeCSS().purge({
+  content: [{ raw: pageHtml, extension: 'html' }],  // forum.html or rewards.html
+  css:     [{ raw: appCss }],                         // app.css without the @import
+  safelist: ['active', 'open', 'ok'],                 // classes added by JavaScript
+});</pre>
+
+			<h3 style="margin-top:18px">Change 5: Minify and inline the CSS</h3>
+			<p>The purged CSS is minified with clean-css, which removes comments and whitespace and merges duplicate rules. At about 8 KB it is small enough to put directly in a <code>&lt;style&gt;</code> block, which removes the last render-blocking request: the page can be drawn as soon as the HTML arrives.</p>
+			<div class="diff">
+				<div class="old"><h4>Before</h4><pre>&lt;link rel="stylesheet"
+  href="../Css/app.css"&gt;
+&lt;!-- 45,960 bytes, blocks rendering --&gt;</pre></div>
+				<div class="new"><h4>After</h4><pre>// build.mjs (clean-css 5)
+const min = new CleanCSS({ level: 2 })
+  .minify(result.css).styles;
+
+&lt;style&gt;:root{--royal:#1B44B8;
+--mid-blue-1:#3A63D0;…}.sidebar{…}&lt;/style&gt;
+&lt;!-- forum 8,242 B · rewards 8,096 B --&gt;</pre></div>
+			</div>
+			<div class="why">
+				<p><strong>Why not WebP, lazy loading, image dimensions or <code>defer</code>?</strong> I checked these first, but they don't apply to these pages and Lighthouse didn't flag them. Forum and Rewards have no photos: every icon, badge and the XP ring is inline SVG, so there is nothing to convert, lazy-load or size. Each page has one small inline <code>&lt;script&gt;</code> at the end of <code>&lt;body&gt;</code>, which already runs after the HTML is parsed, and <code>defer</code> only works on external scripts. Instead I fixed the five issues Lighthouse actually reported.</p>
+			</div>
+		</section>
+
+		<section class="card" aria-labelledby="after-title">
+			<span class="label">Step 4 · After</span>
+			<h2 id="after-title">Re-run evidence</h2>
+			<p>I re-ran Lighthouse on both pages with the same settings (Performance, Navigation, Emulated Desktop). Both pages now score <strong>100</strong>, well above the target of 80.</p>
+			<div class="pair">
+				<figure>
+					<img src="../../images/lighthouse_performance_forum_after.png" alt="Lighthouse report for the forum page showing a performance score of 100 in green" width="1918" height="1198" loading="lazy">
+					<figcaption>Figure 5. Forum page after the changes: 100 (was 81).</figcaption>
+				</figure>
+				<figure>
+					<img src="../../images/lighthouse_performance_rewards_after.png" alt="Lighthouse report for the rewards page showing a performance score of 100 in green" width="1918" height="1198" loading="lazy">
+					<figcaption>Figure 6. Rewards page after the changes: 100 (was 75).</figcaption>
+				</figure>
+			</div>
+			<div class="table-scroll" style="margin-top:16px">
+				<table>
+					<thead><tr><th scope="col">Page</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Change</th></tr></thead>
+					<tbody>
+						<tr><td>Forum</td><td><span class="pill fail">81</span></td><td><span class="pill pass">100</span></td><td>+19</td></tr>
+						<tr><td>Rewards &amp; Leaderboard</td><td><span class="pill fail">75</span></td><td><span class="pill pass">100</span></td><td>+25</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section class="card" aria-labelledby="reflection-title">
+			<span class="label">Step 5 · Reflection</span>
+			<h2 id="reflection-title">Which change had the most impact, and why?</h2>
+			<p><strong>Change 1, switching the font from <code>display=swap</code> to <code>display=optional</code>, had by far the most impact.</strong> It is a one-word change, but it fixed the only metric that was failing.</p>
+			<p>The breakdown in Step 1 shows why. FCP, LCP, Speed Index and Total Blocking Time were already green on both pages. The only red metric was CLS: 0.398 on Forum and 1.000 on Rewards. CLS is weighted at 25% of the score, and anything above 0.25 counts as "poor", so that single metric was costing Forum about 19 points and Rewards about 25. That matches how much each page improved. Lighthouse's "Layout shift culprits" pointed directly at the Inter <code>.woff2</code> file, and on Rewards the whole <code>body</code> shifted, which is why it scored lower than Forum.</p>
+			<div class="why">
+				<p><strong>Trade-off:</strong> on a first visit over a slow connection, the page may show Segoe UI instead of Inter. I think that is worth it. A page that doesn't jump under the user's finger matters more than the exact typeface, Inter is used on every later visit once it's cached, and the preconnect in Change 3 makes it more likely to arrive in time.</p>
+			</div>
+			<p>Changes 2 to 5 mainly made the page paint sooner. They removed both render-blocking stylesheets and cut the CSS from 45 KiB to about 8 KB. Because those metrics were already green on Emulated Desktop, they added fewer points to this score, but they would matter much more on a slow phone connection, and they cleared the remaining Insights and Diagnostics warnings.</p>
+			<p><strong>What I learned:</strong> start with whichever metric is red, and follow Lighthouse's own culprit list. The suggested checklist (WebP, lazy loading, <code>defer</code>) would not have changed anything on these pages. The real problem was one setting in a font URL.</p>
+		</section>
+
+		<section class="card" aria-labelledby="test-title">
+			<span class="label">Checks</span>
+			<h2 id="test-title">How I verified the changes</h2>
+			<ol class="steps">
+				<li>Re-ran Lighthouse in Chrome DevTools on both pages with the same settings: Performance 100 on each.</li>
+				<li>Compared screenshots of the old and new pages at desktop, tablet (700 px) and phone (400 px) widths: they look identical, so removing unused CSS didn't drop any styles the page needs.</li>
+				<li>Checked that the JavaScript still works: the Forum category tabs still filter posts, and the Rewards "Redeem" buttons still change to "✓ Done".</li>
+				<li>Re-ran the Accessibility audit to confirm the Session 1 contrast fixes still apply: both pages still score 100.</li>
+				<li>Opened teammates' pages (<code>index.html</code>, <code>profile.html</code>) to confirm they are unchanged, since <code>app.css</code> was not edited.</li>
+			</ol>
+		</section>
+	</main>
+
+	<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
+</body>
+</html>

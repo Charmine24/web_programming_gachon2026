@@ -25,4 +25,4 @@ web_programming_gachon2026/
 └── week9/index.html # Week 9 section page
 ```
 
-Session folders contain the individual topic and exercise files. Week 5 uses `week5/week5_1/` for DOM materials and `week5/week5_2/` for JavaScript practice exercises. Week 8 uses `week8/week8_1/` for HTML forms and `week8/week8_2/` for JavaScript form validation.
+Session folders contain the individual topic and exercise files. Week 5 uses `week5/week5_1/` for DOM materials and `week5/week5_2/` for JavaScript practice exercises. Week 8 uses `week8/week8_1/` for HTML forms and `week8/week8_2/` for JavaScript form validation. Week 9 uses `week9/week9_1/` for accessibility and `week9/week9_2/` for performance optimisation.
