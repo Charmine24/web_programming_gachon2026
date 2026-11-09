@@ -31,6 +31,7 @@ main {
 	margin: 0 auto;
 }
 .header-inner { padding: 64px 0 58px; }
+.back-button ~ .site-header .header-inner { padding-top: 80px; }
 .eyebrow {
 	margin: 0 0 16px;
 	color: #6d719f;
@@ -318,6 +319,7 @@ footer {
 @media (max-width: 620px) {
 	.header-inner, main { width: min(100% - 28px, 1120px); }
 	.header-inner { padding: 44px 0 42px; }
+	.back-button ~ .site-header .header-inner { padding-top: 68px; }
 	main { padding-top: 34px; }
 	.section-lead { display: block; }
 	.legend { margin-top: 16px; }
