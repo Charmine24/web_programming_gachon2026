@@ -30,4 +30,4 @@ web_programming_gachon2026/
 ```
 
 Session folders contain the individual topic and exercise files. Week 5 uses `week5/week5_1/` for DOM materials and `week5/week5_2/` for JavaScript practice exercises. Week 8 uses `week8/week8_1/` for HTML forms and `week8/week8_2/` for JavaScript form validation. Week 9 uses `week9/week9_1/` for accessibility and `week9/week9_2/` for performance optimisation.
-Week 11 contains React source examples under `week11/week11_1/` and `week11/week11_2/`; the course home and Week 11 page link to each `src/App.jsx` entry point.
+Week 11 is presented as a browser-ready HTML lab in `week11/index.html`, with written JavaScript demonstrations for each React topic and exercise. The original JSX source remains in `week11/week11_1/` and `week11/week11_2/` for reference.

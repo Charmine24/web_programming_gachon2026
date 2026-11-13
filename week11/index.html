@@ -1,76 +1,162 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Week 11 | React Components</title>
-		<link rel="stylesheet" href="../style.css">
-	</head>
-	<body>
-		<a class="skip-link" href="#main-content">Skip to main content</a>
-		<button class="back-button" type="button" onclick="history.back()">Back</button>
-		<header class="site-header">
-			<div class="header-inner">
-				<p class="eyebrow">Yang Kaijing Charmine · Web Programming (K0126_002)</p>
-				<h1>Week 11<br>React Components</h1>
-				<p class="intro">Source examples and exercises covering JSX and reusable React components.</p>
-				<nav class="page-nav" aria-label="Course navigation">
-					<a href="../index.html">Course home</a>
-					<a href="../week10/index.html">Week 10 · Git &amp; Pages</a>
-					<a href="index.html" aria-current="page">Week 11 · React</a>
-				</nav>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Week 11 | React Components in HTML</title>
+	<link rel="stylesheet" href="../style.css">
+	<style>
+		.lab-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+		.lab-card { padding: 22px; border: 1px solid var(--line); border-top: 4px solid var(--accent); border-radius: 8px; background: var(--panel); box-shadow: var(--shadow); }
+		.lab-card h3 { margin-bottom: 6px; }
+		.lab-card h4 { margin: 18px 0 8px; color: var(--accent-dark); font: 700 .78rem "Trebuchet MS", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+		.lab-card p { color: var(--muted); }
+		.demo-box { padding: 15px; border: 1px solid var(--line); border-radius: 8px; background: #fff8fc; }
+		.demo-box button, .demo-box input, .demo-box select { margin: 4px 4px 4px 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; font: inherit; }
+		.demo-box button { cursor: pointer; font-family: "Trebuchet MS", sans-serif; }
+		.demo-box button:hover, .demo-box button:focus-visible { border-color: var(--accent-dark); color: var(--accent-dark); }
+		.demo-output { min-height: 24px; margin: 10px 0 0; font-weight: 700; }
+		.profile-preview { display: flex; gap: 14px; align-items: center; }
+		.avatar { display: grid; width: 52px; height: 52px; place-items: center; border-radius: 50%; color: #fff; background: var(--teal); font: 700 1.2rem "Trebuchet MS", sans-serif; }
+		.profile-preview h4 { margin: 0; color: var(--ink); font: 700 1.05rem Georgia, serif; letter-spacing: 0; text-transform: none; }
+		.profile-preview p { margin: 2px 0 0; }
+		.demo-list { margin: 8px 0 0; padding-left: 20px; }
+		.demo-list li { margin: 5px 0; }
+		.course-results { display: grid; gap: 7px; margin-top: 10px; }
+		.course-result { padding: 8px 10px; border-radius: 5px; background: #eef8fc; }
+		.code-note { margin-top: 8px; color: var(--muted); font: .78rem "Trebuchet MS", sans-serif; }
+		@media (max-width: 620px) { .lab-card { padding: 18px; } }
+	</style>
+</head>
+<body>
+	<a class="skip-link" href="#main-content">Skip to main content</a>
+	<button class="back-button" type="button" onclick="history.back()">Back</button>
+	<header class="site-header">
+		<div class="header-inner">
+			<p class="eyebrow">Yang Kaijing Charmine · Web Programming (K0126_002)</p>
+			<h1>Week 11<br>React Components</h1>
+			<p class="intro">A browser-ready HTML lab that demonstrates JSX ideas, reusable components, props, lists, and composition with written JavaScript.</p>
+			<nav class="page-nav" aria-label="Course navigation">
+				<a href="../index.html">Course home</a>
+				<a href="../week10/index.html">Week 10 · Git &amp; Pages</a>
+				<a href="index.html" aria-current="page">Week 11 · React</a>
+			</nav>
+		</div>
+	</header>
+	<main id="main-content" tabindex="-1">
+		<section class="resource-panel project-panel" aria-labelledby="topics-title">
+			<h2 id="topics-title">Topics</h2>
+			<p>These examples show how React concepts can be represented with semantic HTML and small, readable scripts.</p>
+			<div class="lab-grid">
+				<article class="lab-card" id="topic-react-jsx">
+					<h3>React and JSX</h3>
+					<p>JSX describes a user interface with a readable, HTML-like syntax.</p>
+					<div class="demo-box"><strong id="jsx-message">Hello from a component</strong><p class="code-note">The text is updated by a script.</p></div>
+				</article>
+				<article class="lab-card" id="topic-functional-components">
+					<h3>Functional components</h3>
+					<p>A function can return a reusable piece of interface.</p>
+					<div class="demo-box"><button type="button" id="component-button">Render greeting</button><p class="demo-output" id="component-output" aria-live="polite"></p></div>
+				</article>
+				<article class="lab-card" id="topic-props">
+					<h3>Props</h3>
+					<p>Props are values passed into a component to customize its output.</p>
+					<div class="demo-box"><label for="prop-name">Name</label><input id="prop-name" value="Charmine"><p class="demo-output" id="props-output" aria-live="polite">Welcome, Charmine!</p></div>
+				</article>
+				<article class="lab-card" id="topic-lists">
+					<h3>Lists and conditional rendering</h3>
+					<p>Data can become a list, while a condition controls the empty state.</p>
+					<div class="demo-box"><button type="button" id="toggle-list">Hide courses</button><ul class="demo-list" id="topic-list"><li>HTML foundations</li><li>CSS layout</li><li>JavaScript interactivity</li></ul></div>
+				</article>
+				<article class="lab-card" id="topic-composition">
+					<h3>Component composition</h3>
+					<p>Small pieces can be combined into a larger card or page.</p>
+					<div class="demo-box"><div class="profile-preview"><span class="avatar">YC</span><div><h4>Course learner</h4><p>Reusable card content</p></div></div></div>
+				</article>
 			</div>
-		</header>
-		<main id="main-content" tabindex="-1">
-			<div class="section-lead">
-				<div>
-					<h2>React source library</h2>
-					<p>Open an entry point to inspect each React topic or exercise source file.</p>
-				</div>
-			</div>
-			<section class="week-list session-list" aria-label="Week 11 sessions">
-				<details id="session-1" class="week session-details" open>
-					<summary><span class="week-number">1</span><span class="week-title"><h3>React and JSX</h3><p>5 topics · 5 exercises</p></span></summary>
-					<div class="sessions">
-						<article class="session">
-							<div class="link-group">
-								<h5>Topics</h5>
-								<ul class="link-list">
-									<li><a href="week11_1/topic_01_react_and_jsx/src/App.jsx">React and JSX</a></li>
-									<li><a href="week11_1/topic_02_functional_components/src/App.jsx">Functional components</a></li>
-									<li><a href="week11_1/topic_03_props/src/App.jsx">Props</a></li>
-									<li><a href="week11_1/topic_04_lists_and_conditional_rendering/src/App.jsx">Lists and conditional rendering</a></li>
-									<li><a href="week11_1/topic_05_component_composition/src/App.jsx">Component composition</a></li>
-								</ul>
-							</div>
-							<div class="link-group">
-								<h5>Exercises</h5>
-								<ul class="link-list">
-									<li><a href="week11_1/exercise_01_profile_card/src/App.jsx">Profile card</a></li>
-									<li><a href="week11_1/exercise_02_notification_list/src/App.jsx">Notification list</a></li>
-									<li><a href="week11_1/exercise_03_card_children/src/App.jsx">Card children</a></li>
-									<li><a href="week11_1/exercise_04_course_catalog/src/App.jsx">Course catalog</a></li>
-									<li><a href="week11_1/homework_01_task11_student_profile_card/src/App.jsx">Homework: Student profile card</a></li>
-								</ul>
-							</div>
-						</article>
-					</div>
-				</details>
-				<details id="session-2" class="week session-details" open>
-					<summary><span class="week-number">2</span><span class="week-title"><h3>React practice</h3><p>0 topics · 1 exercise</p></span></summary>
-					<div class="sessions">
-						<article class="session">
-							<div class="link-group">
-								<h5>Exercises</h5>
-								<ul class="link-list">
-									<li><a href="week11_2/exercise_01_student_card/src/App.jsx">Student card</a></li>
-								</ul>
-							</div>
-						</article>
-					</div>
-				</details>
-			</section>
-		</main>
-		<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
-	</body>
+		</section>
+
+		<div class="section-lead"><div><h2>Interactive exercises</h2><p>Each exercise below is written in HTML and powered by JavaScript in this page.</p></div><div class="legend" aria-label="Exercise status"><span>Interactive</span></div></div>
+		<section class="lab-grid" aria-label="Week 11 exercises">
+			<article class="lab-card" id="exercise-profile-card">
+				<h3>Exercise 1 · Profile card</h3>
+				<p>Show and hide additional profile information.</p>
+				<div class="demo-box"><div class="profile-preview"><span class="avatar">YC</span><div><h4>Yang Kaijing Charmine</h4><p>Computer Engineering</p></div></div><button type="button" id="profile-toggle" aria-expanded="false" aria-controls="profile-details">Show details</button><p class="demo-output" id="profile-details" hidden>Web Programming student · Gachon University</p></div>
+			</article>
+			<article class="lab-card" id="exercise-notifications">
+				<h3>Exercise 2 · Notification list</h3>
+				<p>Mark individual notifications as read.</p>
+				<div class="demo-box"><ul class="demo-list" id="notification-list"><li><button type="button" data-notification="0">New assignment available</button></li><li><button type="button" data-notification="1">Feedback received</button></li><li><button type="button" data-notification="2">Class reminder</button></li></ul><p class="demo-output" id="notification-output" aria-live="polite">3 unread notifications</p></div>
+			</article>
+			<article class="lab-card" id="exercise-card-children">
+				<h3>Exercise 3 · Card children</h3>
+				<p>Change the content placed inside a reusable card.</p>
+				<div class="demo-box"><label for="card-content">Card content</label><input id="card-content" value="Learning React"><p class="demo-output" id="card-output" aria-live="polite">Learning React</p></div>
+			</article>
+			<article class="lab-card" id="exercise-course-catalog">
+				<h3>Exercise 4 · Course catalog</h3>
+				<p>Filter a list of courses by topic.</p>
+				<div class="demo-box"><label for="course-filter">Search courses</label><input id="course-filter" placeholder="Try &quot;web&quot;"><div class="course-results" id="course-results"></div></div>
+			</article>
+			<article class="lab-card" id="exercise-student-profile">
+				<h3>Homework · Student profile card</h3>
+				<p>Update a student card from form values.</p>
+				<div class="demo-box"><label for="student-major">Major</label><input id="student-major" value="Computer Engineering"><p class="demo-output" id="student-output" aria-live="polite">Yang Kaijing Charmine · Computer Engineering</p></div>
+			</article>
+			<article class="lab-card" id="exercise-student-card">
+				<h3>Session 2 · Student card</h3>
+				<p>Toggle a compact student card between summary and detail views.</p>
+				<div class="demo-box"><button type="button" id="student-card-toggle">Show student ID</button><p class="demo-output" id="student-card-output" aria-live="polite">Yang Kaijing Charmine</p></div>
+			</article>
+		</section>
+	</main>
+	<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
+	<script>
+		const byId = (id) => document.getElementById(id);
+		const updateProps = () => { byId("props-output").textContent = `Welcome, ${byId("prop-name").value || "learner"}!`; };
+		const updateCard = () => { byId("card-output").textContent = byId("card-content").value || "Your card content"; };
+		const updateStudent = () => { byId("student-output").textContent = `Yang Kaijing Charmine · ${byId("student-major").value || "Web Programming"}`; };
+
+		byId("component-button").addEventListener("click", () => { byId("component-output").textContent = "A functional component was rendered."; });
+		byId("prop-name").addEventListener("input", updateProps);
+		byId("card-content").addEventListener("input", updateCard);
+		byId("student-major").addEventListener("input", updateStudent);
+		byId("toggle-list").addEventListener("click", (event) => {
+			const list = byId("topic-list");
+			const hidden = list.hasAttribute("hidden");
+			list.toggleAttribute("hidden", !hidden);
+			event.currentTarget.textContent = hidden ? "Hide courses" : "Show courses";
+		});
+		byId("profile-toggle").addEventListener("click", (event) => {
+			const details = byId("profile-details");
+			const expanded = event.currentTarget.getAttribute("aria-expanded") === "true";
+			event.currentTarget.setAttribute("aria-expanded", String(!expanded));
+			event.currentTarget.textContent = expanded ? "Show details" : "Hide details";
+			details.toggleAttribute("hidden", expanded);
+		});
+		const notifications = [...document.querySelectorAll("[data-notification]")];
+		notifications.forEach((button) => button.addEventListener("click", () => {
+			button.disabled = true;
+			button.textContent += " (read)";
+			const unread = notifications.filter((item) => !item.disabled).length;
+			byId("notification-output").textContent = `${unread} unread notification${unread === 1 ? "" : "s"}`;
+		}));
+		const courses = ["HTML foundations", "CSS layout", "JavaScript interactivity", "React components", "Web accessibility"];
+		const renderCourses = () => {
+			const query = byId("course-filter").value.toLowerCase();
+			const matches = courses.filter((course) => course.toLowerCase().includes(query));
+			byId("course-results").innerHTML = matches.length
+				? matches.map((course) => `<div class="course-result">${course}</div>`).join("")
+				: "<div class=\"course-result\">No courses found.</div>";
+		};
+		byId("course-filter").addEventListener("input", renderCourses);
+		byId("student-card-toggle").addEventListener("click", (event) => {
+			const detailsVisible = event.currentTarget.getAttribute("aria-pressed") === "true";
+			event.currentTarget.setAttribute("aria-pressed", String(!detailsVisible));
+			event.currentTarget.textContent = detailsVisible ? "Show student ID" : "Hide student ID";
+			byId("student-card-output").textContent = detailsVisible ? "Yang Kaijing Charmine" : "Yang Kaijing Charmine · ID 202699477";
+		});
+		renderCourses();
+	</script>
+</body>
 </html>
