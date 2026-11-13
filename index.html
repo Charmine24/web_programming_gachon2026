@@ -23,6 +23,7 @@
 				<a href="week8/index.html">Week 8 · Forms</a>
 				<a href="week9/index.html">Week 9 · Accessibility</a>
 				<a href="week10/index.html">Week 10 · Git &amp; Pages</a>
+				<a href="week11/index.html">Week 11 · React</a>
 			</nav>
 		</div>
 	</header>
@@ -164,6 +165,25 @@
 					"exercise_03_book_search_api.html"
 				] }
 			] }
+			,
+			{ week: 11, title: "React components", description: "JSX, functional components, props, lists, and component composition", sessions: [
+				{ name: "Session 1 · React and JSX", folder: "week11/week11_1", topics: [
+					{ file: "topic_01_react_and_jsx/src/App.jsx", label: "React and JSX" },
+					{ file: "topic_02_functional_components/src/App.jsx", label: "Functional components" },
+					{ file: "topic_03_props/src/App.jsx", label: "Props" },
+					{ file: "topic_04_lists_and_conditional_rendering/src/App.jsx", label: "Lists and conditional rendering" },
+					{ file: "topic_05_component_composition/src/App.jsx", label: "Component composition" }
+				], exercises: [
+					{ file: "exercise_01_profile_card/src/App.jsx", label: "Profile card" },
+					{ file: "exercise_02_notification_list/src/App.jsx", label: "Notification list" },
+					{ file: "exercise_03_card_children/src/App.jsx", label: "Card children" },
+					{ file: "exercise_04_course_catalog/src/App.jsx", label: "Course catalog" },
+					{ file: "homework_01_task11_student_profile_card/src/App.jsx", label: "Homework: Student profile card" }
+				] },
+				{ name: "Session 2 · React practice", folder: "week11/week11_2", topics: [], exercises: [
+					{ file: "exercise_01_student_card/src/App.jsx", label: "Student card" }
+				] }
+			] }
 		];
 
 		const prettyName = (fileName) => fileName
@@ -172,8 +192,10 @@
 			.replace(/[_&@-]+/g, " ")
 			.replace(/\b\w/g, (letter) => letter.toUpperCase());
 
-		const makeLinks = (files, folder) => files.map((fileName) =>
-			`<li><a href="${folder}/${encodeURI(fileName)}">${prettyName(fileName)}</a></li>`
+		const makeLinks = (files, folder) => files.map((file) => {
+			const entry = typeof file === "string" ? { file: file, label: prettyName(file) } : file;
+			return `<li><a href="${folder}/${encodeURI(entry.file)}">${entry.label}</a></li>`;
+		}
 		).join("");
 
 		document.querySelector("#course-content").innerHTML = course.map((week) => {
