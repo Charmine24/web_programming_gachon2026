@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A summary of the React concepts implemented in Charmine Yang's portfolio.">
+<title>Changes I Made to My Portfolio Website</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+<style>
+  .changes{max-width:820px;margin:0 auto;padding:90px 20px}
+  .changes h1{font-family:'JetBrains Mono',monospace;color:var(--green);margin-bottom:14px}
+  .changes .intro{color:var(--muted);margin-bottom:30px}
+  .change-list{display:grid;gap:16px;list-style:none}
+  .change-list li{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;padding:18px 20px}
+  .change-list h2{font-size:1.05rem;color:var(--accent);margin-bottom:6px}
+  .change-list p{color:var(--muted)}
+  .back{display:inline-block;margin-top:30px}
+</style>
+</head>
+<body>
+<nav aria-label="Main"><ul><li><a href="../../index.html">./Portfolio</a></li><li><a class="brand" href="../../index.html#home">root@charmine:~</a></li></ul></nav>
+<main class="changes">
+  <p class="prompt">root@charmine : ~# cat portfolio-website-changes.html</p>
+  <h1>Changes I Made to My Portfolio Website</h1>
+  <p class="intro">The portfolio remains a static HTML/CSS/JavaScript site, so these concepts are implemented with framework-free JavaScript rather than adding a React build step.</p>
+  <ul class="change-list">
+    <li><h2>1. State and event-driven updates</h2><p>The project explorer stores the active tab, search query, and selected skill in one state object. User actions update that state and re-render the visible UI.</p></li>
+    <li><h2>2. Functional components and props</h2><p><code>createTagButton(tag, selected)</code> is a reusable component-like function. Its parameters act like props, producing consistently configured filter buttons.</p></li>
+    <li><h2>3. List rendering</h2><p>Skill filters are derived from the existing card data and rendered from a unique, sorted list, similar to React's <code>.map()</code> pattern.</p></li>
+    <li><h2>4. Conditional rendering</h2><p>The explorer shows only the active tab, hides cards that do not match, and creates an empty-state message when no work matches the current filters.</p></li>
+    <li><h2>5. Component composition</h2><p>The explorer is composed from tabs, a search control, skill filter buttons, status text, cards, and the empty state, each handled by a focused part of the render flow.</p></li>
+    <li><h2>6. Files changed</h2><p><code>index.html</code> adds the explorer UI and navigation link. <code>js/main.js</code> adds the state and rendering logic. <code>css/style.css</code> styles the controls and empty state. This page documents the changes.</p></li>
+  </ul>
+  <a class="btn back" href="../index.html">Back to Week 11</a>
+</main>
+<footer>&lt;/&gt; with ❤️ by Charmine Yang © 2026</footer>
+</body>
+</html>
