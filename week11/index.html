@@ -38,9 +38,14 @@
 			<p class="intro">A browser-ready HTML lab that demonstrates JSX ideas, reusable components, props, lists, and composition with written JavaScript.</p>
 			<nav class="page-nav" aria-label="Course navigation">
 				<a href="../index.html">Course home</a>
+				<a href="../week2/index.html">Week 2 · HTML</a>
+				<a href="../week3/index.html">Week 3 · CSS</a>
+				<a href="../week5/index.html">Week 5 · DOM &amp; JS</a>
+				<a href="../week7/index.html">Week 7 · Fetch API</a>
+				<a href="../week8/index.html">Week 8 · Forms</a>
+				<a href="../week9/index.html">Week 9 · Accessibility</a>
 				<a href="../week10/index.html">Week 10 · Git &amp; Pages</a>
 				<a href="index.html" aria-current="page">Week 11 · React</a>
-				<a href="week11_2/portfolio-website-changes.html">Portfolio website changes</a>
 			</nav>
 		</div>
 	</header>
@@ -77,38 +82,57 @@
 			</div>
 		</section>
 
-		<div class="section-lead"><div><h2>Interactive exercises</h2><p>Each exercise below is written in HTML and powered by JavaScript in this page.</p></div><div class="legend" aria-label="Exercise status"><span>Interactive</span></div></div>
-		<section class="lab-grid" aria-label="Week 11 exercises">
-			<article class="lab-card" id="exercise-profile-card">
-				<h3>Exercise 1 · Profile card</h3>
-				<p>Show and hide additional profile information.</p>
-				<div class="demo-box"><div class="profile-preview"><span class="avatar">YC</span><div><h4>Yang Kaijing Charmine</h4><p>Computer Engineering</p></div></div><button type="button" id="profile-toggle" aria-expanded="false" aria-controls="profile-details">Show details</button><p class="demo-output" id="profile-details" hidden>Web Programming student · Gachon University</p></div>
-			</article>
-			<article class="lab-card" id="exercise-notifications">
-				<h3>Exercise 2 · Notification list</h3>
-				<p>Mark individual notifications as read.</p>
-				<div class="demo-box"><ul class="demo-list" id="notification-list"><li><button type="button" data-notification="0">New assignment available</button></li><li><button type="button" data-notification="1">Feedback received</button></li><li><button type="button" data-notification="2">Class reminder</button></li></ul><p class="demo-output" id="notification-output" aria-live="polite">3 unread notifications</p></div>
-			</article>
-			<article class="lab-card" id="exercise-card-children">
-				<h3>Exercise 3 · Card children</h3>
-				<p>Change the content placed inside a reusable card.</p>
-				<div class="demo-box"><label for="card-content">Card content</label><input id="card-content" value="Learning React"><p class="demo-output" id="card-output" aria-live="polite">Learning React</p></div>
-			</article>
-			<article class="lab-card" id="exercise-course-catalog">
-				<h3>Exercise 4 · Course catalog</h3>
-				<p>Filter a list of courses by topic.</p>
-				<div class="demo-box"><label for="course-filter">Search courses</label><input id="course-filter" placeholder="Try &quot;web&quot;"><div class="course-results" id="course-results"></div></div>
-			</article>
-			<article class="lab-card" id="exercise-student-profile">
-				<h3>Homework · Student profile card</h3>
-				<p>Update a student card from form values.</p>
-				<div class="demo-box"><label for="student-major">Major</label><input id="student-major" value="Computer Engineering"><p class="demo-output" id="student-output" aria-live="polite">Yang Kaijing Charmine · Computer Engineering</p></div>
-			</article>
-			<article class="lab-card" id="exercise-student-card">
-				<h3>Session 2 · Student card</h3>
-				<p>Toggle a compact student card between summary and detail views.</p>
-				<div class="demo-box"><button type="button" id="student-card-toggle">Show student ID</button><p class="demo-output" id="student-card-output" aria-live="polite">Yang Kaijing Charmine</p></div>
-			</article>
+		<div class="section-lead"><div><h2>Interactive exercises</h2><p>Choose a session to view the exercises completed on Friday or Monday.</p></div><div class="legend" aria-label="Exercise status"><span>Interactive</span></div></div>
+		<section class="week-list session-list" aria-label="Week 11 exercise sessions">
+			<details id="session-1" class="week session-details" open>
+				<summary><span class="week-number">1</span><span class="week-title"><h3>Friday exercises</h3><p>5 interactive exercises</p></span></summary>
+				<div class="sessions">
+					<div class="lab-grid">
+						<article class="lab-card" id="exercise-profile-card">
+							<h3>Exercise 1 · Profile card</h3>
+							<p>Show and hide additional profile information.</p>
+							<div class="demo-box"><div class="profile-preview"><span class="avatar">YC</span><div><h4>Yang Kaijing Charmine</h4><p>Computer Engineering</p></div></div><button type="button" id="profile-toggle" aria-expanded="false" aria-controls="profile-details">Show details</button><p class="demo-output" id="profile-details" hidden>Web Programming student · Gachon University</p></div>
+						</article>
+						<article class="lab-card" id="exercise-notifications">
+							<h3>Exercise 2 · Notification list</h3>
+							<p>Mark individual notifications as read.</p>
+							<div class="demo-box"><ul class="demo-list" id="notification-list"><li><button type="button" data-notification="0">New assignment available</button></li><li><button type="button" data-notification="1">Feedback received</button></li><li><button type="button" data-notification="2">Class reminder</button></li></ul><p class="demo-output" id="notification-output" aria-live="polite">3 unread notifications</p></div>
+						</article>
+						<article class="lab-card" id="exercise-card-children">
+							<h3>Exercise 3 · Card children</h3>
+							<p>Change the content placed inside a reusable card.</p>
+							<div class="demo-box"><label for="card-content">Card content</label><input id="card-content" value="Learning React"><p class="demo-output" id="card-output" aria-live="polite">Learning React</p></div>
+						</article>
+						<article class="lab-card" id="exercise-course-catalog">
+							<h3>Exercise 4 · Course catalog</h3>
+							<p>Filter a list of courses by topic.</p>
+							<div class="demo-box"><label for="course-filter">Search courses</label><input id="course-filter" placeholder="Try &quot;web&quot;"><div class="course-results" id="course-results"></div></div>
+						</article>
+						<article class="lab-card" id="exercise-student-profile">
+							<h3>Homework · Student profile card</h3>
+							<p>Update a student card from form values.</p>
+							<div class="demo-box"><label for="student-major">Major</label><input id="student-major" value="Computer Engineering"><p class="demo-output" id="student-output" aria-live="polite">Yang Kaijing Charmine · Computer Engineering</p></div>
+						</article>
+					</div>
+				</div>
+			</details>
+			<details id="session-2" class="week session-details" open>
+				<summary><span class="week-number">2</span><span class="week-title"><h3>Monday exercises</h3><p>2 interactive exercises</p></span></summary>
+				<div class="sessions">
+					<div class="lab-grid">
+						<article class="lab-card" id="exercise-student-card">
+							<h3>Exercise 1 · Student card</h3>
+							<p>Toggle a compact student card between summary and detail views.</p>
+							<div class="demo-box"><button type="button" id="student-card-toggle">Show student ID</button><p class="demo-output" id="student-card-output" aria-live="polite">Yang Kaijing Charmine</p></div>
+						</article>
+						<article class="lab-card" id="exercise-portfolio-changes">
+							<h3>Exercise 2 · Portfolio website changes</h3>
+							<p>Review how React-inspired ideas were applied to the portfolio website.</p>
+							<p><a href="week11_2/portfolio-website-changes.html">Open portfolio website changes</a></p>
+						</article>
+					</div>
+				</div>
+			</details>
 		</section>
 	</main>
 	<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
