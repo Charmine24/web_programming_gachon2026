@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homework Step 2 | Add / Remove Buttons</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; color: #1f2937; background: #f6f7fb; font: 1rem/1.5 system-ui, sans-serif; }
+    .task { color: #4b5563; }
+    .product-list { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); margin: 0; padding: 0; list-style: none; }
+    .product-card { display: flex; flex-direction: column; gap: .4rem; overflow: hidden; padding-bottom: .85rem; border: 1px solid #e2e5ee; border-radius: 10px; background: #fff; }
+    .product-card img { display: block; width: 100%; height: 120px; object-fit: cover; background: #e5e7eb; }
+    .product-card h2, .product-card p { margin: 0 .85rem; }
+    .product-card h2 { margin-top: .4rem; font-size: 1.05rem; }
+    .product-card p { color: #4b5563; }
+    .actions { display: flex; gap: .4rem; margin: auto .85rem 0; }
+    button { flex: 1; padding: .4rem .6rem; border: 1px solid #1f9fbf; border-radius: 6px; color: #fff; background: #1f9fbf; font: inherit; cursor: pointer; }
+    button.remove { color: #b42318; border-color: #f1c4c0; background: #fff; }
+    button:disabled { cursor: not-allowed; opacity: .45; }
+    pre { margin-top: 1.5rem; padding: 1rem; border-radius: 8px; color: #e5e7eb; background: #1f2937; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>Step 2 · Add / Remove buttons</h1>
+  <p class="task">Requirement: add and remove buttons. State is an array of cart items.</p>
+  <main>
+    <ul class="product-list" id="product-list"></ul>
+    <h2>Current state</h2>
+    <pre id="state"></pre>
+  </main>
+  <script>
+    const products = [
+      { id: 1, name: 'Coffee', price: 4500, image: 'https://placehold.co/400x260/6f4e37/ffffff?text=Coffee' },
+      { id: 2, name: 'Sandwich', price: 7000, image: 'https://placehold.co/400x260/e0a458/ffffff?text=Sandwich' },
+      { id: 3, name: 'Water', price: 1000, image: 'https://placehold.co/400x260/4aa3df/ffffff?text=Water' },
+      { id: 4, name: 'Croissant', price: 3500, image: 'https://placehold.co/400x260/c98b3c/ffffff?text=Croissant' },
+      { id: 5, name: 'Green Tea', price: 4000, image: 'https://placehold.co/400x260/5a8f3c/ffffff?text=Green+Tea' },
+    ];
+
+    // State: an array of cart items
+    let cart = [];
+
+    const formatPrice = (price) => `₩${price.toLocaleString('ko-KR')}`;
+
+    // Add: create a NEW array with the item appended
+    function addToCart(id) {
+      if (cart.some((item) => item.id === id)) return;
+      const product = products.find((p) => p.id === id);
+      cart = [...cart, { id: product.id, name: product.name, price: product.price }];
+      render();
+    }
+
+    // Remove: filter creates a NEW array without the item
+    function removeFromCart(id) {
+      cart = cart.filter((item) => item.id !== id);
+      render();
+    }
+
+    function render() {
+      document.getElementById('product-list').innerHTML = products.map((product) => {
+        const inCart = cart.some((item) => item.id === product.id);
+        return `
+          <li class="product-card">
+            <img src="${product.image}" alt="${product.name}">
+            <h2>${product.name}</h2>
+            <p>${formatPrice(product.price)}</p>
+            <div class="actions">
+              <button type="button" data-add="${product.id}" ${inCart ? 'disabled' : ''}>Add</button>
+              <button type="button" class="remove" data-remove="${product.id}" ${inCart ? '' : 'disabled'}>Remove</button>
+            </div>
+          </li>`;
+      }).join('');
+      document.getElementById('state').textContent = `cart = ${JSON.stringify(cart, null, 2)}`;
+    }
+
+    document.getElementById('product-list').addEventListener('click', (event) => {
+      const { add, remove } = event.target.dataset;
+      if (add) addToCart(Number(add));
+      if (remove) removeFromCart(Number(remove));
+    });
+
+    render();
+  </script>
+</body>
+</html>

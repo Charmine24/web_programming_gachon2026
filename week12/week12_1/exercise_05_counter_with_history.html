@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 5 | Counter with History</title>
+  <style>
+    body { max-width: 640px; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 sans-serif; }
+    .counter { padding: 1rem 1.25rem; border: 1px solid #ddd; border-radius: 8px; }
+    .counter h2 { margin: 0 0 .5rem; font-size: 2.5rem; }
+    .controls { display: flex; flex-wrap: wrap; gap: .5rem; }
+    button { padding: .45rem .9rem; font: inherit; cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: .5; }
+    .history { color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Counter with History</h1>
+  <p>Every change is recorded in a history of the last 5 values. Undo steps back through them.</p>
+  <main class="counter">
+    <h2 id="count" aria-live="polite">0</h2>
+    <div class="controls">
+      <button type="button" data-action="inc">+1</button>
+      <button type="button" data-action="dec">-1</button>
+      <button type="button" data-action="reset">Reset</button>
+      <button type="button" data-action="undo" id="undo">Undo</button>
+    </div>
+    <p class="history">History: <span id="history"></span></p>
+  </main>
+  <script>
+    // Two pieces of state: the current count and the list of recent values
+    let count = 0;
+    let history = [0];
+
+    const MAX_HISTORY = 5;
+
+    function render() {
+      document.getElementById('count').textContent = count;
+      document.getElementById('history').textContent = `[${history.join(', ')}]`;
+      document.getElementById('undo').disabled = history.length < 2;
+    }
+
+    // Set a new count and record it (keep last 5 values) without mutating the array
+    function update(newCount) {
+      count = newCount;
+      history = [...history, newCount].slice(-MAX_HISTORY);
+      render();
+    }
+
+    // Go back to the previous value and drop the latest history entry
+    function undo() {
+      if (history.length < 2) return;
+      count = history[history.length - 2];
+      history = history.slice(0, -1);
+      render();
+    }
+
+    document.querySelector('.controls').addEventListener('click', (event) => {
+      switch (event.target.dataset.action) {
+        case 'inc': update(count + 1); break;
+        case 'dec': update(count - 1); break;
+        case 'reset': update(0); break;
+        case 'undo': undo(); break;
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
