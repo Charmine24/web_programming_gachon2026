@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 3 | Updating State</title>
+  <style>
+    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 sans-serif; }
+    .box { margin-bottom: 12px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
+    .box h3 { margin-top: 0; }
+    button { margin: 2px 4px 2px 0; cursor: pointer; }
+    pre { padding: 12px; border-radius: 8px; background: #f4f4f5; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>Updating State — Rules</h1>
+  <pre>Rule 1: Never mutate state directly — always call the setter
+  ❌ count++;  state.name = 'Amir';  items.push('new item');
+  ✅ setCount(count + 1);  setName('Amir');  setItems([...items, 'new item']);
+Rule 2: Objects — spread to copy first, then override what changed
+Rule 3: Arrays — use non-mutating methods (spread, filter, map)
+Functional updates: when new state depends on the previous state,
+  use the callback form so you always get the LATEST value.</pre>
+
+  <div class="box" id="object-demo"></div>
+  <div class="box" id="array-demo"></div>
+  <div class="box" id="functional-demo"></div>
+
+  <script>
+    // A small useState imitation that behaves like React:
+    //  - updates are batched and applied after the click handler finishes
+    //  - if the new value is the SAME reference (Object.is), nothing re-renders
+    function createState(initialValue, render) {
+      let value = initialValue;
+      let queue = [];
+      const get = () => value;
+      const set = (next) => {
+        queue.push(next);
+        if (queue.length === 1) queueMicrotask(() => {
+          const previous = value;
+          queue.forEach((update) => { value = typeof update === 'function' ? update(value) : update; });
+          queue = [];
+          if (!Object.is(previous, value)) render();
+        });
+      };
+      return [get, set];
+    }
+
+    // Rule 2: objects
+    const objectRoot = document.getElementById('object-demo');
+    const [user, setUser] = createState({ name: 'Amir', age: 20, city: 'Tashkent' }, renderObject);
+    function renderObject() {
+      objectRoot.innerHTML = `
+        <h3>Rule 2: Objects</h3>
+        <p>${JSON.stringify(user())}</p>
+        <button type="button" data-action="wrong">❌ Mutate (screen won't update)</button>
+        <button type="button" data-action="right">✅ Spread copy</button>`;
+    }
+    objectRoot.addEventListener('click', (event) => {
+      const current = user();
+      if (event.target.dataset.action === 'wrong') {
+        current.age = current.age + 1; // ❌ mutates the object
+        setUser(current);              // same reference, so no re-render
+      }
+      if (event.target.dataset.action === 'right') {
+        setUser({ ...current, age: current.age + 1 }); // ✅ new object
+      }
+    });
+    renderObject();
+
+    // Rule 3: arrays
+    const arrayRoot = document.getElementById('array-demo');
+    const [items, setItems] = createState(['HTML', 'CSS'], renderArray);
+    function renderArray() {
+      arrayRoot.innerHTML = `
+        <h3>Rule 3: Arrays</h3>
+        <p>[${items().join(', ')}]</p>
+        <button type="button" data-action="add-js">Add JavaScript (spread)</button>
+        <button type="button" data-action="add-react">Add React (functional — preferred)</button>
+        <button type="button" data-action="remove-css">Remove CSS</button>
+        <button type="button" data-action="html5">HTML → HTML5</button>
+        <button type="button" data-action="reset">Reset</button>`;
+    }
+    arrayRoot.addEventListener('click', (event) => {
+      const list = items();
+      switch (event.target.dataset.action) {
+        case 'add-js': setItems([...list, 'JavaScript']); break;
+        case 'add-react': setItems((prev) => [...prev, 'React']); break;
+        case 'remove-css': setItems(list.filter((item) => item !== 'CSS')); break;
+        case 'html5': setItems(list.map((item) => (item === 'HTML' ? 'HTML5' : item))); break;
+        case 'reset': setItems(['HTML', 'CSS']); break;
+      }
+    });
+    renderArray();
+
+    // Functional updates
+    const functionalRoot = document.getElementById('functional-demo');
+    const [count, setCount] = createState(0, renderFunctional);
+    function renderFunctional() {
+      functionalRoot.innerHTML = `
+        <h3>Functional updates</h3>
+        <p>Count: ${count()}</p>
+        <button type="button" data-action="stale">⚠️ setCount(count + 1) ×3</button>
+        <button type="button" data-action="safe">✅ setCount(prev =&gt; prev + 1) ×3</button>
+        <button type="button" data-action="reset">Reset</button>`;
+    }
+    functionalRoot.addEventListener('click', (event) => {
+      const current = count(); // the value from "this render"
+      if (event.target.dataset.action === 'stale') {
+        // all three read the same value, so only +1
+        setCount(current + 1);
+        setCount(current + 1);
+        setCount(current + 1);
+      }
+      if (event.target.dataset.action === 'safe') {
+        // each callback receives the latest value, so +3
+        setCount((prev) => prev + 1);
+        setCount((prev) => prev + 1);
+        setCount((prev) => prev + 1);
+      }
+      if (event.target.dataset.action === 'reset') setCount(0);
+    });
+    renderFunctional();
+  </script>
+</body>
+</html>

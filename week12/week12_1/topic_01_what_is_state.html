@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 1 | What is State?</title>
+  <style>
+    body { max-width: 640px; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 sans-serif; }
+    .like-card { margin-bottom: 8px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
+    .broken { padding: 12px; border: 1px dashed #e11d48; border-radius: 8px; }
+    table { border-collapse: collapse; margin-bottom: 1.5rem; }
+    th, td { padding: 6px 10px; border: 1px solid #ddd; text-align: left; }
+    button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Props vs State</h1>
+  <table>
+    <tr><th>Props</th><th>State</th></tr>
+    <tr><td>Passed from parent</td><td>Owned by the component</td></tr>
+    <tr><td>Read-only inside child</td><td>Can change over time</td></tr>
+    <tr><td>Controlled by parent</td><td>Component updates itself</td></tr>
+    <tr><td>Like function parameters</td><td>Like local variables, but persistent</td></tr>
+  </table>
+  <p>When state changes, the component re-renders: the render function runs again with the new value.</p>
+  <main id="app"></main>
+  <script>
+    // `label` is a PROP: the parent decides it, the component only reads it.
+    // `likes` is STATE: each component owns its own value and updates it.
+    function likeButton(root, { label }) {
+      let likes = 0; // state owned by this component
+      const render = () => {
+        root.innerHTML = `
+          <div class="like-card">
+            <p><strong>${label}</strong> (prop, read-only)</p>
+            <p>Likes: ${likes} (state, owned by this component)</p>
+            <button type="button">👍 Like</button>
+          </div>`;
+        root.querySelector('button').addEventListener('click', () => {
+          likes = likes + 1;
+          render(); // a state change triggers a re-render
+        });
+      };
+      render();
+    }
+
+    // A plain variable that never triggers a re-render: the screen never changes.
+    function brokenCounter(root) {
+      let clicks = 0;
+      root.innerHTML = `
+        <div class="broken">
+          <p>Plain variable: ${clicks} (never updates on screen)</p>
+          <button type="button">Click (open the console)</button>
+        </div>`;
+      root.querySelector('button').addEventListener('click', () => {
+        clicks++;
+        console.log('clicks is now', clicks, 'but the UI does not re-render');
+      });
+    }
+
+    const app = document.getElementById('app');
+    // Same component, different props; each keeps its OWN state
+    ['Web Programming', 'Databases'].forEach((label) => {
+      const slot = document.createElement('div');
+      app.append(slot);
+      likeButton(slot, { label });
+    });
+    const brokenSlot = document.createElement('div');
+    app.append(brokenSlot);
+    brokenCounter(brokenSlot);
+  </script>
+</body>
+</html>

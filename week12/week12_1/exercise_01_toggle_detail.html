@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 1 | Toggle Detail</title>
+  <style>
+    body { max-width: 640px; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 sans-serif; }
+    button { padding: 6px 12px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Toggle Detail</h1>
+  <main id="app"></main>
+  <script>
+    // A button toggles the visibility of a paragraph using boolean state.
+    let isVisible = false;
+    const app = document.getElementById('app');
+
+    function render() {
+      app.innerHTML = `
+        <button type="button" aria-expanded="${isVisible}">${isVisible ? 'Hide details' : 'Show details'}</button>
+        ${isVisible ? '<p>React state enables dynamic UIs without page reloads.</p>' : ''}`;
+      app.querySelector('button').addEventListener('click', () => {
+        isVisible = !isVisible;
+        render();
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>

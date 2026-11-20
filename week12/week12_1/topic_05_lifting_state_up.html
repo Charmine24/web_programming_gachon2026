@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 5 | Lifting State Up</title>
+  <style>
+    body { max-width: 640px; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 sans-serif; }
+    input { margin-left: 6px; padding: 4px 6px; font: inherit; }
+  </style>
+</head>
+<body>
+  <h1>Lifting State Up</h1>
+  <p>When sibling components need the same data, the state moves to their nearest common parent. State flows <strong>down</strong> as props; events flow <strong>up</strong> as callbacks.</p>
+  <main id="app"></main>
+  <script>
+    // Child receives a value and a callback through props
+    function celsiusInput(root, { value, onChange }) {
+      root.innerHTML = '<label>Celsius:<input type="number"></label>';
+      const input = root.querySelector('input');
+      input.value = value;
+      input.addEventListener('input', (e) => onChange(Number(e.target.value)));
+    }
+
+    // Child that only displays the value it receives
+    function fahrenheitDisplay(root, { celsius }) {
+      const fahrenheit = (celsius * 9) / 5 + 32;
+      root.textContent = `In Fahrenheit: ${fahrenheit.toFixed(1)}°F`;
+    }
+
+    // Parent holds the shared state
+    function temperatureApp(root) {
+      let celsius = 0;
+      root.innerHTML = '<h2>Temperature Converter</h2><div id="input-slot"></div><p id="output-slot"></p>';
+      const inputSlot = root.querySelector('#input-slot');
+      const outputSlot = root.querySelector('#output-slot');
+      const setCelsius = (next) => {
+        celsius = next;
+        fahrenheitDisplay(outputSlot, { celsius }); // re-render the child that depends on it
+      };
+      celsiusInput(inputSlot, { value: celsius, onChange: setCelsius });
+      fahrenheitDisplay(outputSlot, { celsius });
+    }
+
+    temperatureApp(document.getElementById('app'));
+  </script>
+</body>
+</html>

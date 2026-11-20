@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 3 | Score Board</title>
+  <style>
+    body { max-width: 640px; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 sans-serif; }
+    .player { margin-bottom: 12px; }
+    .player h3 { margin: 0 0 4px; }
+    button { width: 2rem; height: 2rem; font-size: 1.1rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Score Board</h1>
+  <main id="app"></main>
+  <script>
+    // Lifting state up: the parent scoreBoard owns both scores and passes
+    // each score plus increment/decrement callbacks down to playerScore.
+    function playerScore({ name, score, onIncrement, onDecrement }) {
+      const el = document.createElement('div');
+      el.className = 'player';
+      el.innerHTML = `
+        <h3>${name}: ${score}</h3>
+        <button type="button" aria-label="Decrease ${name}">−</button>
+        <button type="button" aria-label="Increase ${name}">+</button>`;
+      const [dec, inc] = el.querySelectorAll('button');
+      dec.addEventListener('click', onDecrement);
+      inc.addEventListener('click', onIncrement);
+      return el;
+    }
+
+    function scoreBoard(root) {
+      let p1 = 0;
+      let p2 = 0;
+      const render = () => {
+        root.innerHTML = '';
+        root.append(
+          playerScore({ name: 'Player 1', score: p1, onIncrement: () => { p1 += 1; render(); }, onDecrement: () => { p1 -= 1; render(); } }),
+          playerScore({ name: 'Player 2', score: p2, onIncrement: () => { p2 += 1; render(); }, onDecrement: () => { p2 -= 1; render(); } }),
+        );
+        const total = document.createElement('h2');
+        total.textContent = `Total: ${p1 + p2}`;
+        root.append(total);
+      };
+      render();
+    }
+
+    scoreBoard(document.getElementById('app'));
+  </script>
+</body>
+</html>

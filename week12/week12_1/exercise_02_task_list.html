@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 2 | Task List</title>
+  <style>
+    body { max-width: 640px; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 sans-serif; }
+    input, button { padding: 6px 8px; font: inherit; }
+    li button { margin-left: 8px; padding: 0 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Task List</h1>
+  <main>
+    <form id="task-form">
+      <input id="task-input" placeholder="New task" aria-label="New task">
+      <button type="submit">Add</button>
+    </form>
+    <ul id="task-list"></ul>
+  </main>
+  <script>
+    // Tasks are stored in an array; each render rebuilds the list from it.
+    let tasks = [];
+    const input = document.getElementById('task-input');
+    const list = document.getElementById('task-list');
+
+    function render() {
+      list.innerHTML = '';
+      tasks.forEach((task) => {
+        const li = document.createElement('li');
+        li.textContent = task.text;
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.textContent = '✕';
+        remove.setAttribute('aria-label', `Remove ${task.text}`);
+        remove.addEventListener('click', () => removeTask(task.id));
+        li.append(remove);
+        list.append(li);
+      });
+    }
+
+    function addTask() {
+      if (!input.value.trim()) return;
+      tasks = [...tasks, { id: Date.now(), text: input.value.trim() }];
+      input.value = '';
+      render();
+    }
+
+    function removeTask(id) {
+      tasks = tasks.filter((t) => t.id !== id);
+      render();
+    }
+
+    document.getElementById('task-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      addTask();
+    });
+    render();
+  </script>
+</body>
+</html>

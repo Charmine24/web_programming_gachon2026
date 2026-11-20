@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Week 12 | React State in HTML</title>
+	<link rel="stylesheet" href="../style.css">
+	<style>
+		.lab-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+		.lab-card { padding: 22px; border: 1px solid var(--line); border-top: 4px solid var(--accent); border-radius: 8px; background: var(--panel); box-shadow: var(--shadow); }
+		.lab-card h3 { margin-bottom: 6px; }
+		.lab-card p { color: var(--muted); }
+		.demo-box { padding: 15px; border: 1px solid var(--line); border-radius: 8px; background: #fff8fc; }
+		.demo-box button { margin: 4px 4px 4px 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; font: inherit; font-family: "Trebuchet MS", sans-serif; cursor: pointer; }
+		.demo-box button:hover, .demo-box button:focus-visible { border-color: var(--accent-dark); color: var(--accent-dark); }
+		.demo-output { min-height: 24px; margin: 10px 0 0; font-weight: 700; }
+		@media (max-width: 620px) { .lab-card { padding: 18px; } }
+	</style>
+</head>
+<body>
+	<a class="skip-link" href="#main-content">Skip to main content</a>
+	<button class="back-button" type="button" onclick="history.back()">Back</button>
+	<header class="site-header">
+		<div class="header-inner">
+			<p class="eyebrow">Yang Kaijing Charmine · Web Programming (K0126_002)</p>
+			<h1>Week 12<br>React State</h1>
+			<p class="intro">A browser-ready HTML lab that demonstrates state, the useState pattern, immutable updates, multiple state variables, and lifting state up with written JavaScript.</p>
+			<nav class="page-nav" aria-label="Course navigation">
+				<a href="../index.html">Course home</a>
+				<a href="../week2/index.html">Week 2 · HTML</a>
+				<a href="../week3/index.html">Week 3 · CSS</a>
+				<a href="../week5/index.html">Week 5 · DOM &amp; JS</a>
+				<a href="../week7/index.html">Week 7 · Fetch API</a>
+				<a href="../week8/index.html">Week 8 · Forms</a>
+				<a href="../week9/index.html">Week 9 · Accessibility</a>
+				<a href="../week10/index.html">Week 10 · Git &amp; Pages</a>
+				<a href="../week11/index.html">Week 11 · React</a>
+				<a href="index.html" aria-current="page">Week 12 · React State</a>
+			</nav>
+		</div>
+	</header>
+	<main id="main-content" tabindex="-1">
+		<section class="resource-panel project-panel" aria-labelledby="topics-title">
+			<h2 id="topics-title">Topics</h2>
+			<p>Each topic is a standalone HTML file with its script written inside the page.</p>
+			<div class="lab-grid">
+				<article class="lab-card" id="topic-what-is-state">
+					<h3>Topic 1 · What is state?</h3>
+					<p>Props are passed in and read-only; state is owned by the component and changes over time.</p>
+					<div class="demo-box"><button type="button" id="like-button">👍 Like</button><p class="demo-output" id="like-output" aria-live="polite">Likes: 0</p></div>
+					<p><a href="week12_1/topic_01_what_is_state.html">Open HTML file</a></p>
+				</article>
+				<article class="lab-card" id="topic-usestate-syntax">
+					<h3>Topic 2 · useState syntax</h3>
+					<p>A value and its setter, initial state types, and lazy initial state.</p>
+					<p><a href="week12_1/topic_02_usestate_syntax.html">Open HTML file</a></p>
+				</article>
+				<article class="lab-card" id="topic-updating-state">
+					<h3>Topic 3 · Updating state</h3>
+					<p>Never mutate state; copy objects and arrays, and use functional updates.</p>
+					<p><a href="week12_1/topic_03_updating_state.html">Open HTML file</a></p>
+				</article>
+				<article class="lab-card" id="topic-multiple-state">
+					<h3>Topic 4 · Multiple state variables</h3>
+					<p>A registration form that tracks name, email, errors, and submission separately.</p>
+					<p><a href="week12_1/topic_04_multiple_state_variables.html">Open HTML file</a></p>
+				</article>
+				<article class="lab-card" id="topic-lifting-state">
+					<h3>Topic 5 · Lifting state up</h3>
+					<p>A parent holds shared state and passes it down to a Celsius input and a Fahrenheit display.</p>
+					<p><a href="week12_1/topic_05_lifting_state_up.html">Open HTML file</a></p>
+				</article>
+			</div>
+		</section>
+
+		<div class="section-lead"><div><h2>Interactive exercises</h2><p>Hands-on exercises completed in session 1.</p></div><div class="legend" aria-label="Exercise status"><span>Interactive</span></div></div>
+		<section class="week-list session-list" aria-label="Week 12 exercise sessions">
+			<details id="session-1" class="week session-details" open>
+				<summary><span class="week-number">1</span><span class="week-title"><h3>Session 1 exercises</h3><p>4 exercises</p></span></summary>
+				<div class="sessions">
+					<div class="lab-grid">
+						<article class="lab-card" id="exercise-toggle-detail">
+							<h3>Exercise 1 · Toggle detail</h3>
+							<p>Show and hide a paragraph using boolean state.</p>
+							<p><a href="week12_1/exercise_01_toggle_detail.html">Open HTML file</a></p>
+						</article>
+						<article class="lab-card" id="exercise-task-list">
+							<h3>Exercise 2 · Task list</h3>
+							<p>Add and remove tasks stored in an array.</p>
+							<p><a href="week12_1/exercise_02_task_list.html">Open HTML file</a></p>
+						</article>
+						<article class="lab-card" id="exercise-shopping-cart">
+							<h3>Exercise 2 · Shopping cart</h3>
+							<p>Adjust item quantities and calculate the cart total.</p>
+							<p><a href="week12_1/exercise_02_shopping_cart.html">Open HTML file</a></p>
+						</article>
+						<article class="lab-card" id="exercise-score-board">
+							<h3>Exercise 3 · Score board</h3>
+							<p>Two player scores lifted into a parent that shows the combined total.</p>
+							<p><a href="week12_1/exercise_03_score_board.html">Open HTML file</a></p>
+						</article>
+					</div>
+				</div>
+			</details>
+		</section>
+	</main>
+	<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
+	<script>
+		let likes = 0;
+		document.getElementById("like-button").addEventListener("click", () => {
+			likes += 1;
+			document.getElementById("like-output").textContent = `Likes: ${likes}`;
+		});
+	</script>
+</body>
+</html>

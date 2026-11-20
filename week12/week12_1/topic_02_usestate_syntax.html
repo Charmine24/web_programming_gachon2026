@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 2 | useState Syntax</title>
+  <style>
+    body { max-width: 640px; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 sans-serif; }
+    pre { padding: 12px; border-radius: 8px; background: #f4f4f5; overflow-x: auto; }
+    .note { padding: 10px 12px; border-left: 4px solid #f59e0b; background: #fffbeb; }
+    button { margin-right: 4px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>useState Syntax</h1>
+  <pre>const [value, setValue] = useState(initialValue);</pre>
+  <ul>
+    <li><code>useState</code> returns <code>[currentValue, setterFunction]</code>.</li>
+    <li>The argument is the <strong>initial</strong> value, used only on the first render.</li>
+  </ul>
+  <p class="note">⚠️ Rules of Hooks: never call <code>useState</code> inside loops, conditions, or nested functions. Call hooks at the top level of the component, in the same order every render.</p>
+
+  <h2>Counter</h2>
+  <div id="counter"></div>
+
+  <h2>Initial state types</h2>
+  <pre id="initial-types"></pre>
+
+  <h2>Lazy initial state</h2>
+  <div id="lazy"></div>
+
+  <script>
+    // A tiny useState-style helper: returns [getValue, setValue].
+    // The initial value can be a function, which runs only once (lazy init).
+    function useState(initialValue, onChange) {
+      let value = typeof initialValue === 'function' ? initialValue() : initialValue;
+      const get = () => value;
+      const set = (next) => {
+        value = typeof next === 'function' ? next(value) : next;
+        onChange();
+      };
+      return [get, set];
+    }
+
+    // Counter
+    const counterRoot = document.getElementById('counter');
+    const [count, setCount] = useState(0, () => renderCounter());
+    function renderCounter() {
+      counterRoot.innerHTML = `
+        <p>Count: ${count()}</p>
+        <button type="button" data-action="inc">+1</button>
+        <button type="button" data-action="dec">-1</button>
+        <button type="button" data-action="reset">Reset</button>`;
+    }
+    counterRoot.addEventListener('click', (event) => {
+      const action = event.target.dataset.action;
+      if (action === 'inc') setCount(count() + 1);
+      if (action === 'dec') setCount(count() - 1);
+      if (action === 'reset') setCount(0);
+    });
+    renderCounter();
+
+    // Initial state types
+    const initialState = {
+      count: 0,                     // number
+      name: '',                     // string
+      isOpen: false,                // boolean
+      items: [],                    // array
+      user: null,                   // null
+      form: { name: '', email: '' } // object
+    };
+    document.getElementById('initial-types').textContent = JSON.stringify(initialState, null, 2);
+
+    // Lazy initial state (for expensive computation)
+    function expensiveComputation() {
+      console.log('expensiveComputation ran'); // logs once, not on every render
+      let total = 0;
+      for (let i = 0; i < 1_000_000; i++) total += i;
+      return total;
+    }
+    const lazyRoot = document.getElementById('lazy');
+    // Pass a FUNCTION so it runs only once, not on every render
+    const [data] = useState(() => expensiveComputation(), () => {});
+    const [renders, setRenders] = useState(0, () => renderLazy());
+    function renderLazy() {
+      lazyRoot.innerHTML = `
+        <p>Computed once: ${data()}</p>
+        <button type="button">Re-render (${renders()})</button>`;
+      lazyRoot.querySelector('button').addEventListener('click', () => setRenders((r) => r + 1));
+    }
+    renderLazy();
+  </script>
+</body>
+</html>
