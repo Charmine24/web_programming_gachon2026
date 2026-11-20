@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 1 | React and JSX</title>
+  <style>
+    body { max-width: 640px; margin: 2rem auto; font: 1rem/1.5 sans-serif; }
+    .app { padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px; }
+    img { max-width: 120px; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1 id="welcome"></h1>
+    <p id="today"></p>
+    <img src="photo.jpg" alt="Profile">
+  </main>
+  <script>
+    const user = 'Amir';
+    document.getElementById('welcome').textContent = `Welcome, ${user}!`;
+    document.getElementById('today').textContent = `Today: ${new Date().toDateString()}`;
+  </script>
+</body>
+</html>

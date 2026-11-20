@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 2 | Notification List</title>
+</head>
+<body>
+  <main>
+    <h1>Notifications</h1>
+    <ul id="notifications"></ul>
+  </main>
+  <script>
+    const notifications = [
+      { id: 1, type: 'success', message: 'Profile updated successfully' },
+      { id: 2, type: 'warning', message: 'Password expires in 3 days' },
+      { id: 3, type: 'info', message: 'New lecture materials available' },
+    ];
+    const icons = { success: '✅', warning: '⚠️', info: 'ℹ️' };
+    document.getElementById('notifications').innerHTML = notifications
+      .map(({ type, message }) => `<li>${icons[type]} ${message}</li>`).join('');
+  </script>
+</body>
+</html>

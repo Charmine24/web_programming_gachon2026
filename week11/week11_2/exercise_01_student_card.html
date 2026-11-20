@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 1 | Student Card</title>
+  <style>
+    .app { max-width: 600px; margin: 2rem auto; font-family: sans-serif; }
+    .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem 1.25rem; }
+  </style>
+</head>
+<body>
+  <main class="app" id="app"></main>
+  <script>
+    const studentCard = ({ name, id, major }) =>
+      `<article class="card"><h2>${name}</h2><p>ID: ${id}</p><p>Major: ${major}</p></article>`;
+    document.getElementById('app').innerHTML = studentCard({
+      name: 'Yang Kaijing Charmine', id: '202699477', major: 'Computer Engineering',
+    });
+  </script>
+</body>
+</html>

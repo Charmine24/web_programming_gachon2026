@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 4 | Lists and Conditional Rendering</title>
+</head>
+<body>
+  <main id="app"></main>
+  <script>
+    const courses = [
+      { id: 1, name: 'Web Programming', credits: 3 },
+      { id: 2, name: 'Databases', credits: 3 },
+      { id: 3, name: 'Algorithms', credits: 4 },
+    ];
+    const courseList = () => `<ul>${courses.map((course) => `<li>${course.name} — ${course.credits} credits</li>`).join('')}</ul>`;
+    const userGreeting = ({ isLoggedIn, username }) =>
+      isLoggedIn ? `<h1>Welcome back, ${username}!</h1><button>Log out</button>` : '<h1>Please log in</h1>';
+    const dashboard = ({ isAdmin }) => isAdmin ? '<p>Admin panel</p>' : '<p>Access denied</p>';
+    document.getElementById('app').innerHTML =
+      courseList() + userGreeting({ isLoggedIn: true, username: 'Charmine' }) +
+      userGreeting({ isLoggedIn: false }) + dashboard({ isAdmin: true }) + dashboard({ isAdmin: false });
+  </script>
+</body>
+</html>

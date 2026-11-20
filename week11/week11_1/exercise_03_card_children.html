@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 3 | Card Children</title>
+  <style>
+    .card { max-width: 360px; margin-bottom: 16px; padding: 16px 20px; border: 1px solid #bae6fd; border-radius: 10px; font: 1rem sans-serif; }
+    .card h3 { margin: 0 0 10px; }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+  <script>
+    const card = ({ title, children }) => `<article class="card"><h3>${title}</h3>${children}</article>`;
+    document.getElementById('app').innerHTML =
+      card({ title: 'Lecture Topics', children: '<ul><li>Components</li><li>Props</li></ul>' }) +
+      card({ title: 'Homework', children: '<p>Build a student portfolio component</p>' });
+  </script>
+</body>
+</html>

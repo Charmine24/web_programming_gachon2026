@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 3 | Props</title>
+  <style>
+    body { max-width: 640px; margin: 2rem auto; font: 1rem/1.5 sans-serif; }
+    .card, .panel { margin: 1rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; }
+    .panel-body { padding-top: .5rem; }
+    button { margin: .25rem; padding: .5rem .75rem; border: 0; border-radius: 4px; color: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+  <script>
+    const studentCard = ({ name, year }) => `<div class="card"><h3>${name}</h3><p>Year ${year}</p></div>`;
+    const button = ({ label = 'Click me', color = 'blue', disabled = false }) =>
+      `<button style="background:${color}" ${disabled ? 'disabled' : ''}>${label}</button>`;
+    const panel = ({ title, children }) =>
+      `<div class="panel"><h2>${title}</h2><div class="panel-body">${children}</div></div>`;
+    document.getElementById('app').innerHTML = [
+      studentCard({ name: 'Amir Tashkentov', year: 2 }),
+      studentCard({ name: 'Gulnora Nazarova', year: 3 }),
+      button({}), button({ label: 'Submit' }), button({ label: 'Delete', color: 'red' }),
+      panel({ title: 'Week 11', children: '<p>React session today</p><ul><li>Components</li><li>Props</li></ul>' }),
+    ].join('');
+  </script>
+</body>
+</html>

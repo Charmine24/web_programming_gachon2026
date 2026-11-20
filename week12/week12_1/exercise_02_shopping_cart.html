@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 2 | Shopping Cart</title>
+  <style>
+    .app { max-width: 600px; margin: 2rem auto; font-family: sans-serif; }
+    .shopping-cart { padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px; }
+    .cart-list { display: grid; gap: 1rem; padding: 0; list-style: none; }
+    .cart-item { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
+    .cart-item h2, .cart-item p { margin: 0; }
+    .cart-item p { margin-top: .35rem; color: #666; }
+    .quantity-controls { display: flex; align-items: center; gap: .75rem; }
+    .quantity-controls button { width: 2rem; height: 2rem; font-size: 1.25rem; cursor: pointer; }
+    .cart-total { margin-bottom: 0; text-align: right; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="shopping-cart">
+      <h1>장바구니</h1>
+      <ul class="cart-list" id="cart-list"></ul>
+      <p class="cart-total">총액: <strong id="cart-total">0원</strong></p>
+    </section>
+  </main>
+  <script>
+    const items = [
+      { id: 1, name: '커피', price: 4500 },
+      { id: 2, name: '샌드위치', price: 7000 },
+      { id: 3, name: '물', price: 1000 },
+    ];
+    const quantities = { 1: 0, 2: 0, 3: 0 };
+    const formatPrice = (price) => `${price.toLocaleString('ko-KR')}원`;
+    const updateQuantity = (id, change) => {
+      quantities[id] = Math.max(0, quantities[id] + change);
+      render();
+    };
+    const render = () => {
+      document.getElementById('cart-list').innerHTML = items.map((item) => `
+        <li class="cart-item">
+          <div><h2>${item.name}</h2><p>${formatPrice(item.price)}</p></div>
+          <div class="quantity-controls">
+            <button type="button" data-id="${item.id}" data-change="-1" aria-label="${item.name} 수량 줄이기">−</button>
+            <span>${quantities[item.id]}</span>
+            <button type="button" data-id="${item.id}" data-change="1" aria-label="${item.name} 수량 늘리기">+</button>
+          </div>
+        </li>`).join('');
+      const total = items.reduce((sum, item) => sum + item.price * quantities[item.id], 0);
+      document.getElementById('cart-total').textContent = formatPrice(total);
+      document.querySelectorAll('[data-id]').forEach((button) => {
+        button.addEventListener('click', () => updateQuantity(Number(button.dataset.id), Number(button.dataset.change)));
+      });
+    };
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 4 | Course Catalog</title>
+  <style>
+    .app { max-width: 600px; margin: 2rem auto; font: 1rem sans-serif; }
+    .card { margin: 1rem 0; padding: 1rem 1.25rem; border: 1px solid #ddd; border-radius: 8px; }
+    .badge { padding: 2px 8px; border-radius: 4px; font-size: .8rem; }
+    .badge-required { color: #991b1b; background: #fee2e2; }
+    .badge-elective { color: #075985; background: #e0f2fe; }
+  </style>
+</head>
+<body>
+  <main class="app" id="app"></main>
+  <script>
+    const courses = [
+      { id: 1, title: 'Web Programming', instructor: 'Dr. Toshpulatov', credits: 3, required: true },
+      { id: 2, title: 'Database Systems', instructor: 'Dr. Kim', credits: 3, required: true },
+      { id: 3, title: 'Mobile App Dev', instructor: 'Dr. Lee', credits: 2, required: false },
+    ];
+    const courseCard = ({ title, instructor, credits, required }) =>
+      `<article class="card"><h3>${title} <span class="badge ${required ? 'badge-required' : 'badge-elective'}">${required ? '필수' : '선택'}</span></h3><p>Instructor: ${instructor}</p><p>Credits: ${credits}</p></article>`;
+    document.getElementById('app').innerHTML = `<h2>Course Catalog</h2>${courses.map(courseCard).join('')}`;
+  </script>
+</body>
+</html>
