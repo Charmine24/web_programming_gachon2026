@@ -1,3 +1,11 @@
+<style>
+  /* Back button: same look as .back-button in style.css */
+  .back-button { position: fixed; top: 20px; left: 20px; z-index: 10; display: inline-flex; width: 96px; height: 40px; margin: 0; align-items: center; justify-content: center; padding: 0; border: 1px solid #d8eaf3; border-radius: 999px; color: #3f4661; background: #fffefe; cursor: pointer; font: 700 .86rem/1 "Trebuchet MS", sans-serif; text-align: center; appearance: none; }
+  .back-button:hover, .back-button:focus-visible { border-color: #b46682; color: #b46682; }
+  body { padding-top: 76px; }
+</style>
+<button class="back-button" type="button" onclick="history.back()">Back</button>
+
 <form action="/login" method="post" novalidate>
   <label for="email">Email</label>
   <input type="email" id="email" name="email" required>

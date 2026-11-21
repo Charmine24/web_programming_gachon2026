@@ -40,8 +40,15 @@
     .requirements .done { color: #17809a; font-size: .9rem; font-weight: 600; }
     @media (max-width: 760px) { .shopping-cart { grid-template-columns: 1fr; } .cart-panel { position: static; } }
   </style>
+  <style>
+    /* Back button: same look as .back-button in style.css */
+    .back-button { position: fixed; top: 20px; left: 20px; z-index: 10; display: inline-flex; width: 96px; height: 40px; margin: 0; align-items: center; justify-content: center; padding: 0; border: 1px solid #d8eaf3; border-radius: 999px; color: #3f4661; background: #fffefe; cursor: pointer; font: 700 .86rem/1 "Trebuchet MS", sans-serif; text-align: center; appearance: none; }
+    .back-button:hover, .back-button:focus-visible { border-color: #b46682; color: #b46682; }
+    body { padding-top: 76px; }
+  </style>
 </head>
 <body>
+  <button class="back-button" type="button" onclick="history.back()">Back</button>
   <h1>Step 5 · ShoppingCart component</h1>
   <section class="requirements" aria-labelledby="requirements-title">
     <h2 id="requirements-title">Homework requirements</h2>

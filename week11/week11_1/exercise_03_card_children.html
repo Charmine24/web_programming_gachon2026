@@ -8,8 +8,15 @@
     .card { max-width: 360px; margin-bottom: 16px; padding: 16px 20px; border: 1px solid #bae6fd; border-radius: 10px; font: 1rem sans-serif; }
     .card h3 { margin: 0 0 10px; }
   </style>
+  <style>
+    /* Back button: same look as .back-button in style.css */
+    .back-button { position: fixed; top: 20px; left: 20px; z-index: 10; display: inline-flex; width: 96px; height: 40px; margin: 0; align-items: center; justify-content: center; padding: 0; border: 1px solid #d8eaf3; border-radius: 999px; color: #3f4661; background: #fffefe; cursor: pointer; font: 700 .86rem/1 "Trebuchet MS", sans-serif; text-align: center; appearance: none; }
+    .back-button:hover, .back-button:focus-visible { border-color: #b46682; color: #b46682; }
+    body { padding-top: 76px; }
+  </style>
 </head>
 <body>
+  <button class="back-button" type="button" onclick="history.back()">Back</button>
   <main id="app"></main>
   <script>
     const card = ({ title, children }) => `<article class="card"><h3>${title}</h3>${children}</article>`;
