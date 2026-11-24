@@ -128,17 +128,27 @@
 					{ name: "Session 1 · HTML forms", folder: "week8/week8_1", topics: [
 						"topic_01_why_forms.html", "topic_02_the_form_element.html", "topic_03_input_types.html", "topic_04_html5_validation_attributes.html", "topic_05_labels_&_accessibility.html", "topic_06_grouping_fields.html"
 					], exercises: [
-						"exercise_01_build_a_login_form.html", "exercise_02_add_required_&_pattern_attributes.html", "homework_02_build_a_student_registration_form.html"
+						"exercise_01_build_a_login_form.html", "exercise_02_add_required_&_pattern_attributes.html", { file: "homework_build_a_student_registration_form.html", label: "Homework: Student Registration Form" }
 					] },
 					{ name: "Session 2 · JavaScript form validation", folder: "week8/week8_2", topics: [
 						"topic_07_css_validation_pseudo_classes.html"
 					], exercises: [
-						"exercise_03_style_valid_invalid_states_with_css.html", "homework_01_contact_form.html"
+						"exercise_03_style_valid_invalid_states_with_css.html", { file: "homework_contact_form.html", label: "Homework: Contact Form" }
 					] }
 				]
 			},
 			{ week: 9, title: "Accessibility", description: "Semantic HTML, ARIA, keyboard access, and Lighthouse audits", sessions: [
-				{ name: "Session 1 · Accessibility audit", folder: "week9/week9_1", topics: [], exercises: [
+				{ name: "Session 1 · Accessibility audit", folder: "week9/week9_1", topics: [
+				"topic_01_what_is_accessibility.html",
+				{ file: "topic_02_wcag_levels.html", label: "WCAG Levels" },
+				{ file: "topic_03_semantic_html.html", label: "Semantic HTML" },
+				"topic_04_button_vs_div.html",
+				"topic_05_alt_text_deep_dive.html",
+				{ file: "topic_06_aria_attributes.html", label: "ARIA Attributes" },
+				"topic_07_keyboard_navigation.html",
+				"topic_08_color_contrast.html",
+				"topic_09_lighthouse_audit.html"
+			], exercises: [
 				"exercise_01_accessibility_audit.html",
 				"exercise_02_fix_div_to_button.html",
 				"exercise_03_add_alt_text.html",
@@ -187,7 +197,7 @@
 				] }
 			] }
 			,
-			{ week: 12, title: "React state", description: "State, useState, immutable updates, multiple state variables, and lifting state up", sessions: [
+			{ week: 12, title: "React state &amp; effects", description: "useState, lifting state up, useEffect, cleanup, and data fetching", sessions: [
 				{ name: "Session 1 · State and useState", folder: "week12/week12_1", topics: [
 					"topic_01_what_is_state.html",
 					{ file: "topic_02_usestate_syntax.html", label: "useState Syntax" },
@@ -201,6 +211,34 @@
 					{ file: "exercise_04_shopping_cart_counter.html", label: "Shopping Cart Counter" },
 					{ file: "exercise_05_counter_with_history.html", label: "Counter with History (code challenge)" },
 					{ file: "homework_interactive_shopping_cart.html", label: "Homework: Interactive Shopping Cart" }
+				] },
+				{ name: "Session 2 · useEffect and side effects", folder: "week12/week12_2", topics: [
+					{ file: "topic_01_what_is_a_side_effect.html", label: "What is a Side Effect?" },
+					{ file: "topic_02_useeffect_syntax_and_dependency_array.html", label: "useEffect Syntax &amp; Dependency Array" },
+					{ file: "topic_03_cleanup_functions.html", label: "Cleanup Functions" },
+					{ file: "topic_04_data_fetching_pattern.html", label: "Data Fetching Pattern" },
+					{ file: "topic_05_common_patterns.html", label: "Common Patterns" },
+					{ file: "topic_06_useeffect_cheat_sheet.html", label: "useEffect Cheat Sheet" }
+				], exercises: [
+					{ file: "exercises_01_effect_syntax_mount_cleanup.html", label: "useEffect Syntax: Mount and Cleanup" },
+					{ file: "exercises_02_dependency_patterns.html", label: "The Three Dependency Patterns" },
+					{ file: "exercises_03_fetching_data_on_mount.html", label: "Fetching Data on Mount" },
+					{ file: "exercises_04_async_await_inside_an_effect.html", label: "async/await Inside an Effect" },
+					{ file: "exercises_05_cleanup_timer_live_clock.html", label: "Cleanup: Timer (Live Clock)" },
+					{ file: "exercises_06_cleanup_abort_controller.html", label: "Cleanup: AbortController" },
+					{ file: "exercises_07_code_challenge_github_user_lookup.html", label: "Code Challenge: GitHub User Lookup" },
+					{ file: "exercises_08_race_condition_and_the_fix.html", label: "Race Condition and the Fix" },
+					{ file: "exercises_09_localstorage_persistence.html", label: "localStorage Persistence" },
+					{ file: "exercises_10_document_title_sync.html", label: "Document Title Sync" },
+					{ file: "exercises_11_gotcha_infinite_loop.html", label: "Gotcha: Infinite Loop" },
+					{ file: "exercises_12_you_might_not_need_an_effect.html", label: "You Might Not Need an Effect" },
+					{ file: "exercises_13_practice_challenge_github_profile.html", label: "Practice Challenge: GitHubProfile" },
+					{ file: "homework_01_weather_dashboard_starter.html", label: "Homework 01: Weather Dashboard Starter" },
+					{ file: "homework_02_city_search.html", label: "Homework 02: City Search" },
+					{ file: "homework_03_weather_code_descriptions.html", label: "Homework 03: Weather Code Descriptions" },
+					{ file: "homework_04_geolocation_bonus.html", label: "Homework 04: Geolocation (Bonus)" },
+					{ file: "homework_05_weather_dashboard_component.html", label: "Homework 05: WeatherDashboard Component" },
+					{ file: "homework_06_submission.html", label: "Homework 06: Submission" }
 				] }
 			] }
 		];
