@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 5 | Common Patterns</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { max-width: 760px; margin: 0 auto; padding: 2rem 1rem; color: #1f2937; background: #f6f7fb; font: 1rem/1.6 system-ui, sans-serif; }
+    h1 { margin: 0 0 .25rem; }
+    h2 { margin: 1.6rem 0 .5rem; font-size: 1.2rem; }
+    .lead { color: #4b5563; margin-top: 0; }
+    .panel { margin: 1rem 0; padding: 1rem 1.25rem; border: 1px solid #e2e5ee; border-radius: 10px; background: #fff; }
+    .panel > :first-child { margin-top: 0; }
+    .panel > :last-child { margin-bottom: 0; }
+    pre { margin: .5rem 0 1rem; padding: 12px 14px; border-radius: 8px; color: #e5e7eb; background: #1f2433; overflow-x: auto; font-size: .82rem; line-height: 1.5; }
+    code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; }
+    :not(pre) > code { padding: .1rem .3rem; border-radius: 4px; background: #eef0f6; }
+    .note { margin: 1rem 0; padding: 10px 14px; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; background: #fffbeb; }
+    .tip { margin: 1rem 0; padding: 10px 14px; border-left: 4px solid #16a34a; border-radius: 0 8px 8px 0; background: #f0fdf4; }
+    button { margin: 0 .35rem .35rem 0; padding: .42rem .85rem; border: 1px solid #1f9fbf; border-radius: 6px; color: #fff; background: #1f9fbf; font: inherit; cursor: pointer; }
+    button:hover, button:focus-visible { background: #17809a; }
+    button.secondary { color: #1f2937; border-color: #d1d5db; background: #fff; }
+    button.secondary:hover, button.secondary:focus-visible { background: #f3f4f6; }
+    button:disabled { cursor: not-allowed; opacity: .55; }
+    input, select { padding: .38rem .55rem; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit; }
+    label { margin-right: .6rem; }
+    table { width: 100%; border-collapse: collapse; margin: .5rem 0 1rem; font-size: .93rem; background: #fff; }
+    th, td { padding: .45rem .6rem; border: 1px solid #e2e5ee; text-align: left; vertical-align: top; }
+    th { background: #f3f4f8; }
+    .error { color: #b42318; font-weight: 600; }
+    .muted { color: #6b7280; }
+    .ok { color: #15803d; font-weight: 600; }
+    .log-head { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; }
+    .log-head h2 { margin: 0; font-size: 1rem; }
+    .log { min-height: 3.2rem; max-height: 210px; margin: .4rem 0 1rem; padding: .6rem .8rem; overflow: auto; border-radius: 8px; color: #a7f3d0; background: #0f172a; font: .8rem/1.5 ui-monospace, Consolas, monospace; }
+    .log:empty::before { content: 'Console output appears here'; color: #64748b; }
+    .requirements li { margin: .3rem 0; }
+    .done { color: #17809a; font-size: .9rem; font-weight: 600; }
+    footer { margin-top: 2.5rem; color: #6b7280; font-size: .85rem; }
+  </style>
+  <style>
+    /* Back button: same look as .back-button in style.css */
+    .back-button { position: fixed; top: 20px; left: 20px; z-index: 10; display: inline-flex; width: 96px; height: 40px; margin: 0; align-items: center; justify-content: center; padding: 0; border: 1px solid #d8eaf3; border-radius: 999px; color: #3f4661; background: #fffefe; cursor: pointer; font: 700 .86rem/1 "Trebuchet MS", sans-serif; text-align: center; appearance: none; }
+    .back-button:hover, .back-button:focus-visible { border-color: #b46682; color: #b46682; background: #fffefe; }
+    body { padding-top: 76px; }
+  </style>
+</head>
+<body>
+  <button class="back-button" type="button" onclick="history.back()">Back</button>
+  <h1>Common Patterns</h1>
+  <p class="lead">Three patterns you will use again and again: syncing the document title, debouncing a search, and mapping class lifecycle methods to useEffect.</p>
+
+  <h2>Pattern 1: sync the document title with state</h2>
+  <div class="panel"><div id="title-demo"></div><p class="muted">Look at this browser tab's title while you click.</p></div>
+  <pre><code>useEffect(() => {
+  document.title = `${unreadCount} unread messages — WebPro`;
+}, [unreadCount]);</code></pre>
+
+  <h2>Pattern 2: debounced search</h2>
+  <div class="panel">
+    <p>Type a fruit name quickly. The request only goes out once you stop typing for 400ms (simulated search API).</p>
+    <div id="search-demo"></div>
+  </div>
+  <pre><code>const [query, setQuery] = useState('');
+const [results, setResults] = useState([]);
+
+useEffect(() => {
+  if (!query) { setResults([]); return; }
+
+  const timerId = setTimeout(async () => {
+    const res  = await fetch(`/api/search?q=${query}`);
+    const data = await res.json();
+    setResults(data);
+  }, 400); // wait 400ms after typing stops
+
+  return () => clearTimeout(timerId); // cancel if query changes quickly
+}, [query]);</code></pre>
+
+  <h2>Pattern 3: lifecycle analogy</h2>
+  <table>
+    <tr><th>Class component lifecycle</th><th>useEffect equivalent</th></tr>
+    <tr><td><code>componentDidMount</code></td><td><code>useEffect(() =&gt; {...}, [])</code></td></tr>
+    <tr><td><code>componentDidUpdate</code></td><td><code>useEffect(() =&gt; {...}, [dep])</code></td></tr>
+    <tr><td><code>componentWillUnmount</code></td><td>Cleanup function: <code>return () =&gt; {...}</code></td></tr>
+  </table>
+  <div class="log-head"><h2>Console</h2><button type="button" class="secondary" id="clear-log">Clear</button></div>
+  <div class="log" id="log" aria-live="polite"></div>
+  <footer>Yang Kaijing Charmine · 202699477 · Web Programming (K0126_002) · Week 12 · React Effects</footer>
+  <script>
+    // ---------------------------------------------------------------
+    // mini-hooks: a small imitation of React's useState, useEffect and
+    // useRef, so this page runs straight in the browser (no build step).
+    // A component is a function that returns a DOM element.
+    // root.render(Component, props) mounts or re-renders it;
+    // root.unmount() runs every effect cleanup and removes it.
+    // ---------------------------------------------------------------
+    let currentRoot = null;
+    function useState(initial) { return currentRoot.useState(initial); }
+    function useEffect(effect, deps) { return currentRoot.useEffect(effect, deps); }
+    function useRef(initial) { return currentRoot.useRef(initial); }
+
+    function createRoot(container) {
+      let Component = null, props = {}, hooks = [], cursor = 0, queued = false, effects = [];
+      const api = {
+        useState(initial) {
+          const i = cursor++;
+          if (!hooks[i]) hooks[i] = { value: typeof initial === 'function' ? initial() : initial };
+          const slot = hooks[i];
+          const setValue = (next) => {
+            const value = typeof next === 'function' ? next(slot.value) : next;
+            if (Object.is(value, slot.value)) return; // same value: no re-render
+            slot.value = value;
+            schedule();
+          };
+          return [slot.value, setValue];
+        },
+        useRef(initial) {
+          const i = cursor++;
+          if (!hooks[i]) hooks[i] = { current: initial };
+          return hooks[i];
+        },
+        useEffect(effect, deps) {
+          const i = cursor++;
+          const slot = hooks[i];
+          // Run when: first render, no dependency array, or any dependency changed
+          const changed = !slot || !deps || deps.some((d, k) => !Object.is(d, slot.deps[k]));
+          if (!slot) hooks[i] = { deps: null, cleanup: null };
+          if (changed) effects.push(() => {
+            const s = hooks[i];
+            if (s.cleanup) s.cleanup(); // clean up the previous run first
+            s.deps = deps;
+            const result = effect();
+            s.cleanup = typeof result === 'function' ? result : null;
+          });
+        },
+        render(NextComponent, nextProps = {}) {
+          if (Component && NextComponent !== Component) api.unmount();
+          Component = NextComponent;
+          props = nextProps;
+          draw();
+        },
+        unmount() {
+          hooks.forEach((s) => { if (s && s.cleanup) s.cleanup(); });
+          hooks = [];
+          Component = null;
+          container.replaceChildren();
+        }
+      };
+      function schedule() {
+        if (queued || !Component) return; // unmounted components do not re-render
+        queued = true;
+        queueMicrotask(() => { queued = false; draw(); });
+      }
+      function draw() {
+        if (!Component) return;
+        cursor = 0;
+        effects = [];
+        // Keep keyboard focus and caret position when the DOM is replaced
+        const active = document.activeElement;
+        const focusId = active && active.id && container.contains(active) ? active.id : null;
+        let caret = null;
+        try { caret = focusId ? [active.selectionStart, active.selectionEnd] : null; } catch (e) { caret = null; }
+        const previous = currentRoot;
+        currentRoot = api;
+        const node = Component(props);
+        currentRoot = previous;
+        container.replaceChildren(node);
+        if (focusId) {
+          const again = document.getElementById(focusId);
+          if (again) {
+            again.focus();
+            try { if (caret && caret[0] != null) again.setSelectionRange(caret[0], caret[1]); } catch (e) { /* number inputs */ }
+          }
+        }
+        effects.forEach((run) => run()); // effects run AFTER the new DOM is on the page
+      }
+      return api;
+    }
+
+    // Turn an HTML string into one element
+    function el(html) {
+      const t = document.createElement('template');
+      t.innerHTML = html.trim();
+      if (t.content.childElementCount === 1) return t.content.firstElementChild;
+      const wrap = document.createElement('div');
+      wrap.append(t.content);
+      return wrap;
+    }
+
+    // Escape text before putting it into HTML (prevents XSS from API data)
+    const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    // console.log that also prints into the on-page console box
+    function log(...args) {
+      console.log(...args);
+      const box = document.getElementById('log');
+      if (!box) return;
+      const line = document.createElement('div');
+      line.textContent = args.map((a) => (typeof a === 'string' ? a : JSON.stringify(a))).join(' ');
+      box.append(line);
+      box.scrollTop = box.scrollHeight;
+    }
+    document.getElementById('clear-log')?.addEventListener('click', () => { document.getElementById('log').replaceChildren(); });
+    // ---------------------------------------------------------------
+
+    // Pattern 1: document title
+    const originalTitle = document.title;
+    function Inbox() {
+      const [unreadCount, setUnreadCount] = useState(0);
+      useEffect(() => {
+        document.title = unreadCount ? `${unreadCount} unread messages — WebPro` : originalTitle;
+        log('document.title is now:', document.title);
+      }, [unreadCount]);
+      const node = el(`<div><p>Unread messages: <strong>${unreadCount}</strong></p>
+        <button type="button" data-do="new">New message</button>
+        <button type="button" class="secondary" data-do="read">Mark all read</button></div>`);
+      node.querySelector('[data-do="new"]').onclick = () => setUnreadCount((c) => c + 1);
+      node.querySelector('[data-do="read"]').onclick = () => setUnreadCount(0);
+      return node;
+    }
+    createRoot(document.getElementById('title-demo')).render(Inbox);
+
+    // Pattern 2: debounced search against a simulated API
+    const FRUITS = ['apple', 'apricot', 'avocado', 'banana', 'blackberry', 'blueberry', 'cherry', 'coconut', 'grape', 'grapefruit', 'kiwi', 'lemon', 'lime', 'mango', 'melon', 'orange', 'papaya', 'peach', 'pear', 'pineapple', 'plum', 'strawberry', 'watermelon'];
+    let requestCount = 0;
+    function fakeSearch(q) {
+      requestCount += 1;
+      log(`request #${requestCount} sent: /api/search?q=${q}`);
+      return new Promise((resolve) => setTimeout(() => resolve(FRUITS.filter((f) => f.includes(q.toLowerCase()))), 250));
+    }
+
+    function Search() {
+      const [query, setQuery] = useState('');
+      const [results, setResults] = useState([]);
+      const keystrokes = useRef(0);
+
+      useEffect(() => {
+        if (!query) { setResults([]); return; }
+        const timerId = setTimeout(async () => {
+          const data = await fakeSearch(query);
+          setResults(data);
+        }, 400);
+        return () => clearTimeout(timerId); // cancel if the query changes quickly
+      }, [query]);
+
+      const node = el(`<div>
+        <label for="q">Search</label><input id="q" type="search" placeholder="e.g. berry" value="${esc(query)}" autocomplete="off">
+        <p class="muted">Keystrokes: ${keystrokes.current} · requests sent: ${requestCount}</p>
+        <ul>${results.map((r) => `<li>${esc(r)}</li>`).join('') || (query ? '<li class="muted">No results yet</li>' : '')}</ul>
+      </div>`);
+      node.querySelector('#q').addEventListener('input', (e) => { keystrokes.current += 1; setQuery(e.target.value); });
+      return node;
+    }
+    createRoot(document.getElementById('search-demo')).render(Search);
+  </script>
+</body>
+</html>
