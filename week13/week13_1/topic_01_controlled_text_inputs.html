@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 1 | Controlled Text Inputs</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { max-width: 760px; margin: 0 auto; padding: 2rem 1rem; color: #1f2937; background: #f6f7fb; font: 1rem/1.6 system-ui, sans-serif; }
+    h1 { margin: 0 0 .25rem; }
+    h2 { margin: 1.6rem 0 .5rem; font-size: 1.2rem; }
+    h3 { margin: 1.2rem 0 .4rem; font-size: 1.02rem; }
+    .panel h3:first-child { margin-top: 0; }
+    .lead { color: #4b5563; margin-top: 0; }
+    .panel { margin: 1rem 0; padding: 1rem 1.25rem; border: 1px solid #e2e5ee; border-radius: 10px; background: #fff; }
+    .panel > :first-child { margin-top: 0; }
+    .panel > :last-child { margin-bottom: 0; }
+    pre { margin: .5rem 0 1rem; padding: 12px 14px; border-radius: 8px; color: #e5e7eb; background: #1f2433; overflow-x: auto; font-size: .82rem; line-height: 1.5; }
+    pre.state { color: #1f2937; background: #f3f4f8; }
+    code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; }
+    :not(pre) > code { padding: .1rem .3rem; border-radius: 4px; background: #eef0f6; }
+    .note { margin: 1rem 0; padding: 10px 14px; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; background: #fffbeb; }
+    button { margin: 0 .35rem .35rem 0; padding: .42rem .85rem; border: 1px solid #1f9fbf; border-radius: 6px; color: #fff; background: #1f9fbf; font: inherit; cursor: pointer; }
+    button:hover, button:focus-visible { background: #17809a; }
+    button.secondary { color: #1f2937; border-color: #d1d5db; background: #fff; }
+    button.secondary:hover, button.secondary:focus-visible { background: #f3f4f6; }
+    button:disabled { cursor: not-allowed; opacity: .55; }
+    input, select, textarea { padding: .38rem .55rem; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit; }
+    .control { display: block; width: 100%; max-width: 380px; }
+    textarea.control { resize: vertical; }
+    .field { margin: 0 0 .85rem; }
+    .field > label { display: block; margin-bottom: .2rem; font-weight: 600; }
+    .choice { display: inline-flex; align-items: center; gap: .35rem; margin: 0 .9rem .3rem 0; }
+    .choice.block { display: flex; }
+    fieldset { margin: 0 0 .85rem; padding: .6rem .9rem .4rem; border: 1px solid #e2e5ee; border-radius: 8px; }
+    legend { padding: 0 .3rem; font-weight: 600; }
+    .invalid { border-color: #b42318; }
+    .error { margin: .25rem 0 0; color: #b42318; font-size: .88rem; font-weight: 600; }
+    .muted { color: #6b7280; }
+    .ok { color: #15803d; font-weight: 600; }
+    .counter { margin: .25rem 0 0; color: #6b7280; font-size: .85rem; }
+    .counter.low { color: #b42318; }
+    .progress { display: flex; gap: 8px; margin: .6rem 0 1.1rem; }
+    .progress span { flex: 1; height: 10px; border-radius: 6px; background: #d9dfeb; }
+    .progress span.done { background: #1fb5d4; }
+    .summary { margin-top: 1rem; padding: .75rem 1rem; border-radius: 8px; background: #f5f7fb; font-size: .93rem; }
+    .summary p { margin: .2rem 0; }
+    .log-head { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; }
+    .log-head h2 { margin: 0; font-size: 1rem; }
+    .log { min-height: 3.2rem; max-height: 210px; margin: .4rem 0 1rem; padding: .6rem .8rem; overflow: auto; border-radius: 8px; color: #a7f3d0; background: #0f172a; font: .8rem/1.5 ui-monospace, Consolas, monospace; }
+    .log:empty::before { content: 'Console output appears here'; color: #64748b; }
+    footer { margin-top: 2.5rem; color: #6b7280; font-size: .85rem; }
+  </style>
+  <style>
+    /* Back button: same look as .back-button in style.css */
+    .back-button { position: fixed; top: 20px; left: 20px; z-index: 10; display: inline-flex; width: 96px; height: 40px; margin: 0; align-items: center; justify-content: center; padding: 0; border: 1px solid #d8eaf3; border-radius: 999px; color: #3f4661; background: #fffefe; cursor: pointer; font: 700 .86rem/1 "Trebuchet MS", sans-serif; text-align: center; appearance: none; }
+    .back-button:hover, .back-button:focus-visible { border-color: #b46682; color: #b46682; background: #fffefe; }
+    body { padding-top: 76px; }
+  </style>
+</head>
+<body>
+  <button class="back-button" type="button" onclick="history.back()">Back</button>
+  <h1>Controlled Text Inputs</h1>
+  <p class="lead">A controlled input takes its <code>value</code> from state and updates that state on every change, so state is the single source of truth. Type in the fields and watch the state update.</p>
+
+  <div class="panel">
+    <form id="login" class="login">
+      <div class="field"><label for="email">Email</label><input class="control" id="email" type="email" required></div>
+      <div class="field"><label for="password">Password</label><input class="control" id="password" type="password" minlength="8"></div>
+      <button type="submit">Log in</button>
+    </form>
+    <h3>State right now</h3>
+    <pre class="state" id="state"></pre>
+  </div>
+  <div class="log-head"><h2>Console</h2><button type="button" class="secondary" id="clear-log">Clear</button></div>
+  <div class="log" id="log" aria-live="polite"></div>
+  <h2>React version (from the slides)</h2>
+  <pre><code>// Week 13 — Topic 01
+import { useState } from &#x27;react&#x27;;
+
+// ─── 2. Controlled Text Inputs ──────────────────────────────────────────────
+// value={state} + onChange keeps React state as the single source of truth.
+function LoginForm() {
+  const [email, setEmail] = useState(&#x27;&#x27;);
+  const [password, setPassword] = useState(&#x27;&#x27;);
+
+  function handleSubmit(e) {
+    e.preventDefault(); // prevent page reload
+    console.log(&#x27;Logging in with:&#x27;, email, password);
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;label&gt;
+        Email
+        &lt;input
+          type=&quot;email&quot;
+          value={email}                              // controlled: tied to state
+          onChange={e =&gt; setEmail(e.target.value)}   // update state on change
+          required
+        /&gt;
+      &lt;/label&gt;
+      &lt;label&gt;
+        Password
+        &lt;input
+          type=&quot;password&quot;
+          value={password}
+          onChange={e =&gt; setPassword(e.target.value)}
+          minLength={8}
+        /&gt;
+      &lt;/label&gt;
+      &lt;button type=&quot;submit&quot;&gt;Log in&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+
+export default LoginForm;</code></pre>
+  <footer>Yang Kaijing Charmine · 202699477 · Web Programming (K0126_002) · Week 13 · React Forms</footer>
+  <script>
+    // Escape user text before putting it into HTML
+    const esc = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    // log(): console.log, and also show the line in the on-page console panel
+    const logEl = document.getElementById('log');
+    function log(...args) {
+      console.log(...args);
+      if (!logEl) return;
+      const line = document.createElement('div');
+      line.textContent = args.map((a) => (typeof a === 'string' ? a : JSON.stringify(a))).join(' ');
+      logEl.append(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    const clearLog = document.getElementById('clear-log');
+    if (clearLog) clearLog.addEventListener('click', () => { logEl.textContent = ''; });
+
+    // Controlled inputs: these two variables are the single source of truth
+    let email = '';
+    let password = '';
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    function render() {
+      // value={state}: the inputs always show what is in state
+      if (emailInput.value !== email) emailInput.value = email;
+      if (passwordInput.value !== password) passwordInput.value = password;
+      document.getElementById('state').textContent =
+        `email    = ${JSON.stringify(email)}\npassword = ${JSON.stringify('•'.repeat(password.length))} (${password.length} characters)`;
+    }
+
+    // onChange: update state, then re-render
+    emailInput.addEventListener('input', (e) => { email = e.target.value; render(); });
+    passwordInput.addEventListener('input', (e) => { password = e.target.value; render(); });
+
+    document.getElementById('login').addEventListener('submit', (e) => {
+      e.preventDefault(); // prevent page reload
+      log('Logging in with:', email, password);
+    });
+
+    render();
+  </script>
+</body>
+</html>

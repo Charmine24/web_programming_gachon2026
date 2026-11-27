@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic 5 | Form Validation</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { max-width: 760px; margin: 0 auto; padding: 2rem 1rem; color: #1f2937; background: #f6f7fb; font: 1rem/1.6 system-ui, sans-serif; }
+    h1 { margin: 0 0 .25rem; }
+    h2 { margin: 1.6rem 0 .5rem; font-size: 1.2rem; }
+    h3 { margin: 1.2rem 0 .4rem; font-size: 1.02rem; }
+    .panel h3:first-child { margin-top: 0; }
+    .lead { color: #4b5563; margin-top: 0; }
+    .panel { margin: 1rem 0; padding: 1rem 1.25rem; border: 1px solid #e2e5ee; border-radius: 10px; background: #fff; }
+    .panel > :first-child { margin-top: 0; }
+    .panel > :last-child { margin-bottom: 0; }
+    pre { margin: .5rem 0 1rem; padding: 12px 14px; border-radius: 8px; color: #e5e7eb; background: #1f2433; overflow-x: auto; font-size: .82rem; line-height: 1.5; }
+    pre.state { color: #1f2937; background: #f3f4f8; }
+    code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; }
+    :not(pre) > code { padding: .1rem .3rem; border-radius: 4px; background: #eef0f6; }
+    .note { margin: 1rem 0; padding: 10px 14px; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; background: #fffbeb; }
+    button { margin: 0 .35rem .35rem 0; padding: .42rem .85rem; border: 1px solid #1f9fbf; border-radius: 6px; color: #fff; background: #1f9fbf; font: inherit; cursor: pointer; }
+    button:hover, button:focus-visible { background: #17809a; }
+    button.secondary { color: #1f2937; border-color: #d1d5db; background: #fff; }
+    button.secondary:hover, button.secondary:focus-visible { background: #f3f4f6; }
+    button:disabled { cursor: not-allowed; opacity: .55; }
+    input, select, textarea { padding: .38rem .55rem; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit; }
+    .control { display: block; width: 100%; max-width: 380px; }
+    textarea.control { resize: vertical; }
+    .field { margin: 0 0 .85rem; }
+    .field > label { display: block; margin-bottom: .2rem; font-weight: 600; }
+    .choice { display: inline-flex; align-items: center; gap: .35rem; margin: 0 .9rem .3rem 0; }
+    .choice.block { display: flex; }
+    fieldset { margin: 0 0 .85rem; padding: .6rem .9rem .4rem; border: 1px solid #e2e5ee; border-radius: 8px; }
+    legend { padding: 0 .3rem; font-weight: 600; }
+    .invalid { border-color: #b42318; }
+    .error { margin: .25rem 0 0; color: #b42318; font-size: .88rem; font-weight: 600; }
+    .muted { color: #6b7280; }
+    .ok { color: #15803d; font-weight: 600; }
+    .counter { margin: .25rem 0 0; color: #6b7280; font-size: .85rem; }
+    .counter.low { color: #b42318; }
+    .progress { display: flex; gap: 8px; margin: .6rem 0 1.1rem; }
+    .progress span { flex: 1; height: 10px; border-radius: 6px; background: #d9dfeb; }
+    .progress span.done { background: #1fb5d4; }
+    .summary { margin-top: 1rem; padding: .75rem 1rem; border-radius: 8px; background: #f5f7fb; font-size: .93rem; }
+    .summary p { margin: .2rem 0; }
+    .log-head { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; }
+    .log-head h2 { margin: 0; font-size: 1rem; }
+    .log { min-height: 3.2rem; max-height: 210px; margin: .4rem 0 1rem; padding: .6rem .8rem; overflow: auto; border-radius: 8px; color: #a7f3d0; background: #0f172a; font: .8rem/1.5 ui-monospace, Consolas, monospace; }
+    .log:empty::before { content: 'Console output appears here'; color: #64748b; }
+    footer { margin-top: 2.5rem; color: #6b7280; font-size: .85rem; }
+  </style>
+  <style>
+    /* Back button: same look as .back-button in style.css */
+    .back-button { position: fixed; top: 20px; left: 20px; z-index: 10; display: inline-flex; width: 96px; height: 40px; margin: 0; align-items: center; justify-content: center; padding: 0; border: 1px solid #d8eaf3; border-radius: 999px; color: #3f4661; background: #fffefe; cursor: pointer; font: 700 .86rem/1 "Trebuchet MS", sans-serif; text-align: center; appearance: none; }
+    .back-button:hover, .back-button:focus-visible { border-color: #b46682; color: #b46682; background: #fffefe; }
+    body { padding-top: 76px; }
+  </style>
+</head>
+<body>
+  <button class="back-button" type="button" onclick="history.back()">Back</button>
+  <h1>Form Validation</h1>
+  <p class="lead">Validation runs on submit, errors are stored in an object keyed by field name, and each error clears as soon as you type in that field. Try submitting empty fields, a bad email or a short password.</p>
+
+  <div class="panel">
+    <form id="signup" novalidate>
+      <div class="field">
+        <label for="signup-email">Email</label>
+        <input class="control" id="signup-email" name="email" type="email" placeholder="Email">
+        <p class="error" id="email-error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="signup-password">Password</label>
+        <input class="control" id="signup-password" name="password" type="password" placeholder="Password">
+        <p class="error" id="password-error" hidden></p>
+      </div>
+      <button type="submit">Create account</button>
+    </form>
+    <p class="ok" id="success" hidden>Account created!</p>
+  </div>
+  <h2>React version (from the slides)</h2>
+  <pre><code>// Week 13 — Topic 05
+import { useState } from &#x27;react&#x27;;
+
+const errorStyle = { color: &#x27;red&#x27;, fontSize: 13 };
+
+// ─── 6. Form Validation ─────────────────────────────────────────────────────
+// Validate on submit, store errors keyed by field name, clear an error as the user types.
+function SignupForm() {
+  const [form, setForm] = useState({ email: &#x27;&#x27;, password: &#x27;&#x27; });
+  const [errors, setErrors] = useState({});
+
+  function validate() {
+    const e = {};
+    if (!form.email) {
+      e.email = &#x27;Email is required&#x27;;
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      e.email = &#x27;Enter a valid email address&#x27;;
+    }
+    if (!form.password) {
+      e.password = &#x27;Password is required&#x27;;
+    } else if (form.password.length &lt; 8) {
+      e.password = &#x27;Password must be at least 8 characters&#x27;;
+    }
+    return e;
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm(prev =&gt; ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev =&gt; ({ ...prev, [name]: &#x27;&#x27; }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const newErrors = validate();
+    if (Object.keys(newErrors).length &gt; 0) {
+      setErrors(newErrors);
+      return;
+    }
+    alert(&#x27;Account created!&#x27;);
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;div&gt;
+        &lt;input name=&quot;email&quot; value={form.email} onChange={handleChange}
+               type=&quot;email&quot; placeholder=&quot;Email&quot;
+               style={{ borderColor: errors.email ? &#x27;red&#x27; : &#x27;&#x27; }} /&gt;
+        {errors.email &amp;&amp; &lt;p style={errorStyle}&gt;{errors.email}&lt;/p&gt;}
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;input name=&quot;password&quot; value={form.password} onChange={handleChange}
+               type=&quot;password&quot; placeholder=&quot;Password&quot;
+               style={{ borderColor: errors.password ? &#x27;red&#x27; : &#x27;&#x27; }} /&gt;
+        {errors.password &amp;&amp; &lt;p style={errorStyle}&gt;{errors.password}&lt;/p&gt;}
+      &lt;/div&gt;
+      &lt;button type=&quot;submit&quot;&gt;Create account&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+
+export default SignupForm;</code></pre>
+  <footer>Yang Kaijing Charmine · 202699477 · Web Programming (K0126_002) · Week 13 · React Forms</footer>
+  <script>
+    // Escape user text before putting it into HTML
+    const esc = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    // log(): console.log, and also show the line in the on-page console panel
+    const logEl = document.getElementById('log');
+    function log(...args) {
+      console.log(...args);
+      if (!logEl) return;
+      const line = document.createElement('div');
+      line.textContent = args.map((a) => (typeof a === 'string' ? a : JSON.stringify(a))).join(' ');
+      logEl.append(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    const clearLog = document.getElementById('clear-log');
+    if (clearLog) clearLog.addEventListener('click', () => { logEl.textContent = ''; });
+
+    let form = { email: '', password: '' };
+    let errors = {};
+    const formEl = document.getElementById('signup');
+
+    function validate() {
+      const e = {};
+      if (!form.email) {
+        e.email = 'Email is required';
+      } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+        e.email = 'Enter a valid email address';
+      }
+      if (!form.password) {
+        e.password = 'Password is required';
+      } else if (form.password.length < 8) {
+        e.password = 'Password must be at least 8 characters';
+      }
+      return e;
+    }
+
+    // Show each field's error (red border + message) from the errors object
+    function renderErrors() {
+      ['email', 'password'].forEach((name) => {
+        const message = errors[name] || '';
+        const errorEl = document.getElementById(`${name}-error`);
+        errorEl.textContent = message;
+        errorEl.hidden = !message;
+        formEl.elements[name].classList.toggle('invalid', Boolean(message));
+      });
+    }
+
+    formEl.addEventListener('input', (e) => {
+      const { name, value } = e.target;
+      form = { ...form, [name]: value };
+      document.getElementById('success').hidden = true;
+      if (errors[name]) { errors = { ...errors, [name]: '' }; renderErrors(); } // clear as the user types
+    });
+
+    formEl.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newErrors = validate();
+      errors = newErrors;
+      renderErrors();
+      if (Object.keys(newErrors).length > 0) return;
+      // The React version calls alert(); here the message is shown on the page
+      document.getElementById('success').hidden = false;
+    });
+  </script>
+</body>
+</html>

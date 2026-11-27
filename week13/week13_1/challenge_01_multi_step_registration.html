@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Challenge | Multi-Step Registration Wizard</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { max-width: 760px; margin: 0 auto; padding: 2rem 1rem; color: #1f2937; background: #f6f7fb; font: 1rem/1.6 system-ui, sans-serif; }
+    h1 { margin: 0 0 .25rem; }
+    h2 { margin: 1.6rem 0 .5rem; font-size: 1.2rem; }
+    h3 { margin: 1.2rem 0 .4rem; font-size: 1.02rem; }
+    .panel h3:first-child { margin-top: 0; }
+    .lead { color: #4b5563; margin-top: 0; }
+    .panel { margin: 1rem 0; padding: 1rem 1.25rem; border: 1px solid #e2e5ee; border-radius: 10px; background: #fff; }
+    .panel > :first-child { margin-top: 0; }
+    .panel > :last-child { margin-bottom: 0; }
+    pre { margin: .5rem 0 1rem; padding: 12px 14px; border-radius: 8px; color: #e5e7eb; background: #1f2433; overflow-x: auto; font-size: .82rem; line-height: 1.5; }
+    pre.state { color: #1f2937; background: #f3f4f8; }
+    code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; }
+    :not(pre) > code { padding: .1rem .3rem; border-radius: 4px; background: #eef0f6; }
+    .note { margin: 1rem 0; padding: 10px 14px; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; background: #fffbeb; }
+    button { margin: 0 .35rem .35rem 0; padding: .42rem .85rem; border: 1px solid #1f9fbf; border-radius: 6px; color: #fff; background: #1f9fbf; font: inherit; cursor: pointer; }
+    button:hover, button:focus-visible { background: #17809a; }
+    button.secondary { color: #1f2937; border-color: #d1d5db; background: #fff; }
+    button.secondary:hover, button.secondary:focus-visible { background: #f3f4f6; }
+    button:disabled { cursor: not-allowed; opacity: .55; }
+    input, select, textarea { padding: .38rem .55rem; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit; }
+    .control { display: block; width: 100%; max-width: 380px; }
+    textarea.control { resize: vertical; }
+    .field { margin: 0 0 .85rem; }
+    .field > label { display: block; margin-bottom: .2rem; font-weight: 600; }
+    .choice { display: inline-flex; align-items: center; gap: .35rem; margin: 0 .9rem .3rem 0; }
+    .choice.block { display: flex; }
+    fieldset { margin: 0 0 .85rem; padding: .6rem .9rem .4rem; border: 1px solid #e2e5ee; border-radius: 8px; }
+    legend { padding: 0 .3rem; font-weight: 600; }
+    .invalid { border-color: #b42318; }
+    .error { margin: .25rem 0 0; color: #b42318; font-size: .88rem; font-weight: 600; }
+    .muted { color: #6b7280; }
+    .ok { color: #15803d; font-weight: 600; }
+    .counter { margin: .25rem 0 0; color: #6b7280; font-size: .85rem; }
+    .counter.low { color: #b42318; }
+    .progress { display: flex; gap: 8px; margin: .6rem 0 1.1rem; }
+    .progress span { flex: 1; height: 10px; border-radius: 6px; background: #d9dfeb; }
+    .progress span.done { background: #1fb5d4; }
+    .summary { margin-top: 1rem; padding: .75rem 1rem; border-radius: 8px; background: #f5f7fb; font-size: .93rem; }
+    .summary p { margin: .2rem 0; }
+    .log-head { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; }
+    .log-head h2 { margin: 0; font-size: 1rem; }
+    .log { min-height: 3.2rem; max-height: 210px; margin: .4rem 0 1rem; padding: .6rem .8rem; overflow: auto; border-radius: 8px; color: #a7f3d0; background: #0f172a; font: .8rem/1.5 ui-monospace, Consolas, monospace; }
+    .log:empty::before { content: 'Console output appears here'; color: #64748b; }
+    footer { margin-top: 2.5rem; color: #6b7280; font-size: .85rem; }
+  </style>
+  <style>
+    /* Back button: same look as .back-button in style.css */
+    .back-button { position: fixed; top: 20px; left: 20px; z-index: 10; display: inline-flex; width: 96px; height: 40px; margin: 0; align-items: center; justify-content: center; padding: 0; border: 1px solid #d8eaf3; border-radius: 999px; color: #3f4661; background: #fffefe; cursor: pointer; font: 700 .86rem/1 "Trebuchet MS", sans-serif; text-align: center; appearance: none; }
+    .back-button:hover, .back-button:focus-visible { border-color: #b46682; color: #b46682; background: #fffefe; }
+    body { padding-top: 76px; }
+  </style>
+</head>
+<body>
+  <button class="back-button" type="button" onclick="history.back()">Back</button>
+  <h1>Multi-Step Registration Wizard</h1>
+  <p class="lead">Three steps: personal info, account setup and preferences. <strong>Next</strong> stays disabled until the current step is valid, <strong>Previous</strong> keeps what you entered (all data lives in one state object), and Submit logs the full form object.</p>
+
+  <div class="panel">
+    <form id="wizard" novalidate>
+      <h3 id="step-title"></h3>
+      <div class="progress" id="progress" aria-hidden="true"></div>
+      <div id="step-body"></div>
+      <div>
+        <button type="button" class="secondary" id="previous">Previous</button>
+        <button type="button" id="next">Next</button>
+        <button type="submit" id="submit">Submit</button>
+      </div>
+    </form>
+    <div id="done" hidden>
+      <h3>Registration complete 🎉</h3>
+      <p id="done-text"></p>
+    </div>
+  </div>
+  <div class="log-head"><h2>Console</h2><button type="button" class="secondary" id="clear-log">Clear</button></div>
+  <div class="log" id="log" aria-live="polite"></div>
+  <h2>React version (from the slides)</h2>
+  <pre><code>// Week 13 — Challenge: Multi-Step Registration Wizard
+//
+// Step 1 – Personal Info:  Name (required, min 2 chars), Email (must match regex)
+// Step 2 – Account Setup:  Username (min 3 chars, no spaces), Password (min 8),
+//                          Confirm Password (must match password)
+// Step 3 – Preferences:    Role (Student | TA | Instructor radios),
+//                          Subscribe to newsletter (checkbox), review summary
+//
+// Requirements:
+//  - &quot;Next&quot; stays disabled until the current step is valid
+//  - Shows progress: &quot;Step 2 of 3&quot; plus a progress bar
+//  - &quot;Previous&quot; keeps data already entered (all data lives in ONE state object)
+//  - Final submit: console.log(fullFormObject)
+import { useState } from &#x27;react&#x27;;
+
+const TOTAL_STEPS = 3;
+const ROLES = [&#x27;Student&#x27;, &#x27;TA&#x27;, &#x27;Instructor&#x27;];
+
+const INITIAL_FORM = {
+  name: &#x27;&#x27;,
+  email: &#x27;&#x27;,
+  username: &#x27;&#x27;,
+  password: &#x27;&#x27;,
+  confirmPassword: &#x27;&#x27;,
+  role: &#x27;&#x27;,
+  newsletter: false,
+};
+
+// Fields that belong to each step (used to validate only the current step)
+const STEP_FIELDS = {
+  1: [&#x27;name&#x27;, &#x27;email&#x27;],
+  2: [&#x27;username&#x27;, &#x27;password&#x27;, &#x27;confirmPassword&#x27;],
+  3: [&#x27;role&#x27;],
+};
+
+// Returns an error object for the whole form; empty object = everything valid
+function validate(form) {
+  const errs = {};
+
+  // Step 1
+  if (form.name.trim().length &lt; 2) {
+    errs.name = &#x27;Name must be at least 2 characters&#x27;;
+  }
+  if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+    errs.email = &#x27;Enter a valid email address&#x27;;
+  }
+
+  // Step 2
+  if (form.username.length &lt; 3) {
+    errs.username = &#x27;Username must be at least 3 characters&#x27;;
+  } else if (/\s/.test(form.username)) {
+    errs.username = &#x27;Username cannot contain spaces&#x27;;
+  }
+  if (form.password.length &lt; 8) {
+    errs.password = &#x27;Password must be at least 8 characters&#x27;;
+  }
+  if (!form.confirmPassword || form.confirmPassword !== form.password) {
+    errs.confirmPassword = &#x27;Passwords do not match&#x27;;
+  }
+
+  // Step 3
+  if (!form.role) {
+    errs.role = &#x27;Please choose a role&#x27;;
+  }
+
+  return errs;
+}
+
+// ─── Styles ─────────────────────────────────────────────────────────────────
+const styles = {
+  card: {
+    maxWidth: 420, margin: &#x27;40px auto&#x27;, padding: 24, borderRadius: 14,
+    background: &#x27;#fff&#x27;, boxShadow: &#x27;0 4px 20px rgba(0,0,0,0.12)&#x27;,
+    fontFamily: &#x27;system-ui, sans-serif&#x27;,
+  },
+  progress: { display: &#x27;flex&#x27;, gap: 8, margin: &#x27;12px 0 20px&#x27; },
+  bar: done =&gt; ({
+    flex: 1, height: 10, borderRadius: 6,
+    background: done ? &#x27;#1fb5d4&#x27; : &#x27;#d9dfeb&#x27;,
+  }),
+  input: hasError =&gt; ({
+    display: &#x27;block&#x27;, width: &#x27;100%&#x27;, boxSizing: &#x27;border-box&#x27;,
+    padding: &#x27;12px 14px&#x27;, marginTop: 12, fontSize: 15, borderRadius: 8,
+    background: &#x27;#eef2fa&#x27;,
+    border: `2px solid ${hasError ? &#x27;#e0435b&#x27; : &#x27;#d9dfeb&#x27;}`,
+  }),
+  error: { color: &#x27;#e0435b&#x27;, fontSize: 13, margin: &#x27;4px 0 0&#x27; },
+  buttons: { display: &#x27;flex&#x27;, gap: 12, marginTop: 24 },
+  btn: disabled =&gt; ({
+    flex: 1, padding: &#x27;12px 0&#x27;, fontSize: 15, fontWeight: 600,
+    border: &#x27;none&#x27;, borderRadius: 8, color: &#x27;#fff&#x27;,
+    background: disabled ? &#x27;#aab4cc&#x27; : &#x27;#0d1526&#x27;,
+    cursor: disabled ? &#x27;not-allowed&#x27; : &#x27;pointer&#x27;,
+  }),
+  summary: { background: &#x27;#f5f7fb&#x27;, borderRadius: 8, padding: 12, marginTop: 16, fontSize: 14 },
+};
+
+export default function MultiStepRegistration() {
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [touched, setTouched] = useState({}); // only show errors after the user types in a field
+  const [submitted, setSubmitted] = useState(false);
+
+  const errors = validate(form);
+  const stepIsValid = STEP_FIELDS[step].every(field =&gt; !errors[field]);
+
+  // One handler for all inputs; checkboxes use `checked`, everything else `value`
+  function handleChange(e) {
+    const { name, value, type, checked } = e.target;
+    setForm(prev =&gt; ({ ...prev, [name]: type === &#x27;checkbox&#x27; ? checked : value }));
+    setTouched(prev =&gt; ({ ...prev, [name]: true }));
+  }
+
+  function showError(field) {
+    return touched[field] &amp;&amp; errors[field];
+  }
+
+  function next() {
+    if (stepIsValid) setStep(s =&gt; s + 1);
+  }
+
+  function previous() {
+    setStep(s =&gt; s - 1); // form state is untouched, so earlier data is kept
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (Object.keys(errors).length &gt; 0) return;
+    console.log(form); // final submit: full form object
+    setSubmitted(true);
+  }
+
+  if (submitted) {
+    return (
+      &lt;div style={styles.card}&gt;
+        &lt;h2&gt;Registration complete 🎉&lt;/h2&gt;
+        &lt;p&gt;Welcome, {form.name}! Check the console for the submitted data.&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  function field(name, placeholder, type = &#x27;text&#x27;) {
+    return (
+      &lt;div&gt;
+        &lt;input
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          value={form[name]}
+          onChange={handleChange}
+          style={styles.input(showError(name))}
+        /&gt;
+        {showError(name) &amp;&amp; &lt;p style={styles.error}&gt;{errors[name]}&lt;/p&gt;}
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;form style={styles.card} onSubmit={handleSubmit} noValidate&gt;
+      &lt;h2 style={{ margin: 0 }}&gt;Step {step} of {TOTAL_STEPS}&lt;/h2&gt;
+
+      {/* Progress bar */}
+      &lt;div style={styles.progress}&gt;
+        {Array.from({ length: TOTAL_STEPS }, (_, i) =&gt; (
+          &lt;div key={i} style={styles.bar(i &lt; step)} /&gt;
+        ))}
+      &lt;/div&gt;
+
+      {/* Step 1 – Personal Info */}
+      {step === 1 &amp;&amp; (
+        &lt;&gt;
+          {field(&#x27;name&#x27;, &#x27;Name&#x27;)}
+          {field(&#x27;email&#x27;, &#x27;Email&#x27;, &#x27;email&#x27;)}
+        &lt;/&gt;
+      )}
+
+      {/* Step 2 – Account Setup */}
+      {step === 2 &amp;&amp; (
+        &lt;&gt;
+          {field(&#x27;username&#x27;, &#x27;Username&#x27;)}
+          {field(&#x27;password&#x27;, &#x27;Password&#x27;, &#x27;password&#x27;)}
+          {field(&#x27;confirmPassword&#x27;, &#x27;Confirm&#x27;, &#x27;password&#x27;)}
+        &lt;/&gt;
+      )}
+
+      {/* Step 3 – Preferences + Review */}
+      {step === 3 &amp;&amp; (
+        &lt;&gt;
+          &lt;fieldset style={{ border: &#x27;none&#x27;, padding: 0, marginTop: 12 }}&gt;
+            &lt;legend style={{ fontWeight: 600 }}&gt;Role&lt;/legend&gt;
+            {ROLES.map(role =&gt; (
+              &lt;label key={role} style={{ marginRight: 16 }}&gt;
+                &lt;input
+                  type=&quot;radio&quot;
+                  name=&quot;role&quot;
+                  value={role}
+                  checked={form.role === role}
+                  onChange={handleChange}
+                /&gt;
+                {&#x27; &#x27;}{role}
+              &lt;/label&gt;
+            ))}
+          &lt;/fieldset&gt;
+
+          &lt;label style={{ display: &#x27;block&#x27;, marginTop: 12 }}&gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+              name=&quot;newsletter&quot;
+              checked={form.newsletter}
+              onChange={handleChange}
+            /&gt;
+            {&#x27; &#x27;}Subscribe to newsletter
+          &lt;/label&gt;
+
+          {/* Read-only review summary */}
+          &lt;div style={styles.summary}&gt;
+            &lt;strong&gt;Review&lt;/strong&gt;
+            &lt;p&gt;Name: {form.name}&lt;/p&gt;
+            &lt;p&gt;Email: {form.email}&lt;/p&gt;
+            &lt;p&gt;Username: {form.username}&lt;/p&gt;
+            &lt;p&gt;Password: {&#x27;•&#x27;.repeat(form.password.length)}&lt;/p&gt;
+            &lt;p&gt;Role: {form.role || &#x27;—&#x27;}&lt;/p&gt;
+            &lt;p&gt;Newsletter: {form.newsletter ? &#x27;Yes&#x27; : &#x27;No&#x27;}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/&gt;
+      )}
+
+      {/* Navigation */}
+      &lt;div style={styles.buttons}&gt;
+        {step &gt; 1 &amp;&amp; (
+          &lt;button type=&quot;button&quot; onClick={previous} style={styles.btn(false)}&gt;
+            Previous
+          &lt;/button&gt;
+        )}
+        {step &lt; TOTAL_STEPS ? (
+          &lt;button type=&quot;button&quot; onClick={next} disabled={!stepIsValid} style={styles.btn(!stepIsValid)}&gt;
+            Next
+          &lt;/button&gt;
+        ) : (
+          &lt;button type=&quot;submit&quot; disabled={!stepIsValid} style={styles.btn(!stepIsValid)}&gt;
+            Submit
+          &lt;/button&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+  <footer>Yang Kaijing Charmine · 202699477 · Web Programming (K0126_002) · Week 13 · React Forms</footer>
+  <script>
+    // Escape user text before putting it into HTML
+    const esc = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    // log(): console.log, and also show the line in the on-page console panel
+    const logEl = document.getElementById('log');
+    function log(...args) {
+      console.log(...args);
+      if (!logEl) return;
+      const line = document.createElement('div');
+      line.textContent = args.map((a) => (typeof a === 'string' ? a : JSON.stringify(a))).join(' ');
+      logEl.append(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    const clearLog = document.getElementById('clear-log');
+    if (clearLog) clearLog.addEventListener('click', () => { logEl.textContent = ''; });
+
+    const TOTAL_STEPS = 3;
+    const ROLES = ['Student', 'TA', 'Instructor'];
+    const STEP_FIELDS = { 1: ['name', 'email'], 2: ['username', 'password', 'confirmPassword'], 3: ['role'] };
+
+    // All data lives in ONE state object, so going back keeps it
+    let step = 1;
+    let form = { name: '', email: '', username: '', password: '', confirmPassword: '', role: '', newsletter: false };
+    let touched = {}; // only show errors after the user types in a field
+
+    // Returns an error object for the whole form; empty object = everything valid
+    function validate(f) {
+      const errs = {};
+      if (f.name.trim().length < 2) errs.name = 'Name must be at least 2 characters';
+      if (!/^\S+@\S+\.\S+$/.test(f.email)) errs.email = 'Enter a valid email address';
+      if (f.username.length < 3) errs.username = 'Username must be at least 3 characters';
+      else if (/\s/.test(f.username)) errs.username = 'Username cannot contain spaces';
+      if (f.password.length < 8) errs.password = 'Password must be at least 8 characters';
+      if (!f.confirmPassword || f.confirmPassword !== f.password) errs.confirmPassword = 'Passwords do not match';
+      if (!f.role) errs.role = 'Please choose a role';
+      return errs;
+    }
+
+    const field = (name, placeholder, type = 'text') => `
+      <div class="field">
+        <input class="control" name="${name}" type="${type}" placeholder="${placeholder}" aria-label="${placeholder}" value="${esc(form[name])}">
+        <p class="error" data-error-for="${name}" hidden></p>
+      </div>`;
+
+    // Re-build the inputs only when the step changes
+    function renderStep() {
+      const body = document.getElementById('step-body');
+      if (step === 1) {
+        body.innerHTML = field('name', 'Name') + field('email', 'Email', 'email');
+      } else if (step === 2) {
+        body.innerHTML = field('username', 'Username') + field('password', 'Password', 'password') + field('confirmPassword', 'Confirm password', 'password');
+      } else {
+        body.innerHTML = `
+          <fieldset>
+            <legend>Role</legend>
+            ${ROLES.map((role) => `<label class="choice"><input type="radio" name="role" value="${role}" ${form.role === role ? 'checked' : ''}> ${role}</label>`).join('')}
+          </fieldset>
+          <label class="choice block"><input type="checkbox" name="newsletter" ${form.newsletter ? 'checked' : ''}> Subscribe to newsletter</label>
+          <div class="summary" id="summary"></div>`;
+      }
+      document.getElementById('step-title').textContent = `Step ${step} of ${TOTAL_STEPS}`;
+      document.getElementById('progress').innerHTML =
+        Array.from({ length: TOTAL_STEPS }, (_, i) => `<span class="${i < step ? 'done' : ''}"></span>`).join('');
+      renderStatus();
+      const first = body.querySelector('input');
+      if (first) first.focus();
+    }
+
+    // Update errors, the review summary and the buttons on every change
+    function renderStatus() {
+      const errors = validate(form);
+      const stepIsValid = STEP_FIELDS[step].every((name) => !errors[name]);
+      document.querySelectorAll('[data-error-for]').forEach((el) => {
+        const name = el.dataset.errorFor;
+        const message = touched[name] && errors[name] ? errors[name] : '';
+        el.textContent = message;
+        el.hidden = !message;
+        document.querySelector(`#step-body [name="${name}"]`).classList.toggle('invalid', Boolean(message));
+      });
+      const summary = document.getElementById('summary');
+      if (summary) {
+        summary.innerHTML = `
+          <strong>Review</strong>
+          <p>Name: ${esc(form.name)}</p>
+          <p>Email: ${esc(form.email)}</p>
+          <p>Username: ${esc(form.username)}</p>
+          <p>Password: ${'•'.repeat(form.password.length)}</p>
+          <p>Role: ${esc(form.role || '—')}</p>
+          <p>Newsletter: ${form.newsletter ? 'Yes' : 'No'}</p>`;
+      }
+      document.getElementById('previous').hidden = step === 1;
+      document.getElementById('next').hidden = step === TOTAL_STEPS;
+      document.getElementById('submit').hidden = step !== TOTAL_STEPS;
+      document.getElementById('next').disabled = !stepIsValid;
+      document.getElementById('submit').disabled = !stepIsValid;
+    }
+
+    // One handler for all inputs: checkboxes use checked, everything else value
+    function handleChange(e) {
+      const { name, value, type, checked } = e.target;
+      form = { ...form, [name]: type === 'checkbox' ? checked : value };
+      touched = { ...touched, [name]: true };
+      renderStatus();
+    }
+
+    const wizard = document.getElementById('wizard');
+    wizard.addEventListener('input', handleChange);
+    wizard.addEventListener('change', handleChange);
+    document.getElementById('next').addEventListener('click', () => {
+      const errors = validate(form);
+      if (STEP_FIELDS[step].every((name) => !errors[name])) { step += 1; renderStep(); }
+    });
+    document.getElementById('previous').addEventListener('click', () => { step -= 1; renderStep(); });
+    wizard.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (Object.keys(validate(form)).length > 0) return;
+      log(form); // final submit: full form object
+      wizard.hidden = true;
+      document.getElementById('done').hidden = false;
+      document.getElementById('done-text').textContent = `Welcome, ${form.name}! The submitted data is in the console below.`;
+    });
+
+    renderStep();
+  </script>
+</body>
+</html>

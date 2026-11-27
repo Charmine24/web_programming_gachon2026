@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Week 13 | React Forms in HTML</title>
+	<link rel="stylesheet" href="../style.css">
+	<style>
+		.lab-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+		.lab-card { display: flex; flex-direction: column; padding: 22px; border: 1px solid var(--line); border-top: 4px solid var(--accent); border-radius: 8px; background: var(--panel); box-shadow: var(--shadow); }
+		.lab-card h3 { margin-bottom: 6px; }
+		.lab-card p { color: var(--muted); }
+		.lab-card .file-link { margin-top: auto; padding-top: 8px; }
+		@media (max-width: 620px) { .lab-card { padding: 18px; } }
+	</style>
+</head>
+<body>
+	<a class="skip-link" href="#main-content">Skip to main content</a>
+	<button class="back-button" type="button" onclick="history.back()">Back</button>
+	<header class="site-header">
+		<div class="header-inner">
+			<p class="eyebrow">Yang Kaijing Charmine · Web Programming (K0126_002)</p>
+			<h1>Week 13<br>React Forms</h1>
+			<p class="intro">Controlled inputs, select and textarea, checkboxes and radio buttons, one handler for many inputs, and form validation. Every page is a standalone HTML file with written JavaScript.</p>
+			<nav class="page-nav" aria-label="Course navigation">
+				<a href="../index.html">Course home</a>
+				<a href="../week2/index.html">Week 2 · HTML</a>
+				<a href="../week3/index.html">Week 3 · CSS</a>
+				<a href="../week5/index.html">Week 5 · DOM &amp; JS</a>
+				<a href="../week7/index.html">Week 7 · Fetch API</a>
+				<a href="../week8/index.html">Week 8 · Forms</a>
+				<a href="../week9/index.html">Week 9 · Accessibility</a>
+				<a href="../week10/index.html">Week 10 · Git &amp; Pages</a>
+				<a href="../week11/index.html">Week 11 · React</a>
+				<a href="../week12/index.html">Week 12 · React State</a>
+				<a href="index.html" aria-current="page">Week 13 · React Forms</a>
+			</nav>
+		</div>
+	</header>
+	<main id="main-content" tabindex="-1">
+		<section class="resource-panel project-panel" aria-labelledby="topics-title">
+			<h2 id="topics-title">Topics</h2>
+			<p>Each topic is a standalone HTML file with its script written inside the page.</p>
+			<div class="lab-grid" id="topic-list"></div>
+		</section>
+
+		<div class="section-lead"><div><h2>Exercises</h2><p>Each exercise is its own HTML file.</p></div><div class="legend" aria-label="Exercise status"><span>Interactive</span></div></div>
+		<section class="week-list session-list" id="session-list" aria-label="Week 13 exercise sessions"></section>
+	</main>
+	<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
+	<script>
+		// The files for this week. Each entry links to its own standalone HTML file.
+		const weekFiles = {
+			"topics": [
+				{
+					"id": "topic-controlled-inputs",
+					"title": "Topic 1 · Controlled text inputs",
+					"description": "value + onChange keep React state as the single source of truth.",
+					"href": "week13_1/topic_01_controlled_text_inputs.html"
+				},
+				{
+					"id": "topic-select-textarea",
+					"title": "Topic 2 · Select and textarea",
+					"description": "Both are controlled with value + onChange; textarea uses the value prop.",
+					"href": "week13_1/topic_02_select_and_textarea.html"
+				},
+				{
+					"id": "topic-checkboxes-radios",
+					"title": "Topic 3 · Checkboxes and radio buttons",
+					"description": "Boolean state, array state and string state for choice inputs.",
+					"href": "week13_1/topic_03_checkboxes_and_radio_buttons.html"
+				},
+				{
+					"id": "topic-one-handler",
+					"title": "Topic 4 · Multiple inputs, one handler",
+					"description": "One state object and one handler using e.target.name.",
+					"href": "week13_1/topic_04_multiple_inputs_one_handler.html"
+				},
+				{
+					"id": "topic-validation",
+					"title": "Topic 5 · Form validation",
+					"description": "Validate on submit, store errors by field, clear them as the user types.",
+					"href": "week13_1/topic_05_form_validation.html"
+				}
+			],
+			"sessions": [
+				{
+					"name": "Session 1",
+					"files": [
+						{
+							"id": "exercise-bio-field",
+							"title": "Exercise 1 · Bio field",
+							"description": "A textarea with a 200-character limit and a live count.",
+							"href": "week13_1/exercise_01_bio_field.html"
+						},
+						{
+							"id": "exercise-contact-form",
+							"title": "Exercise 2 · Contact form",
+							"description": "Required fields with errors, a thank-you message and a reset.",
+							"href": "week13_1/exercise_02_contact_form.html"
+						},
+						{
+							"id": "exercise-skill-picker",
+							"title": "Exercise 3 · Skill picker",
+							"description": "Six skill checkboxes with a counter and a warning above 3.",
+							"href": "week13_1/exercise_03_skill_picker.html"
+						},
+						{
+							"id": "challenge-multi-step",
+							"title": "Challenge · Multi-step registration wizard",
+							"description": "Three validated steps, a progress bar, and one state object for all data.",
+							"href": "week13_1/challenge_01_multi_step_registration.html"
+						},
+						{
+							"id": "homework-course-feedback",
+							"title": "Homework · Course feedback form",
+							"description": "Name, 8-digit student ID, star rating, topics and comments with validation.",
+							"href": "week13_1/homework_01_course_feedback_form.html"
+						}
+					]
+				}
+			]
+		};
+
+		const fileCard = (file) => `
+			<article class="lab-card" id="${file.id}">
+				<h3>${file.title}</h3>
+				<p>${file.description}</p>
+				<p class="file-link"><a href="${encodeURI(file.href)}">Open HTML file</a></p>
+			</article>`;
+
+		document.getElementById("topic-list").innerHTML = weekFiles.topics.map(fileCard).join("");
+
+		document.getElementById("session-list").innerHTML = weekFiles.sessions.map((session, index) => `
+			<details id="session-${index + 1}" class="week session-details" open>
+				<summary><span class="week-number">${index + 1}</span><span class="week-title"><h3>${session.name}</h3><p>${session.files.length} file${session.files.length === 1 ? "" : "s"}</p></span></summary>
+				<div class="sessions"><div class="lab-grid">${session.files.map(fileCard).join("")}</div></div>
+			</details>`).join("");
+	</script>
+</body>
+</html>

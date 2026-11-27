@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homework | Course Feedback Form</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { max-width: 760px; margin: 0 auto; padding: 2rem 1rem; color: #1f2937; background: #f6f7fb; font: 1rem/1.6 system-ui, sans-serif; }
+    h1 { margin: 0 0 .25rem; }
+    h2 { margin: 1.6rem 0 .5rem; font-size: 1.2rem; }
+    h3 { margin: 1.2rem 0 .4rem; font-size: 1.02rem; }
+    .panel h3:first-child { margin-top: 0; }
+    .lead { color: #4b5563; margin-top: 0; }
+    .panel { margin: 1rem 0; padding: 1rem 1.25rem; border: 1px solid #e2e5ee; border-radius: 10px; background: #fff; }
+    .panel > :first-child { margin-top: 0; }
+    .panel > :last-child { margin-bottom: 0; }
+    pre { margin: .5rem 0 1rem; padding: 12px 14px; border-radius: 8px; color: #e5e7eb; background: #1f2433; overflow-x: auto; font-size: .82rem; line-height: 1.5; }
+    pre.state { color: #1f2937; background: #f3f4f8; }
+    code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; }
+    :not(pre) > code { padding: .1rem .3rem; border-radius: 4px; background: #eef0f6; }
+    .note { margin: 1rem 0; padding: 10px 14px; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; background: #fffbeb; }
+    button { margin: 0 .35rem .35rem 0; padding: .42rem .85rem; border: 1px solid #1f9fbf; border-radius: 6px; color: #fff; background: #1f9fbf; font: inherit; cursor: pointer; }
+    button:hover, button:focus-visible { background: #17809a; }
+    button.secondary { color: #1f2937; border-color: #d1d5db; background: #fff; }
+    button.secondary:hover, button.secondary:focus-visible { background: #f3f4f6; }
+    button:disabled { cursor: not-allowed; opacity: .55; }
+    input, select, textarea { padding: .38rem .55rem; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit; }
+    .control { display: block; width: 100%; max-width: 380px; }
+    textarea.control { resize: vertical; }
+    .field { margin: 0 0 .85rem; }
+    .field > label { display: block; margin-bottom: .2rem; font-weight: 600; }
+    .choice { display: inline-flex; align-items: center; gap: .35rem; margin: 0 .9rem .3rem 0; }
+    .choice.block { display: flex; }
+    fieldset { margin: 0 0 .85rem; padding: .6rem .9rem .4rem; border: 1px solid #e2e5ee; border-radius: 8px; }
+    legend { padding: 0 .3rem; font-weight: 600; }
+    .invalid { border-color: #b42318; }
+    .error { margin: .25rem 0 0; color: #b42318; font-size: .88rem; font-weight: 600; }
+    .muted { color: #6b7280; }
+    .ok { color: #15803d; font-weight: 600; }
+    .counter { margin: .25rem 0 0; color: #6b7280; font-size: .85rem; }
+    .counter.low { color: #b42318; }
+    .progress { display: flex; gap: 8px; margin: .6rem 0 1.1rem; }
+    .progress span { flex: 1; height: 10px; border-radius: 6px; background: #d9dfeb; }
+    .progress span.done { background: #1fb5d4; }
+    .summary { margin-top: 1rem; padding: .75rem 1rem; border-radius: 8px; background: #f5f7fb; font-size: .93rem; }
+    .summary p { margin: .2rem 0; }
+    .log-head { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; }
+    .log-head h2 { margin: 0; font-size: 1rem; }
+    .log { min-height: 3.2rem; max-height: 210px; margin: .4rem 0 1rem; padding: .6rem .8rem; overflow: auto; border-radius: 8px; color: #a7f3d0; background: #0f172a; font: .8rem/1.5 ui-monospace, Consolas, monospace; }
+    .log:empty::before { content: 'Console output appears here'; color: #64748b; }
+    footer { margin-top: 2.5rem; color: #6b7280; font-size: .85rem; }
+  </style>
+  <style>
+    /* Back button: same look as .back-button in style.css */
+    .back-button { position: fixed; top: 20px; left: 20px; z-index: 10; display: inline-flex; width: 96px; height: 40px; margin: 0; align-items: center; justify-content: center; padding: 0; border: 1px solid #d8eaf3; border-radius: 999px; color: #3f4661; background: #fffefe; cursor: pointer; font: 700 .86rem/1 "Trebuchet MS", sans-serif; text-align: center; appearance: none; }
+    .back-button:hover, .back-button:focus-visible { border-color: #b46682; color: #b46682; background: #fffefe; }
+    body { padding-top: 76px; }
+  </style>
+</head>
+<body>
+  <button class="back-button" type="button" onclick="history.back()">Back</button>
+  <h1>Course Feedback Form</h1>
+  <p class="lead">Practice challenge: student name, 8-digit student ID and a star rating are required; topics are optional; comments allow 300 characters with a live count. Bonus: Submit stays disabled while any required field is empty.</p>
+
+  <div class="panel">
+    <form id="feedback" novalidate>
+      <div class="field">
+        <label for="f-name">Student Name *</label>
+        <input class="control" id="f-name" type="text" name="name">
+        <p class="error" id="name-error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="f-id">Student ID (8 digits) *</label>
+        <input class="control" id="f-id" type="number" name="studentId">
+        <p class="error" id="studentId-error" hidden></p>
+      </div>
+      <fieldset id="ratings">
+        <legend>Rating *</legend>
+        <p class="error" id="rating-error" hidden></p>
+      </fieldset>
+      <fieldset id="topics">
+        <legend>Topics Covered Well (optional)</legend>
+      </fieldset>
+      <div class="field">
+        <label for="f-comments">Comments</label>
+        <textarea class="control" id="f-comments" name="comments" rows="4"></textarea>
+        <p class="counter" id="comment-count" aria-live="polite"></p>
+      </div>
+      <button type="submit" id="submit">Submit Feedback</button>
+    </form>
+    <div id="thanks" hidden>
+      <h3 id="thanks-title"></h3>
+      <p>Your feedback has been received.</p>
+      <button type="button" id="again">Submit another response</button>
+    </div>
+  </div>
+  <div class="log-head"><h2>Console</h2><button type="button" class="secondary" id="clear-log">Clear</button></div>
+  <div class="log" id="log" aria-live="polite"></div>
+  <h2>React version (from the slides)</h2>
+  <pre><code>// Week 13 — Homework: Practice Challenge — Course Feedback Form
+// Fields: name (required), 8-digit student ID (required), star rating (required),
+// topics (optional checkboxes), comments (max 300 chars, live count).
+// Bonus: submit is disabled while any required field is empty.
+import { useState } from &#x27;react&#x27;;
+
+const RATINGS = [
+  { value: &#x27;5&#x27;, label: &#x27;⭐⭐⭐⭐⭐&#x27; },
+  { value: &#x27;4&#x27;, label: &#x27;⭐⭐⭐⭐&#x27; },
+  { value: &#x27;3&#x27;, label: &#x27;⭐⭐⭐&#x27; },
+];
+const TOPICS = [&#x27;HTML&#x27;, &#x27;CSS&#x27;, &#x27;JavaScript&#x27;, &#x27;Git&#x27;, &#x27;React&#x27;];
+const MAX_COMMENT = 300;
+
+const INITIAL_FORM = {
+  name: &#x27;&#x27;,
+  studentId: &#x27;&#x27;,
+  rating: &#x27;&#x27;,
+  topics: [],
+  comments: &#x27;&#x27;,
+};
+
+function CourseFeedbackForm() {
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [errors, setErrors] = useState({});
+  const [submittedName, setSubmittedName] = useState(&#x27;&#x27;);
+
+  // One handler for text, number, radio and textarea inputs
+  function handleChange(e) {
+    const { name, value } = e.target;
+    const newValue = name === &#x27;comments&#x27; ? value.slice(0, MAX_COMMENT) : value;
+    setForm(prev =&gt; ({ ...prev, [name]: newValue }));
+    if (errors[name]) setErrors(prev =&gt; ({ ...prev, [name]: &#x27;&#x27; }));
+  }
+
+  // Checkboxes: add or remove the topic from the array
+  function handleTopic(topic, checked) {
+    setForm(prev =&gt; ({
+      ...prev,
+      topics: checked
+        ? [...prev.topics, topic]
+        : prev.topics.filter(t =&gt; t !== topic),
+    }));
+  }
+
+  function validate() {
+    const errs = {};
+    if (!form.name.trim()) {
+      errs.name = &#x27;Student name is required&#x27;;
+    }
+    if (!form.studentId) {
+      errs.studentId = &#x27;Student ID is required&#x27;;
+    } else if (!/^\d{8}$/.test(form.studentId)) {
+      errs.studentId = &#x27;Student ID must be exactly 8 digits&#x27;;
+    }
+    if (!form.rating) {
+      errs.rating = &#x27;Please choose a rating&#x27;;
+    }
+    return errs;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault(); // stop the page reloading
+    const errs = validate();
+    if (Object.keys(errs).length &gt; 0) {
+      setErrors(errs);
+      return;
+    }
+    console.log(&#x27;Feedback submitted:&#x27;, form);
+    setSubmittedName(form.name.trim());
+    setForm(INITIAL_FORM);
+    setErrors({});
+  }
+
+  // Bonus: disable submit while any required field is empty
+  const requiredEmpty =
+    !form.name.trim() || !form.studentId || !form.rating;
+
+  if (submittedName) {
+    return (
+      &lt;div&gt;
+        &lt;h2&gt;Thank you, {submittedName}!&lt;/h2&gt;
+        &lt;p&gt;Your feedback has been received.&lt;/p&gt;
+        &lt;button onClick={() =&gt; setSubmittedName(&#x27;&#x27;)}&gt;Submit another response&lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  const errorStyle = { color: &#x27;red&#x27;, fontSize: 13, margin: &#x27;4px 0&#x27; };
+  const remaining = MAX_COMMENT - form.comments.length;
+
+  return (
+    &lt;form onSubmit={handleSubmit} noValidate style={{ maxWidth: 420 }}&gt;
+      &lt;h2&gt;Course Feedback&lt;/h2&gt;
+
+      {/* 1. Student Name */}
+      &lt;div&gt;
+        &lt;label&gt;
+          Student Name *&lt;br /&gt;
+          &lt;input
+            type=&quot;text&quot;
+            name=&quot;name&quot;
+            value={form.name}
+            onChange={handleChange}
+            style={{ borderColor: errors.name ? &#x27;red&#x27; : &#x27;&#x27; }}
+          /&gt;
+        &lt;/label&gt;
+        {errors.name &amp;&amp; &lt;p style={errorStyle}&gt;{errors.name}&lt;/p&gt;}
+      &lt;/div&gt;
+
+      {/* 2. Student ID */}
+      &lt;div&gt;
+        &lt;label&gt;
+          Student ID (8 digits) *&lt;br /&gt;
+          &lt;input
+            type=&quot;number&quot;
+            name=&quot;studentId&quot;
+            value={form.studentId}
+            onChange={handleChange}
+            style={{ borderColor: errors.studentId ? &#x27;red&#x27; : &#x27;&#x27; }}
+          /&gt;
+        &lt;/label&gt;
+        {errors.studentId &amp;&amp; &lt;p style={errorStyle}&gt;{errors.studentId}&lt;/p&gt;}
+      &lt;/div&gt;
+
+      {/* 3. Rating */}
+      &lt;fieldset&gt;
+        &lt;legend&gt;Rating *&lt;/legend&gt;
+        {RATINGS.map(r =&gt; (
+          &lt;label key={r.value} style={{ display: &#x27;block&#x27; }}&gt;
+            &lt;input
+              type=&quot;radio&quot;
+              name=&quot;rating&quot;
+              value={r.value}
+              checked={form.rating === r.value}
+              onChange={handleChange}
+            /&gt;
+            {r.label}
+          &lt;/label&gt;
+        ))}
+        {errors.rating &amp;&amp; &lt;p style={errorStyle}&gt;{errors.rating}&lt;/p&gt;}
+      &lt;/fieldset&gt;
+
+      {/* 4. Topics Covered Well */}
+      &lt;fieldset&gt;
+        &lt;legend&gt;Topics Covered Well (optional)&lt;/legend&gt;
+        {TOPICS.map(topic =&gt; (
+          &lt;label key={topic} style={{ marginRight: 12 }}&gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+              checked={form.topics.includes(topic)}
+              onChange={e =&gt; handleTopic(topic, e.target.checked)}
+            /&gt;
+            {topic}
+          &lt;/label&gt;
+        ))}
+      &lt;/fieldset&gt;
+
+      {/* 5. Comments */}
+      &lt;div&gt;
+        &lt;label&gt;
+          Comments&lt;br /&gt;
+          &lt;textarea
+            name=&quot;comments&quot;
+            value={form.comments}
+            onChange={handleChange}
+            rows={4}
+            cols={40}
+          /&gt;
+        &lt;/label&gt;
+        &lt;p style={{ color: remaining &lt; 30 ? &#x27;red&#x27; : &#x27;gray&#x27;, fontSize: 13, margin: &#x27;4px 0&#x27; }}&gt;
+          {form.comments.length} / {MAX_COMMENT}
+        &lt;/p&gt;
+      &lt;/div&gt;
+
+      {/* 6. Submit */}
+      &lt;button type=&quot;submit&quot; disabled={requiredEmpty}&gt;
+        Submit Feedback
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+
+export default CourseFeedbackForm;</code></pre>
+  <footer>Yang Kaijing Charmine · 202699477 · Web Programming (K0126_002) · Week 13 · React Forms</footer>
+  <script>
+    // Escape user text before putting it into HTML
+    const esc = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    // log(): console.log, and also show the line in the on-page console panel
+    const logEl = document.getElementById('log');
+    function log(...args) {
+      console.log(...args);
+      if (!logEl) return;
+      const line = document.createElement('div');
+      line.textContent = args.map((a) => (typeof a === 'string' ? a : JSON.stringify(a))).join(' ');
+      logEl.append(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    const clearLog = document.getElementById('clear-log');
+    if (clearLog) clearLog.addEventListener('click', () => { logEl.textContent = ''; });
+
+    const RATINGS = [
+      { value: '5', label: '⭐⭐⭐⭐⭐' },
+      { value: '4', label: '⭐⭐⭐⭐' },
+      { value: '3', label: '⭐⭐⭐' },
+    ];
+    const TOPICS = ['HTML', 'CSS', 'JavaScript', 'Git', 'React'];
+    const MAX_COMMENT = 300;
+    const INITIAL_FORM = { name: '', studentId: '', rating: '', topics: [], comments: '' };
+
+    let form = { ...INITIAL_FORM };
+    let errors = {};
+    let submittedName = '';
+    const formEl = document.getElementById('feedback');
+
+    // Build the radio buttons and checkboxes from the data arrays
+    document.getElementById('rating-error').insertAdjacentHTML('beforebegin', RATINGS.map((r) =>
+      `<label class="choice block"><input type="radio" name="rating" value="${r.value}"> <span aria-label="${r.value} stars">${r.label}</span></label>`).join(''));
+    document.getElementById('topics').insertAdjacentHTML('beforeend', TOPICS.map((topic) =>
+      `<label class="choice"><input type="checkbox" name="topic" value="${topic}"> ${topic}</label>`).join(''));
+
+    function validate() {
+      const errs = {};
+      if (!form.name.trim()) errs.name = 'Student name is required';
+      if (!form.studentId) errs.studentId = 'Student ID is required';
+      else if (!/^\d{8}$/.test(form.studentId)) errs.studentId = 'Student ID must be exactly 8 digits';
+      if (!form.rating) errs.rating = 'Please choose a rating';
+      return errs;
+    }
+
+    function render() {
+      formEl.hidden = Boolean(submittedName);
+      document.getElementById('thanks').hidden = !submittedName;
+      document.getElementById('thanks-title').textContent = `Thank you, ${submittedName}!`;
+
+      // Controlled values
+      ['name', 'studentId', 'comments'].forEach((name) => {
+        const input = formEl.elements[name];
+        if (input.value !== form[name]) input.value = form[name];
+      });
+      formEl.querySelectorAll('input[name="rating"]').forEach((radio) => { radio.checked = form.rating === radio.value; });
+      formEl.querySelectorAll('input[name="topic"]').forEach((box) => { box.checked = form.topics.includes(box.value); });
+
+      // Errors
+      ['name', 'studentId', 'rating'].forEach((name) => {
+        const message = errors[name] || '';
+        const errorEl = document.getElementById(`${name}-error`);
+        errorEl.textContent = message;
+        errorEl.hidden = !message;
+        if (name !== 'rating') formEl.elements[name].classList.toggle('invalid', Boolean(message));
+      });
+
+      // Live comment count
+      const remaining = MAX_COMMENT - form.comments.length;
+      const count = document.getElementById('comment-count');
+      count.textContent = `${form.comments.length} / ${MAX_COMMENT}`;
+      count.classList.toggle('low', remaining < 30);
+
+      // Bonus: disable submit while any required field is empty
+      document.getElementById('submit').disabled = !form.name.trim() || !form.studentId || !form.rating;
+    }
+
+    // One handler for text, number, radio and textarea inputs
+    function handleChange(e) {
+      const { name, value, checked } = e.target;
+      if (name === 'topic') {
+        // Checkboxes: add or remove the topic from the array
+        const others = form.topics.filter((t) => t !== value);
+        form = { ...form, topics: checked ? [...others, value] : others };
+      } else {
+        const newValue = name === 'comments' ? value.slice(0, MAX_COMMENT) : value;
+        form = { ...form, [name]: newValue };
+        if (errors[name]) errors = { ...errors, [name]: '' };
+      }
+      render();
+    }
+
+    formEl.addEventListener('input', handleChange);
+    formEl.addEventListener('change', handleChange);
+
+    formEl.addEventListener('submit', (e) => {
+      e.preventDefault(); // stop the page reloading
+      const errs = validate();
+      if (Object.keys(errs).length > 0) { errors = errs; render(); return; }
+      log('Feedback submitted:', form);
+      submittedName = form.name.trim();
+      form = { ...INITIAL_FORM, topics: [] };
+      errors = {};
+      render();
+    });
+
+    document.getElementById('again').addEventListener('click', () => { submittedName = ''; render(); });
+
+    render();
+  </script>
+</body>
+</html>
