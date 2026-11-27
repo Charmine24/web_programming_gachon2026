@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A summary of the Week 13 React form ideas applied to Charmine Yang's portfolio website contact form.">
+	<title>Portfolio Website Changes | Week 13</title>
+	<link rel="stylesheet" href="../../style.css">
+	<style>
+		.code-block { margin: 12px 0 0; padding: 16px 18px; overflow-x: auto; border-radius: 8px; color: #e5e7eb; background: #1f2433; font: .8rem/1.55 ui-monospace, Consolas, monospace; }
+		.resource-panel code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; }
+		.placement { margin-top: 14px; }
+	</style>
+</head>
+<body>
+	<a class="skip-link" href="#main-content">Skip to content</a>
+	<button class="back-button" type="button" onclick="history.back()">Back</button>
+	<header class="site-header">
+		<div class="header-inner">
+			<p class="eyebrow">Week 13 · Session 1</p>
+			<h1>Portfolio Website<br>Changes</h1>
+			<p class="intro">A record of the Week 13 React form ideas applied to Yang Kaijing Charmine's portfolio website: a new contact form.</p>
+			<nav class="page-nav" aria-label="Course navigation">
+				<a href="../../index.html">Course home</a>
+				<a href="../../week2/index.html">Week 2 · HTML</a>
+				<a href="../../week3/index.html">Week 3 · CSS</a>
+				<a href="../../week5/index.html">Week 5 · DOM &amp; JS</a>
+				<a href="../../week7/index.html">Week 7 · Fetch API</a>
+				<a href="../../week8/index.html">Week 8 · Forms</a>
+				<a href="../../week9/index.html">Week 9 · Accessibility</a>
+				<a href="../../week10/index.html">Week 10 · Git &amp; Pages</a>
+				<a href="../../week11/index.html">Week 11 · React</a>
+				<a href="../../week12/index.html">Week 12 · React State</a>
+				<a href="../index.html">Week 13 · React Forms</a>
+			</nav>
+		</div>
+	</header>
+	<main id="main-content" tabindex="-1">
+		<section class="resource-panel project-panel" aria-labelledby="changes-title">
+			<h2 id="changes-title">What changed</h2>
+			<p>The contact section of the portfolio now has a message form. The portfolio remains a static HTML, CSS, and JavaScript site, so the Week 13 form patterns are implemented with framework-free JavaScript rather than adding a React build step.</p>
+			<div class="resource-list">
+				<article class="resource-panel">
+					<h3>1. Controlled inputs</h3>
+					<p>The form collects a name, email, reason, source, message and consent. Following the Week 13 controlled-input pattern, <code>js/main.js</code> (section 7) handles the field values and validation in JavaScript instead of relying on the browser's default form submit (the form uses <code>novalidate</code>).</p>
+				</article>
+				<article class="resource-panel">
+					<h3>2. Select and textarea</h3>
+					<p>An optional <code>&lt;select&gt;</code> asks how the visitor found the portfolio. The message <code>&lt;textarea&gt;</code> has a 500-character limit with a live <code>0 / 500</code> counter.</p>
+				</article>
+				<article class="resource-panel">
+					<h3>3. Radio buttons and a checkbox</h3>
+					<p>Four radio buttons share <code>name="reason"</code> and store one string. A consent checkbox stores a boolean read from <code>checked</code>.</p>
+				</article>
+				<article class="resource-panel">
+					<h3>4. Validation and a disabled submit</h3>
+					<p>Name, email, reason, message and consent are required (marked <code>*</code>), and each has its own error message slot under the field. The <code>./send_message</code> button starts disabled, with a hint, until every required field is filled in.</p>
+				</article>
+				<article class="resource-panel">
+					<h3>5. Conditional rendering</h3>
+					<p>After a successful submit the form is replaced by a success panel that greets the visitor by name, opens their email app with the message ready to send, and offers <code>./send_another</code>.</p>
+				</article>
+				<article class="resource-panel">
+					<h3>6. Accessibility</h3>
+					<p>Every field has a <code>&lt;label&gt;</code> or <code>&lt;legend&gt;</code>; error messages are linked with <code>aria-describedby</code> and announced through <code>aria-live</code>; the success panel uses <code>role="status"</code>.</p>
+				</article>
+				<article class="resource-panel">
+					<h3>7. Files changed</h3>
+					<p><code>index.html</code> adds the form inside <code>&lt;section id="contact"&gt;</code>. <code>js/main.js</code> (section 7) adds the form logic. <code>css/style.css</code> (section 12) styles the terminal-themed form.</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="resource-panel project-panel" aria-labelledby="markup-title">
+			<h2 id="markup-title">Form markup added to index.html</h2>
+			<p class="placement">Placed inside <code>&lt;section id="contact"&gt;</code>, directly after the closing <code>&lt;/div&gt;</code> of <code>&lt;div class="contact-list"&gt;</code> (the LinkedIn and Mail links).</p>
+			<pre class="code-block"><code>&lt;!-- Contact form (week 13: controlled inputs + validation, handled in js/main.js §7) --&gt;
+    &lt;h5 class=&quot;reveal contact-or&quot;&gt;…or send me a message:&lt;/h5&gt;
+    &lt;div class=&quot;contact-form-wrap reveal&quot;&gt;
+      &lt;form class=&quot;contact-form&quot; id=&quot;contactForm&quot; novalidate&gt;
+        &lt;div class=&quot;cf-titlebar&quot; aria-hidden=&quot;true&quot;&gt;&lt;span&gt;~/contact/send_message.sh&lt;/span&gt;&lt;/div&gt;
+
+        &lt;div class=&quot;cf-field&quot;&gt;
+          &lt;label for=&quot;cfName&quot;&gt;name &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+          &lt;input id=&quot;cfName&quot; name=&quot;name&quot; type=&quot;text&quot; autocomplete=&quot;name&quot; placeholder=&quot;Your name&quot; aria-describedby=&quot;cfNameErr&quot;&gt;
+          &lt;p class=&quot;cf-error&quot; id=&quot;cfNameErr&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;cf-field&quot;&gt;
+          &lt;label for=&quot;cfEmail&quot;&gt;email &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+          &lt;input id=&quot;cfEmail&quot; name=&quot;email&quot; type=&quot;email&quot; autocomplete=&quot;email&quot; placeholder=&quot;you@example.com&quot; aria-describedby=&quot;cfEmailErr&quot;&gt;
+          &lt;p class=&quot;cf-error&quot; id=&quot;cfEmailErr&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;fieldset class=&quot;cf-field cf-radios&quot;&gt;
+          &lt;legend&gt;reason &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/legend&gt;
+          &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;reason&quot; value=&quot;Internship / job opportunity&quot;&gt; Internship / job&lt;/label&gt;
+          &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;reason&quot; value=&quot;Project collaboration&quot;&gt; Collaboration&lt;/label&gt;
+          &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;reason&quot; value=&quot;Event or speaking invite&quot;&gt; Event invite&lt;/label&gt;
+          &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;reason&quot; value=&quot;Just saying hi&quot;&gt; Just saying hi&lt;/label&gt;
+          &lt;p class=&quot;cf-error&quot; id=&quot;cfReasonErr&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+        &lt;/fieldset&gt;
+
+        &lt;div class=&quot;cf-field&quot;&gt;
+          &lt;label for=&quot;cfSource&quot;&gt;how did you find me?&lt;/label&gt;
+          &lt;select id=&quot;cfSource&quot; name=&quot;source&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;— Select (optional) —&lt;/option&gt;
+            &lt;option value=&quot;LinkedIn&quot;&gt;LinkedIn&lt;/option&gt;
+            &lt;option value=&quot;Nanyang Polytechnic&quot;&gt;Nanyang Polytechnic&lt;/option&gt;
+            &lt;option value=&quot;A CTF or cybersecurity event&quot;&gt;A CTF or cybersecurity event&lt;/option&gt;
+            &lt;option value=&quot;GitHub&quot;&gt;GitHub&lt;/option&gt;
+            &lt;option value=&quot;Other&quot;&gt;Other&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;cf-field&quot;&gt;
+          &lt;label for=&quot;cfMessage&quot;&gt;message &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+          &lt;textarea id=&quot;cfMessage&quot; name=&quot;message&quot; rows=&quot;5&quot; placeholder=&quot;What would you like to talk about?&quot; aria-describedby=&quot;cfMessageErr cfCount&quot;&gt;&lt;/textarea&gt;
+          &lt;div class=&quot;cf-meta&quot;&gt;
+            &lt;p class=&quot;cf-error&quot; id=&quot;cfMessageErr&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+            &lt;span class=&quot;cf-count&quot; id=&quot;cfCount&quot;&gt;0 / 500&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;label class=&quot;cf-check&quot;&gt;
+          &lt;input type=&quot;checkbox&quot; name=&quot;consent&quot;&gt;
+          I agree that Charmine may reply to me at this email address. &lt;span class=&quot;req&quot;&gt;*&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;p class=&quot;cf-error&quot; id=&quot;cfConsentErr&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+
+        &lt;button class=&quot;btn cf-submit&quot; id=&quot;cfSubmit&quot; type=&quot;submit&quot; disabled&gt;./send_message&lt;/button&gt;
+        &lt;p class=&quot;cf-hint&quot; id=&quot;cfHint&quot;&gt;Fill in all required (*) fields to enable sending.&lt;/p&gt;
+      &lt;/form&gt;
+
+      &lt;!-- Shown after a successful submit --&gt;
+      &lt;div class=&quot;cf-success&quot; id=&quot;cfSuccess&quot; hidden role=&quot;status&quot;&gt;
+        &lt;p class=&quot;cf-success-prompt&quot;&gt;root@charmine : ~# echo $STATUS&lt;/p&gt;
+        &lt;h3&gt;Thank you, &lt;span id=&quot;cfSuccessName&quot;&gt;&lt;/span&gt;! ✅&lt;/h3&gt;
+        &lt;p&gt;Your email app should have opened with your message ready to send. I&#x27;ll get back to you soon.&lt;/p&gt;
+        &lt;button class=&quot;btn&quot; id=&quot;cfAgain&quot; type=&quot;button&quot;&gt;./send_another&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;</code></pre>
+		</section>
+	</main>
+	<footer>Yang Kaijing Charmine · Web Programming (K0126_002) · Gachon University · 2026</footer>
+</body>
+</html>
